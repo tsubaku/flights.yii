@@ -28,7 +28,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Учёт рейсов',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -51,7 +51,10 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            ['label' => 'Рейсы', 'url' => ['/site/manager']],
+            ['label' => 'Охранники', 'url' => ['/site/guards']],
+            ['label' => 'Клиенты', 'url' => ['/site/clients']],
         ],
     ]);
     NavBar::end();
