@@ -10,6 +10,7 @@ class Clients extends ActiveRecord //ActiveRecord - это встроенный 
     //{
     //    return 'clients';
    // }
+    ///public $clients;
 
 }
 ?>

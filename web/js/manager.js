@@ -103,7 +103,7 @@ function delete_line (id_line, table)
     month = GetData('month');    
     console.log(id_line+"_"+table+"_"+year+"_"+month);
     $.ajax({
-            url:"index.php?r=site/clients",
+            url:"index.php?r=site/delete",
             type:"POST",
             //async: true,
             statbox:"status",
@@ -125,7 +125,13 @@ function delete_line (id_line, table)
             ///    } else if (table == '10') {
             ///        show_list_guards();     //Обновление списка охранников        
             ///    }
-            },
+                dom = 'clientName-' + id_line;
+                //console.log("dom="+dom);
+                var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
+                el.parentNode.removeChild(el);
+                //document.getElementById(dom1).parentNode.removeChild(document.getElementById(dom1));
+
+                },
             error: function (error1) {
                 console.log("eror_delete_line");
                 //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
@@ -290,9 +296,10 @@ function register(){
 
 //Регистрация клиента
 function register_client(){
+    console.log("register_client");
     var client     = document.getElementById("client").value;
-    ajax({
-            url:"./core/php/register_client.php",
+    $.ajax({
+            url:"index.php?r=site/register",
             type:"POST",
             statbox:"status",
             data:
@@ -300,14 +307,26 @@ function register_client(){
                 client:client,        
             },
             success: function (data) {
-                document.getElementById("status").innerHTML='';     //удалить значок ожидания
-                var res = JSON.parse(data);
+                //document.getElementById("status").innerHTML='';     //удалить значок ожидания
+                /* var res = JSON.parse(data);
                 if (res[1] != ""){                                    //Если есть ошибки, вывести их на экран
-                    document.getElementById("div_register_client_error").innerHTML=res[1];
+                    //document.getElementById("div_register_client_error").innerHTML=res[1];
                 } else {                
-                    document.getElementById("client").innerHTML='';    //Очистить поля ввода
-                    show_list_clients();
-                }
+                    //document.getElementById("client").innerHTML='';    //Очистить поля ввода
+                    //show_list_clients();
+                } */
+                //console.log("register_client-ok" + data);
+                var res = JSON.parse(data);
+                console.log("res[0]=" + res[0]);
+
+                var list = document.getElementById('clientsTable'); //элемент-таблица
+                var tr = document.createElement('TR');              //новый элемент tr
+                //tr.classList.add('block');                        //добавляем класс элементу
+                tr.id = "clientName-"+res[0];                       //Добавляем id элементу
+                tr.innerHTML = '<tr id="clientName"><td>' + res[0] + '</td><td>'+client+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></td></tr>';
+                list.appendChild(tr);                               // добавление в конец         
+
+                
             },
             error: function (error1) {
                 console.log("eror_register_client");

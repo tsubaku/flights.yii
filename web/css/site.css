@@ -113,3 +113,18 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+
+
+/*Эксперименты с вёрсткой */
+
+.form-horizontal .control-label {
+text-align:right;
+/* text-align:left; */
+/* background-color:#ffa; */
+}
+
+
+
+

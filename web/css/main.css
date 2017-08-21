@@ -217,10 +217,10 @@ h3 {
 
 .a_button_delete {
 	display: inline-block;
-	background-image: url(../img/del_object_v1.png);
+	background-image: url(../img/delete.png);
 	background-size: cover; /* Фон занимает всю доступную площадь */
-	height:23px;
-	width: 23px;
+	height:20px;
+	width: 53px;
 	float: right;
 	padding-right: 2px;
 	vertical-align: top;
