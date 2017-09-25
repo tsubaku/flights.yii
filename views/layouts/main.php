@@ -53,7 +53,7 @@ AppAsset::register($this);
                 . '</li>'
             ),
             ['label' => 'Рейсы', 'url' => ['/site/manager']],
-            ['label' => 'Охранники', 'url' => ['/site/guards']],
+            ['label' => 'Охранники', 'url' => ['/site/users']],
             ['label' => 'Клиенты', 'url' => ['/site/clients']],
         ],
     ]);

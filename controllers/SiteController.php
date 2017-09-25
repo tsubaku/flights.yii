@@ -12,7 +12,8 @@ use app\models\ContactForm;
 use app\models\Manager;
 
 use app\models\Clients; //Подключаем модель для обработки списка клиентов;
-use app\models\Guards; //Подключаем модель для обработки списка охранников;
+use app\models\Users; //Подключаем модель для обработки списка охранников;
+use app\models\User; //Подключаем модель для обработки списка охранников;
 
 class SiteController extends Controller
 {
@@ -106,10 +107,15 @@ class SiteController extends Controller
          #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
          if(Yii::$app->request->isAjax){
             $idRow = Yii::$app->request->post('id_line');
+            $tableName = Yii::$app->request->post('table');
             //print_r($idRow);
-            $model = new Clients(); //говорят, лишняя
-            $model = Clients::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-
+            if ($tableName == '11') {
+                $model = new Clients(); //говорят, лишняя
+                $model = Clients::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            } elseif ($tableName == '10') {
+                $model = new Users(); //говорят, лишняя
+                $model = Users::find()->where(['user_id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            }
             //$listClients = Clients::find()->all();    //забираем из базы
             //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат 
         }
@@ -120,7 +126,6 @@ class SiteController extends Controller
     public function actionRegister()
     {      
         $this->view->title = 'One Article';
-        
         #Добавление строки в таблицу clients
         if(Yii::$app->request->isAjax){
             $model = new Clients();
@@ -137,20 +142,48 @@ class SiteController extends Controller
             foreach ($rows as $key => $value) {
                 $rows = $value;
             }
-            
             $json_data = array(0 => $rows);
-
             echo json_encode($json_data);
-
         }
-
-        
         //return $this->render('clients');
         //$listClients = Clients::find()->all();    //забираем из базы
         //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
     }
     
-    public function actionGuards()
+    public function actionRegisteruser()
+    {      
+        $this->view->title = 'One Article';
+        #Добавление строки в таблицу clients
+        if(Yii::$app->request->isAjax){
+            $model = new Users();
+            $loginNewUser = Yii::$app->request->post('g_login');
+            $passwordNewUser = Yii::$app->request->post('g_password');
+            $fullNameNewUser = Yii::$app->request->post('fullName');
+            $model->user_login = $loginNewUser;
+            $model->user_password = $passwordNewUser;
+            $model->full_name = $fullNameNewUser;
+            $model->save();
+            
+            $rows = (new \yii\db\Query())
+                ->select(['user_id'])
+                ->from('users')
+                ->where(['user_login'=>$loginNewUser])
+                ->one();
+            
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data);
+        }
+        //return $this->render('clients');
+        //$listClients = Clients::find()->all();    //забираем из базы
+        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
+    }
+    
+    
+    
+    public function actionUsers()
     {      
          $this->view->title = 'One Article';
         //$model = new Guards();                        //создаём объект модели
@@ -163,8 +196,14 @@ class SiteController extends Controller
         
         //return $this->render('guards');
 
-        $listGuards = Guards::find()->all();    //забираем из базы
-        return $this->render('guards', compact('listGuards')); //compact('listClients') - передаём в вид результат   
+        $listUsers = Users::find()->all();    //забираем из базы
+        return $this->render('users', compact('listUsers')); //compact('listUsers') - передаём в вид результат 
+        //$listClients = Clients::find()->all();    //забираем из базы
+        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат       
+
+              
+        
+        
     }
     
     
@@ -228,4 +267,20 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+    
+    /* public function actionSignup(){
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = new Users();
+
+        return $this->render('users', compact('model'));
+    } */
+    
+    
+    
 }
+
+
+
+

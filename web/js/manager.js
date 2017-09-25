@@ -125,10 +125,18 @@ function delete_line (id_line, table)
             ///    } else if (table == '10') {
             ///        show_list_guards();     //Обновление списка охранников        
             ///    }
-                dom = 'clientName-' + id_line;
-                //console.log("dom="+dom);
-                var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
-                el.parentNode.removeChild(el);
+                if (table == '11'){
+                    dom = 'clientName-' + id_line;
+                    //console.log("dom="+dom);
+                    var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
+                    el.parentNode.removeChild(el);
+                } 
+                if (table == '10'){
+                    dom = 'userName-' + id_line;
+                    //console.log("dom="+dom);
+                    var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
+                    el.parentNode.removeChild(el);
+                } 
                 //document.getElementById(dom1).parentNode.removeChild(document.getElementById(dom1));
 
                 },
@@ -256,34 +264,44 @@ function show_list_guards(){
   
   
 //Регистрация охранника
-function register(){
+function register_user(){
     var g_login     = document.getElementById("login").value;
     var g_password  = document.getElementById("password").value;
-    var full_name   = document.getElementById("full_name").value;
+    var fullName   = document.getElementById("fullName").value;
     //console.log(g_login+"_"+g_password+"_"+full_name);
-    ajax({
-            url:"./core/php/register.php",
+    $.ajax({
+            url:"index.php?r=site/registeruser",
             type:"POST",
             statbox:"status",
             data:
             {
                 g_login:g_login,    
                 g_password:g_password,    
-                full_name:full_name,    
+                fullName:fullName,    
             },
             success: function (data) {
                 document.getElementById("status").innerHTML='';     //удалить значок ожидания
-                //console.log(data);
+                console.log(data);
 
+                //var res = JSON.parse(data);
+                //if (res[1] != ""){                                    //Если есть ошибки, вывести их на экран
+                //    document.getElementById("div_register_guard_error").innerHTML=res[1];
+                //} else {                
+                //    document.getElementById("login").innerHTML='';    //Очистить поля ввода
+                //    document.getElementById("password").innerHTML='';
+                //    document.getElementById("fullName").innerHTML='';
+                //    show_list_guards();
+                //}
                 var res = JSON.parse(data);
-                if (res[1] != ""){                                    //Если есть ошибки, вывести их на экран
-                    document.getElementById("div_register_guard_error").innerHTML=res[1];
-                } else {                
-                    document.getElementById("login").innerHTML='';    //Очистить поля ввода
-                    document.getElementById("password").innerHTML='';
-                    document.getElementById("full_name").innerHTML='';
-                    show_list_guards();
-                }
+                console.log("res[0]=" + res[0]);
+
+                var list = document.getElementById('usersTable'); //элемент-таблица
+                var tr = document.createElement('TR');              //новый элемент tr
+                //tr.classList.add('block');                        //добавляем класс элементу
+                tr.id = "userName-"+res[0];                       //Добавляем id элементу
+                tr.innerHTML = '<tr id="userName"><td>' + res[0] + '</td><td>'+g_login+'</td><td>'+fullName+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></td></tr>';
+                list.appendChild(tr);                               // добавление в конец     
+                
             },
             error: function (error1) {
                 console.log("eror_delete_line");
