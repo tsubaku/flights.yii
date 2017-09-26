@@ -14,6 +14,7 @@ use app\models\Manager;
 use app\models\Clients; //Подключаем модель для обработки списка клиентов;
 use app\models\Users; //Подключаем модель для обработки списка охранников;
 use app\models\User; //Подключаем модель для обработки списка охранников;
+use app\models\Flights; //Подключаем модель для обработки таблицы рейсов;
 
 class SiteController extends Controller
 {
@@ -157,11 +158,15 @@ class SiteController extends Controller
         if(Yii::$app->request->isAjax){
             $model = new Users();
             $loginNewUser = Yii::$app->request->post('g_login');
-            $passwordNewUser = Yii::$app->request->post('g_password');
+            $passwordNewUser = Yii::$app->request->post('g_password');   
             $fullNameNewUser = Yii::$app->request->post('fullName');
+            
+            $passwordNewUserHash = password_hash(trim($passwordNewUser), PASSWORD_DEFAULT);
+            
             $model->user_login = $loginNewUser;
-            $model->user_password = $passwordNewUser;
+            $model->user_password = $passwordNewUserHash;
             $model->full_name = $fullNameNewUser;
+            
             $model->save();
             
             $rows = (new \yii\db\Query())
@@ -199,14 +204,89 @@ class SiteController extends Controller
         $listUsers = Users::find()->all();    //забираем из базы
         return $this->render('users', compact('listUsers')); //compact('listUsers') - передаём в вид результат 
         //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат       
-
-              
-        
-        
+        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат        
     }
     
+    public function actionShowflightstable()
+    {      
+        //$this->view->title = 'One Article';
+        if(Yii::$app->request->isAjax){
+            $year = Yii::$app->request->post('year');
+            $month = Yii::$app->request->post('month');
+            
+
+            $table = '20'; //рейсы             !!! Костыль !!!
+            
+            #Перевод названия месяца в его номер по порядку
+            $mons       = array(
+                "Январь" => 01,
+                "Февраль" => 02,
+                "Март" => 03,
+                "Апрель" => 04,
+                "Май" => 05,
+                "Июнь" => 06,
+                "Июль" => 07,
+                "Август" => 08,
+                "Сентябрь" => 09,
+                "Октябрь" => 10,
+                "Ноябрь" => 11,
+                "Январь" => 12
+            );
+            $month_name = $mons[$month];
+            
+            $ru_rows_array = array(
+                    "№",
+                    "Номер рейса",
+                    "Дата выезда",
+                    "Время",
+                    "Клиент",
+                    "Подклиент",
+                    "Номер машины",
+                    "Принятие под охрану",
+                    "Сдача с охраны",
+                    "Состав ОХР",
+                    "ФИО",
+                    "Выдано",
+                    "Машина",
+                    "Срок доставки",
+                    "Принятие",
+                    "Сдача",
+                    "Фактич. срок доставки",
+                    "Простой часы",
+                    "Простой, ставка за охранника",
+                    "Простой сумма",
+                    "Ставка без НДС",
+                    "Ставка с НДС",
+                    "Счёт",
+                    "ЗП",
+                    "Простой",
+                    "Аренда машины",
+                    "Оплата машины",
+                    "ИТОГО",
+                    "ЗП+Простой",
+                    "Статус"
+                );
+            
+            
+                $model = new Flights();
+
+                
+                $listFlights = Flights::find()->all();    //забираем из базы всех юзеров
+            
+            
+            
+            
+            
+                echo "<table>";
+                echo "<caption><strong>Рейсы за $month $year</strong></caption>"; //Название таблицы
+                echo "</table>";
+        
+        $json_data = array(0 => $listFlights);
+        echo json_encode($json_data);
+        }
+
     
+    }
     
     /**
      * Login action.
@@ -215,14 +295,23 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        //user - компонент содержит постоянную информацию о текущем пользователе
+        //получить к ней доступ из любого места приложения: Yii::app()->user
+        //isGuest - проверить, является ли пользователь гостем
+        //Для проверки прав на определённые действия удобно воспользоваться CWebUser::checkAccess. Также есть возможность получить уникальный идентификатор и другие постоянные данные пользователя.
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->goHome(); //Если юзер не гость, то Redirects the browser to the home page.
         }
-
-        $model = new LoginForm();
+        //Если же он пока не авторизован, то:
+        $model = new LoginForm(); //создаём объект модели LoginForm
+        //$model->load(Yii::$app->request->post()) -загрузка атрибутов в модель (предполагаю, что от пользователя из формы ввода логина/пароля)
+        //login() - public method, sets the specified identity and remembers the authentication status in session and cookie
+        //$model->login() -применяем метод login() к модели
+        //Предполагаю: "Если пришли данные из формы ввода И login() прошёл удачно, то редирект к последней посещённой странице
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goBack(); // goBack()	-метод Redirects the browser to the last visited page.
         }
+        //Иначе снова отрендерить страниу login, передав в неё $model 
         return $this->render('login', [
             'model' => $model,
         ]);

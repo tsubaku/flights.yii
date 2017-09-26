@@ -24,7 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) 
+            //метод field принимает 2 параметра: модель и арибут данной модели (имя поля, которое мы создаём)
+            //метод textInput() Renders a text input.
+        ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

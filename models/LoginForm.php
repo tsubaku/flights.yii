@@ -13,7 +13,7 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $username;   //атрибуты
     public $password;
     public $rememberMe = true;
 
@@ -23,10 +23,13 @@ class LoginForm extends Model
     /**
      * @return array the validation rules.
      */
+    //Методы rules() и прочие:
+    //rules() -правила валидации
     public function rules()
     {
         return [
             // username and password are both required
+            //кажется, username и password - имена полей ввода во вью login.php
             [['username', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
@@ -44,10 +47,13 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {
+        //hasErrors() -Возвращает значение, указывающее, есть ли какая-либо ошибка проверки.
         if (!$this->hasErrors()) {
+            //getUser() -Returns the user component.
             $user = $this->getUser();
-
+            //Если $user нет ИЛИ валидация с введённым паролем не прошла
             if (!$user || !$user->validatePassword($this->password)) {
+                //addError() -Добавляет ошибку к указанному атрибуту объекту модели.
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }

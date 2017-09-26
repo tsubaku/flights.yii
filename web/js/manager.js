@@ -35,8 +35,8 @@ function show_flights_table()
     month = GetData('month');
     //console.log("период введён1: " + year + " " + month);
     
-    ajax({
-        url:"./core/php/show_flights_table.php",
+    $.ajax({
+        url:"index.php?r=site/showflightstable",
         type:"POST",
         statbox:"status",
         data:
@@ -64,7 +64,7 @@ function add_line()
 {
     year = GetData('year');
     month = GetData('month');
-    ajax({
+    $.ajax({
             url:"./core/php/add_line_in_flights_table.php",
             type:"POST",
             //async: true,
@@ -152,7 +152,7 @@ window.delete_line = delete_line;
 
 //Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
 function get_photo(id_line) {
-    ajax({
+    $.ajax({
             url:"./core/php/get_photo.php",
             type:"POST",
             //async: true,
@@ -241,7 +241,7 @@ function get_photo(id_line) {
 
 //Формирование и показ списка охранников
 function show_list_guards(){    
-    ajax({
+    $.ajax({
             url:"./core/php/show_list_guards.php",
             type:"POST",
             statbox:"status",
@@ -354,7 +354,7 @@ function register_client(){
 
 //Формирование и показ списка охранников
 function show_list_clients(){    
-    ajax({
+    $.ajax({
             url:"./core/php/show_list_clients.php",
             type:"POST",
             statbox:"status",
