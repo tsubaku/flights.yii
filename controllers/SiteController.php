@@ -12,9 +12,10 @@ use app\models\ContactForm;
 use app\models\Manager;
 
 use app\models\Clients; //Подключаем модель для обработки списка клиентов;
-use app\models\Users; //Подключаем модель для обработки списка охранников;
 use app\models\User; //Подключаем модель для обработки списка охранников;
 use app\models\Flights; //Подключаем модель для обработки таблицы рейсов;
+
+use app\models\UsersForm; //Подключаем модель для обработки списка охранников;
 
 class SiteController extends Controller
 {
@@ -188,7 +189,7 @@ class SiteController extends Controller
     
     
     
-    public function actionUsers()
+/*     public function actionUsers()
     {      
          $this->view->title = 'One Article';
         //$model = new Guards();                        //создаём объект модели
@@ -204,8 +205,40 @@ class SiteController extends Controller
         $listUsers = Users::find()->all();    //забираем из базы
         return $this->render('users', compact('listUsers')); //compact('listUsers') - передаём в вид результат 
         //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат        
+        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат    
+    } */
+    
+    //Акшен срабатывает при посещении страницы users, либо при вводе данных с неё
+    public function actionUsers(){
+        //Проверка, является ли пользователь гостем
+        //?что такое user? В примере было user. Если изменить на users, то ошибка "Getting unknown property: yii\web\Application::users"
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome(); //Если НЕ гость, то редирект на домашнюю страницу
+        }
+        $model = new UsersForm();  //создаём объект модели UsersForm
+        //?что за \ стоит перед Yii?
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            //echo '<pre>'; print_r($model); //распечатка модели
+            //die;
+            $user = new User(); //создаём объект модели User (эта модель указана в качестве компонента идентификации в файле config\web.php)
+            $user->username = $model->username; //передаём атрибут модели UsersForm в атрибут модели User (заполним его полученными из формы данными)
+            $user->password = \Yii::$app->security->generatePasswordHash($model->password); //Аналогично, только ещё и шифруем
+            //echo '<pre>'; print_r($user); //и распечатываем уже модель User
+            //die;
+            //сохраняем объект модели User
+            if($user->save()){
+                //Yii::$app->session->setFlash('success', 'signUpOk');
+                return $this->goHome(); //если сохранили успешно, то редирект на домашнюю страницу
+                //return $this->render('users', compact('model')); //рендерим вью users, передав в него модель model
+                
+            } 
+        }
+        return $this->render('users', compact('model')); //рендерим вью users, передав в него модель model
     }
+
+
+
+    
     
     public function actionShowflightstable()
     {      

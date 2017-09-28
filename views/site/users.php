@@ -63,10 +63,10 @@ $table_users = '10'; //охранники             !!! Костыль !!!
             <?php
             #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
             $i = 1;   
-            foreach ($listUsers as $CurrentUser){                 
-                $user_id     = $CurrentUser['user_id'];        //id охранника
-                $user_login  = $CurrentUser['user_login'];     //login охранника
-                $full_name   = $CurrentUser['full_name'];      //Фамилия охранника       
+            //foreach ($listUsers as $CurrentUser){                 
+            //    $user_id     = $CurrentUser['user_id'];        //id охранника
+            //    $user_login  = $CurrentUser['user_login'];     //login охранника
+            //    $full_name   = $CurrentUser['full_name'];      //Фамилия охранника       
             ?>
             <tr id='userName-<?=$user_id?>'>
                 <td style="width: 50px;"><?=$i?></td> 
@@ -74,7 +74,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                 <td><?=$full_name?></td> 
                 <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>  
             </tr>
-        <?php $i = $i + 1; } ?>  
+        <?php //$i = $i + 1; } ?>  
         </tbody>
       </table>
 </div>
@@ -138,6 +138,24 @@ $this->registerJs($js); //регистрируем скрипт */
 
 
 <!-- Регистрация юзеров --->
+<?php
+
+//use yii\helpers\Html;
+//use yii\bootstrap\ActiveForm;
+?>
+
+<?php $form = ActiveForm::begin() ?>
+<?= $form->field($model, 'username') 
+    //username -атрибуты модели UsersFofm
+    //метод field принимает 2 параметра: модель и арибут данной модели (имя поля, которое мы создаём)
+?>
+<?= $form->field($model, 'password')->passwordInput() ?>
+    <div class="form-group">
+        <div>
+            <?= Html::submitButton('Регистрация', ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
+<?php ActiveForm::end() ?>
 
 
 

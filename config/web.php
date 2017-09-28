@@ -16,6 +16,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            //допустим, я поменяю User на Users
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
