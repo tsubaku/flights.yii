@@ -76,8 +76,8 @@ function change_cell(cell_value, cell_id)
     var column_in_db = cell_id.substring(0, position_minus);//все символы до -, включительно (получаем название столбца в БД)
     var id_in_db = cell_id.substring(position_minus+1, cell_id.length);//все символы от - и до конца включительно (получаем id строки в БД)
     
-    ajax({
-            url:"./core/php/write_in_table.php",
+    $.ajax({
+            url:"index.php?r=site/change",
             type:"POST",
             async: true,
             statbox:"status",
@@ -96,7 +96,7 @@ function change_cell(cell_value, cell_id)
                     var cell_adress = "schet-" + id_in_db;
                     document.getElementById(cell_adress).value = changed_cells.schet; //Обновляем ячейку "Счёт"
                 }
-                if ( ((column_in_db == 'prinjatie') || (column_in_db == 'sdacha')) && (user_id_current == 'manager') ){
+                if ( ((column_in_db == 'prinjatie') || (column_in_db == 'sdacha')) ){
                     var cell_adress = "fakticheskij_srok_dostavki-" + id_in_db;        
 
                     document.getElementById(cell_adress).value = changed_cells.fakticheskij_srok_dostavki; //Обновляем ячейку "fakticheskij_srok_dostavki"
@@ -126,7 +126,7 @@ function change_cell(cell_value, cell_id)
                     
                     var cell_adress = "zp_plus_prostoj-" + id_in_db;
                     document.getElementById(cell_adress).value = changed_cells.zp_plus_prostoj; //Обновляем ячейку "zp_plus_prostoj"
-                }
+                } 
             },
             error: function (error1) {
                 console.log("eror_change_cell");

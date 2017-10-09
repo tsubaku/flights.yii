@@ -69,38 +69,12 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
 <br />
 
 
-				
-<select size="0" id="month" name="month">
-    <?php
-        $month=array('Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь');
-        $current_month=date("n");
-        for ($i=1;$i<13;$i++){
-            $ii = $i-1;
-            echo "<option value=$month[$ii]";
-            if ($current_month==$i)echo " selected='selected'";
-            echo ">".$month[$i-1];
-        }
-    ?>
-</select>
-
-
-<select size="0" id="year" name="year">
-    <?php
-        $year=array('2016','2017','2018','2019','2020','2021','2022','2023','2024', '2025', '2026', '2027');
-        $current_year=date("Y");
-        for ($y=0;$y<12;$y++){
-            echo "<option value=$year[$y]";
-            if ($year[$y] == $current_year)echo " selected='selected'";
-            echo ">".$year[$y];
-        }
-    ?>
-</select>
-<br />	
+	
 
 <div id="status">					
 </div>
 
-<button class="btn btn-success" id="btn">Click</button>
+
 <?php
 /* $js = <<< JS
     $('#btn').on('click', function(e) {

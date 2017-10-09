@@ -219,8 +219,8 @@ h3 {
 	display: inline-block;
 	background-image: url(../img/delete.png);
 	background-size: cover; /* Фон занимает всю доступную площадь */
-	height:20px;
-	width: 53px;
+	height:23px;
+	width: 23px;
 	float: right;
 	padding-right: 2px;
 	vertical-align: top;

@@ -6,7 +6,7 @@
 //Ловим выбор месяца/года, чтобы сразу показать таблицу для этого периода
     //year  - выбранный селектора года
     //month - выбранный селектор месяца
-$(function()    { 
+/* $(function()    { 
     var selected_year = document.getElementById("year");
     selected_year.onchange = function(){        
         show_flights_table();    
@@ -17,14 +17,14 @@ $(function()    {
     selected_month.onchange = function(){        
         show_flights_table();    
     }
-}); 
+});  */
 
 
 
 //После полной загрузки страницы выполнить показ таблицы для залогиненного пользователя
-window.onload=function(){
+/* window.onload=function(){
     $('#a_show_flights_table').trigger('click');
-}    
+}  */   
 
 
 
@@ -33,7 +33,7 @@ function show_flights_table()
 {        
     year = GetData('year');
     month = GetData('month');
-    //console.log("период введён1: " + year + " " + month);
+    console.log("период введён1: " + year + " " + month);
     
     $.ajax({
         url:"index.php?r=site/showflightstable",
@@ -47,8 +47,8 @@ function show_flights_table()
         },
         success: function (data) {
             document.getElementById("status").innerHTML=''; //удалить значок ожидания
-            //console.log(data);
-            document.getElementById("div_flights_table").innerHTML=data;
+            console.log(data);
+            //document.getElementById("div_flights_table").innerHTML=data;
         },
         error: function (error1) {
             console.log("eror_show_flights_table");
@@ -99,9 +99,9 @@ window.add_line = add_line;
 function delete_line (id_line, table)
 {
     //console.log("id_line="+id_line+" \n");
-    year = GetData('year');
-    month = GetData('month');    
-    console.log(id_line+"_"+table+"_"+year+"_"+month);
+    //year = GetData('year');
+    //month = GetData('month');    
+    //console.log(id_line+"_"+table+"_"+year+"_"+month);
     $.ajax({
             url:"index.php?r=site/delete",
             type:"POST",
@@ -111,8 +111,8 @@ function delete_line (id_line, table)
             {
                 id_line:id_line,    
                 table:table,
-                year:year,    
-                month:month,
+                //year:year,    
+                //month:month,
             },
             success: function (data) {
             ///    document.getElementById("status").innerHTML=''; //удалить значок ожидания
@@ -137,6 +137,12 @@ function delete_line (id_line, table)
                     var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
                     el.parentNode.removeChild(el);
                 } 
+                if (table == '20'){
+                    dom = 'flight-' + id_line;
+                    //console.log("dom="+dom);
+                    var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
+                    el.parentNode.removeChild(el);
+                } 
                 //document.getElementById(dom1).parentNode.removeChild(document.getElementById(dom1));
 
                 },
@@ -153,7 +159,7 @@ window.delete_line = delete_line;
 //Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
 function get_photo(id_line) {
     $.ajax({
-            url:"./core/php/get_photo.php",
+            url:"index.php?r=site/getphoto",
             type:"POST",
             //async: true,
             statbox:"status",
@@ -162,9 +168,11 @@ function get_photo(id_line) {
                 id_line:id_line,    
             },
             success: function (data) {
+                console.log(data);
                 document.getElementById("status").innerHTML=''; //удалить значок ожидания
                 var array_photo_flight = JSON.parse(data);
-                //console.log(array_photo_flight);
+                
+                console.log(array_photo_flight);
                 for (var i = 0; i < array_photo_flight.length; i++) {
                     //console.log(array_photo_flight[i]);
                     document.getElementById("thumbs").innerHTML=document.getElementById("thumbs").innerHTML + array_photo_flight[i];
