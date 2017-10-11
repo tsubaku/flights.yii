@@ -72,127 +72,152 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    
+    
+    
     /**
      * Displays manager homepage.
      *
      * @return string
      */
+    #+Акшен страницы рейсов, показывающий рейсы за период
     public function actionManager()
-    {
+    {    
+        $model = new Flights();             //создаём объект модели
+        #Добавление строки в таблицу 
+        if ( Yii::$app->request->post('add-button') ) {
+            $text = '';
+            $model->podklient = $text;
+            $model->save();
            
-        $model = new Flights(); // И создаём объект модели
+            /* $rows = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('clients')
+                ->where(['client'=>$nameNewClient])
+                ->one();
             
-        $this->view->title = 'Все статьи';     //Передаём объект модели в вид         -это надо вообще?
-        //return $this->render('test', compact('model'));
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data); */
+
+         //return $this->render('manager', compact('model', 'text')); //compact('listFlights') - передаём в вид результат 
+      } 
+ //    if (Yii::$app->request->post('refresh-button') or !Yii::$app->request->post()) {  
+        //$this->view->title = 'Все статьи';  //Передаём объект модели в вид   
         
-        
-       // return $this->render('manager', compact('model'));
-        
-        
-        if( $model->load(Yii::$app->request->post()) ){
-            $text = 'no ajax';
-            return $this->render('manager', compact('model', 'text', 'year', 'month')); 
-        } else {
-            $text = 'ajax';
-            
+        #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
+        if( Yii::$app->request->post('refresh-button') ){
+            $text = 'post';
             $year = Yii::$app->request->post('year');
-            $month = Yii::$app->request->post('month');
-
-            $table = '20'; //рейсы             !!! Костыль !!!
-            
-            #Перевод названия месяца в его номер по порядку
-            $mons       = array(
-                "Январь" => 1,
-                "Февраль" => 2,
-                "Март" => 3,
-                "Апрель" => 4,
-                "Май" => 5,
-                "Июнь" => 6,
-                "Июль" => 7,
-                "Август" => 8,
-                "Сентябрь" => 9,
-                "Октябрь" => 10,
-                "Ноябрь" => 11,
-                "Январь" => 12
-            );
-            $month_name = $mons[$month];
-            
-            $ru_rows_array = array(
-                    "№",
-                    "Номер рейса",
-                    "Дата выезда",
-                    "Время",
-                    "Клиент",
-                    "Подклиент",
-                    "Номер машины",
-                    "Принятие под охрану",
-                    "Сдача с охраны",
-                    "Состав ОХР",
-                    "ФИО",
-                    "Выдано",
-                    "Машина",
-                    "Срок доставки",
-                    "Принятие",
-                    "Сдача",
-                    "Фактич. срок доставки",
-                    "Простой часы",
-                    "Простой, ставка за охранника",
-                    "Простой сумма",
-                    "Ставка без НДС",
-                    "Ставка с НДС",
-                    "Счёт",
-                    "ЗП",
-                    "Простой",
-                    "Аренда машины",
-                    "Оплата машины",
-                    "ИТОГО",
-                    "ЗП+Простой",
-                    "Статус"
-            );
-            
-            //$flightsDate1 = date($year
-            
-
-//$date1 = "$year-$month-01 00:00:00";
-//$date2 = "$year-$month-31 00:00:00";
-$date1 = "2017-06-01 00:00:00";
-$date2 = "2017-06-30 00:00:00";
-//$d1 = strtotime($date); // переводит из строки в дату
-//$date2 = date("Y-m-d", $d1); // переводит в новый формат
-
-
-
-            $model2 = new Flights();
-            $listFlights = flights::find()->asArray()->where(['data_vyezda between 2017-06-01 and 2017-06-07']);    //забираем из базы все рейсы
-
-            #Вытаскиваем все фамилии охранников
-            $listUsers = User::find()->select('full_name')->asArray()->column();    //забираем из базы
-            $k = count($listUsers);
-            $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного */
-            
-            #Вытаскиваем всех клиентов
-            $listClients = Clients::find()->select('client')->asArray()->column();    //забираем из базы
-            $k = count($listClients);
-            $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
-        
-            #Вытаскиваем все пути к фотографиям рейса
-            $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
-            
-                                
-            //$json_data = array(0 => $listFlights);
-            //echo json_encode($json_data);
-            
-            //$listFlights = user::find()->all();    //забираем из базы
-            //$listUsers = [9,0,9,6];
-            return $this->render('manager', compact('model', 'listFlights', 'month', 'year', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //compact('listFlights') - передаём в вид результат 
+            $month = Yii::$app->request->post('month'); 
+        } else {
+            $text = 'no_post';
+            $year = date("Y");
+            $month = date("m"); //SELECT * FROM flights WHERE data_vyezda between '2017-10-01' and '2017-10-31'
         }
         
+        $table = '20'; //рейсы             !!! Костыль !!!
         
+        #Перевод названия месяца в его номер по порядку
+        $mons       = array(
+            "Январь" => 1,
+            "Февраль" => 2,
+            "Март" => 3,
+            "Апрель" => 4,
+            "Май" => 5,
+            "Июнь" => 6,
+            "Июль" => 7,
+            "Август" => 8,
+            "Сентябрь" => 9,
+            "Октябрь" => 10,
+            "Ноябрь" => 11,
+            "Январь" => 12
+        );
+        $month_name = $mons[$month];
         
+        $ru_rows_array = array(
+                "№",
+                "Номер рейса",
+                "Дата выезда",
+                "Время",
+                "Клиент",
+                "Подклиент",
+                "Номер машины",
+                "Принятие под охрану",
+                "Сдача с охраны",
+                "Состав ОХР",
+                "ФИО",
+                "Выдано",
+                "Машина",
+                "Срок доставки",
+                "Принятие",
+                "Сдача",
+                "Фактич. срок доставки",
+                "Простой часы",
+                "Простой, ставка за охранника",
+                "Простой сумма",
+                "Ставка без НДС",
+                "Ставка с НДС",
+                "Счёт",
+                "ЗП",
+                "Простой",
+                "Аренда машины",
+                "Оплата машины",
+                "ИТОГО",
+                "ЗП+Простой",
+                "Статус"
+        );
         
+        #забираем из базы все рейсы  between 1 and 31'
+        $date1 = $year."-".$month."-01";
+        $date2 = $year."-".$month."-31";
+        $query = "SELECT * FROM flights WHERE data_vyezda between :date1 and :date2";
+        $listFlights = flights::findBySql($query, [':date1' => $date1, ':date2' => $date2])->asArray()->all(); 
+        //print_r($listFlights);
+        #Если рейсов за этот месяц нет, показываем все рейсы без даты
+      //  if ( empty($listFlights) ) {
+
+            $query = "SELECT * FROM flights WHERE data_vyezda IS NULL";
+            $listFlightsNoDate = flights::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+            
+      //  }
+
+        $p = count($listFlights);
+        foreach ($listFlightsNoDate as $key => $val) {   
+            //$flightPhoto[] = $val['path']; 
+            $p = $p + 1;
+            $listFlights[$p] = $val;
+            
+        }
+                                    
+                                    
+        #Вытаскиваем все фамилии охранников
+        $listUsers = User::find()->select('full_name')->asArray()->column();    //забираем из базы
+        $k = count($listUsers);
+        $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         
+        #Вытаскиваем всех клиентов
+        $listClients = Clients::find()->select('client')->asArray()->column();    //забираем из базы
+        $k = count($listClients);
+        $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
+    
+        #Вытаскиваем все пути к фотографиям рейса
+        $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
         
+                            
+        //$json_data = array(0 => $listFlights);
+        //echo json_encode($json_data);
+        
+        //$listUsers = [9,0,9,6];
+        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //compact('listFlights') - передаём в вид результат 
+
+   //  }
+    
     }
+    
+    
     
     public function actionClients()
     {      
