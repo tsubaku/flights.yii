@@ -28,7 +28,7 @@ $(function()    {
 
 
 
-//Показать таблицу рейсов менеджеру
+//-Показать таблицу рейсов менеджеру
 function show_flights_table()
 {        
     year = GetData('year');
@@ -410,3 +410,5 @@ function selectPhoto(){
       img.src = url;
     }
 }
+
+

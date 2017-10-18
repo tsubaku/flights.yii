@@ -5,53 +5,67 @@
  
 
 //Показать один рейс для охранника
-function show_one_flight(date)
+function show_one_flight(dat)
 {		
 	//console.log("период введён1: " + year + " " + month);
-	console.log("date: "+ date + " \n");
+	user_id_current = 103;
+    console.log("dat: "+ dat + " \n");
 	console.log("user_id_current: "+ user_id_current + " \n");
-	ajax({
-		url:"./core/php/show_one_flight.php",
-		type:"POST",
+	$.ajax({
+		url:"index.php?r=site/showflight",
+		type:"post",
 		statbox:"status",
 		data:
 		{
-			date:date,
-			user_id:user_id_current,
+			dat:dat,
+			user_id_current:user_id_current,
+            _csrf: yii.getCsrfToken(),
 		},
 		success: function (data) {
 			document.getElementById("status").innerHTML=''; //удалить значок ожидания
 			console.log("data = "+data);
 			//document.getElementById("div_show_one_flight").innerHTML=data;
 			var array_data_one_flight = JSON.parse(data);
+            //console.log("array_data_one_flight = "+array_data_one_flight);
 			//console.log("# "+array_data_one_flight[0]);
 			
-			if (array_data_one_flight[2]){	//Время
-				array_data_one_flight[2] = array_data_one_flight[2].replace(":00.000000","");
+			console.log("# "+array_data_one_flight["sdacha_s_ohrany"]);
+			//console.log("# "+array_data_one_flight[3]);
+			//console.log("# "+array_data_one_flight[4]);
+			
+			if (array_data_one_flight['vremja']){	//Время
+				array_data_one_flight['vremja'] = array_data_one_flight['vremja'].replace(":00.000000","");
 				//array_data_one_flight[2] = array_data_one_flight[2].substring(0, 10);
 			}
-			if (array_data_one_flight[7]){	//Приняте
-				array_data_one_flight[7] = array_data_one_flight[7].replace(".000000","");
-				array_data_one_flight[7] = array_data_one_flight[7].substring(0, 10)+"T"+array_data_one_flight[7].substring(11, 19);
+			if (array_data_one_flight['prinjatie']){	//Приняте
+				array_data_one_flight['prinjatie'] = array_data_one_flight['prinjatie'].replace(".000000","");
+				array_data_one_flight['prinjatie'] = array_data_one_flight['prinjatie'].substring(0, 10)+"T"+array_data_one_flight['prinjatie'].substring(11, 19);
 			}
-			if (array_data_one_flight[8]){	//Сдача
-				array_data_one_flight[8] = array_data_one_flight[8].replace(".000000","");
-				array_data_one_flight[8] = array_data_one_flight[8].substring(0, 10)+"T"+array_data_one_flight[8].substring(11, 19);
+			if (array_data_one_flight['sdacha']){	//Сдача
+				array_data_one_flight['sdacha'] = array_data_one_flight['sdacha'].replace(".000000","");
+				array_data_one_flight['sdacha'] = array_data_one_flight['sdacha'].substring(0, 10)+"T"+array_data_one_flight['sdacha'].substring(11, 19);
 			}
 			
-			number_flight = array_data_one_flight[0];	//номер рейса
-			document.getElementById("div_right_string0").innerHTML=array_data_one_flight[0];			
-			document.getElementById("div_right_string1").innerHTML=array_data_one_flight[1];
-			document.getElementById("div_right_string2").innerHTML=array_data_one_flight[2];			
-			document.getElementById("div_right_string3").innerHTML=array_data_one_flight[3];			
-			document.getElementById("div_right_string5").innerHTML=array_data_one_flight[5];			
-			document.getElementById("div_right_string6").innerHTML=array_data_one_flight[6];			
+
+ 
+
+           // array_data_one_flight['prinjatie'] = array_data_one_flight['prinjatie'].substring(0, array_data_one_flight['prinjatie'].length-7);
+            //console.log("# "+array_data_one_flight['prinjatie']);
+ 
+
+			number_flight = array_data_one_flight['id'];	//номер рейса
+			document.getElementById("div_right_string0").innerHTML=array_data_one_flight['id'];			
+			document.getElementById("div_right_string1").innerHTML=array_data_one_flight['data_vyezda' ];
+			document.getElementById("div_right_string2").innerHTML=array_data_one_flight['vremja'];			
+			document.getElementById("div_right_string3").innerHTML=array_data_one_flight['klient' ];			
+			document.getElementById("div_right_string5").innerHTML=array_data_one_flight['prinjatie_pod_ohranu'];			
+			document.getElementById("div_right_string6").innerHTML=array_data_one_flight['sdacha_s_ohrany'];			
 			
-			document.getElementById("div_right_string4").innerHTML="<input type='text' id='nomer_mashiny-"+array_data_one_flight[0]+"'name='nomer_mashiny-"+array_data_one_flight[0]+"' class='nomer_mashiny_mobi' value='"+array_data_one_flight[4]+"' onchange='change_cell(this.value, this.id)'></input>";	
+			document.getElementById("div_right_string4").innerHTML="<input type='text' id='nomer_mashiny-"+array_data_one_flight['id']+"'name='nomer_mashiny-"+array_data_one_flight['id']+"' class='nomer_mashiny_mobi' value='"+array_data_one_flight['nomer_mashiny' ]+"' onchange='change_cell(this.value, this.id)'></input>";	
 			
-			document.getElementById("div_right_string7").innerHTML="<input type='datetime-local' id='prinjatie-"+array_data_one_flight[0]+"'name='prinjatie-"+array_data_one_flight[0]+"' class='prinjatie_mobi' value='"+array_data_one_flight[7]+"' onchange='change_cell(this.value, this.id)'></input>";
+			document.getElementById("div_right_string7").innerHTML="<input type='datetime-local' id='prinjatie-"+array_data_one_flight['id']+"'name='prinjatie-"+array_data_one_flight['id']+"' class='prinjatie_mobi' value='"+array_data_one_flight['prinjatie']+"' onchange='change_cell(this.value, this.id)'></input>";
 			
-			document.getElementById("div_right_string8").innerHTML="<input type='datetime-local' id='sdacha-"+array_data_one_flight[0]+"'name='sdacha-"+array_data_one_flight[0]+"' class='sdacha_mobi' value='"+array_data_one_flight[8]+"' onchange='change_cell(this.value, this.id)'></input>";
+			document.getElementById("div_right_string8").innerHTML="<input type='datetime-local' id='sdacha-"+array_data_one_flight['id']+"'name='sdacha-"+array_data_one_flight['id']+"' class='sdacha_mobi' value='"+array_data_one_flight['sdacha']+"' onchange='change_cell(this.value, this.id)'></input>";
 			
 			//document.getElementById("div_right_string1").innerHTML=array_data_one_flight[1];
 			//document.getElementById("div_right_string2").innerHTML=array_data_one_flight[2];
@@ -59,7 +73,7 @@ function show_one_flight(date)
 			//document.getElementById("div_right_string4").innerHTML=array_data_one_flight[4];
 
 		},
-		error: function (error1) {
+		error: function (error) {
 			console.log("eror_show_one_flight");
 		}
 	})	
@@ -68,11 +82,14 @@ function show_one_flight(date)
 window.show_one_flight = show_one_flight;
 
 
+//$('.container').append('<p>SHOW jquery SCRIPTS</p>');  //сам jQuery-скрипт для Yii
+
 	
 //--------------------------
 //Внешний вид и настройки календаря для выбора даты 
 $(function(){
 	//var array = ["2017-03-03","2017-03-04"];
+	var array_date_of_departure = ["2017-10-03","2017-10-04"];
 	//console.log("выезды: "+window.array_date_of_departure);
 	//console.log("выезды2: "+array_date_of_departure);
 	
@@ -176,23 +193,29 @@ function submitFile( jQuery ) {
 		var data1 = new FormData();
 		$.each( files, function( key, value ){
 			data1.append( key, value );
-			//console.log("№ " + number_flight);
+			console.log("№ " + number_flight);
 			data1.append("number_flight", number_flight);
 		});
-		//console.log(data1.getAll('number_flight'));
+		console.log(data1.getAll('number_flight'));
 
+        //console.log("data1 " + data1);
 		// Отправляем запрос
 		$.ajax({
-			url: './core/php/submit.php?uploadfiles',
+			url: 'index.php?r=site/uploadfiles',
 			type: 'POST',
 			statbox:"status",
-			data: data1,
+			data: {
+                data1:data1,
+                _csrf:yii.getCsrfToken(),
+            },
 			cache: false,
+            
 			dataType: 'json',	// тип загружаемых данных
 			processData: false, // Не обрабатываем файлы (Don't process the files)
 			contentType: false, // Так jQuery скажет серверу что это строковой запрос
 			success: function( respond, textStatus, jqXHR ){
-				document.getElementById("status").innerHTML=''; //удалить значок ожидания
+				console.log(respond);
+                document.getElementById("status").innerHTML='oooo'; //удалить значок ожидания
 				// Если все ОК
 				if( typeof respond.error === 'undefined' ){
 					// Файлы успешно загружены, делаем что-нибудь здесь
