@@ -138,10 +138,10 @@ class SiteController extends Controller
         $data = array(); // Переменная ответа
 
         //if (isset($_GET['uploadfiles'])) {
-        if( Yii::$app->request->isAjax('uploadfiles') ){
+     ///   if( Yii::$app->request->get('uploadfiles') ){
             $error = false;
             $files = array();
-            $uploaddir = '../photo/'; //каталог для сохраняемых файлов
+            $uploaddir = 'img/photo/'; //каталог для сохраняемых файлов
             
             # Создадим папку если её нет
             //if( ! is_dir( $uploaddir ) ) mkdir( $uploaddir, 0777 );
@@ -180,10 +180,11 @@ class SiteController extends Controller
                 //    'file_name' => $file['name'],
                 //    'flight_n' => $_POST['number_flight']
                 //));
+               
                 $model = new Photo();             //создаём объект модели
-                $model->file_name = $file['name'];
-                $model->flight_n = $_POST['number_flight'];
-                $model->save();
+                $model->path = $file['name'];
+                $model->n_flight = $_POST['number_flight'];
+                $model->save(); 
             }
             
             $data = $error ? array(
@@ -193,7 +194,7 @@ class SiteController extends Controller
             );
             
             echo json_encode($data);
-        }
+    ///    }
     }
     
     
@@ -738,8 +739,10 @@ class SiteController extends Controller
         //isGuest - проверить, является ли пользователь гостем
         //Для проверки прав на определённые действия удобно воспользоваться CWebUser::checkAccess. Также есть возможность получить уникальный идентификатор и другие постоянные данные пользователя.
         if (!Yii::$app->user->isGuest) {
+            
             return $this->goHome(); //Если юзер не гость, то Redirects the browser to the home page.
         }
+        
         //Если же он пока не авторизован, то:
         $model = new LoginForm(); //создаём объект модели LoginForm
         //$model->load(Yii::$app->request->post()) -загрузка атрибутов в модель (предполагаю, что от пользователя из формы ввода логина/пароля)
@@ -748,10 +751,14 @@ class SiteController extends Controller
         //Предполагаю: "Если данные пришедшие из формы ввода загружены в модель И login() прошёл удачно, то редирект к последней посещённой странице
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             //return $this->goBack(); // goBack()	-метод Redirects the browser to the last visited page.
+            ///Yii::$app->user->login();
+            
         }
+        $sig = Yii::$app->user->isGuest;
         //Иначе снова отрендерить страницу login, передав в неё $model 
         return $this->render('login', [
             'model' => $model,
+            'sig' => $sig,
         ]);
     }
 

@@ -144,7 +144,80 @@ function change_cell(cell_value, cell_id)
 
 
 
+//----- Скрипт загрузки файла ----- 
+function submitFile( jQuery ) {
+(function($){
+	var files;  // Глобальная переменная куда будут располагаться данные файлов. С ней будем работать
 
+	// Вешаем функцию на событие
+	$('input[type=file]').change(function(){
+		ajax_respond.style.visibility='hidden';	//Скрываем ответ сервера
+		files = this.files;	// Получим данные файлов и добавим их в переменную
+		event.stopPropagation(); // Остановка происходящего
+		event.preventDefault();  // Полная остановка происходящего
+
+		// Создадим данные формы и добавим в них данные файлов из files
+		var data1 = new FormData();
+		$.each( files, function( key, value ){
+			data1.append( key, value );
+			console.log("№1 " + number_flight);
+			data1.append("number_flight", number_flight);
+		});
+		console.log(data1.getAll('number_flight'));
+
+        //console.log("data1 " + data1);
+		// Отправляем запрос
+        //var csrfToken = $('meta[name="csrf-token"]').attr("content");
+		nFlight = 5;
+        $.ajax({
+			url: 'index.php?r=site/uploadfiles',
+			type: 'POST',
+			statbox:"status",
+            /* data: 
+            {
+                data1:data1,
+                nFlight:nFlight,
+            }, */ 
+            data: data1,
+			cache: false,
+            
+			dataType: 'json',	// тип загружаемых данных
+			processData: false, // Не обрабатываем файлы (Don't process the files)
+			contentType: false, // Так jQuery скажет серверу что это строковой запрос
+			success: function( respond, textStatus, jqXHR ){
+				console.log(respond);
+                document.getElementById("status").innerHTML='oooo'; //удалить значок ожидания
+				// Если все ОК
+				if( typeof respond.error === 'undefined' ){
+					// Файлы успешно загружены, делаем что-нибудь здесь
+
+					// выведем пути к загруженным файлам в блок '.ajax-respond'
+					//var files_path = respond.files;
+					//var html = '';
+					//$.each( files_path, function( key, val ){ html += val +'<br>'; } )
+					//$('.ajax-respond').html( html );
+					
+				//	var html = "<img src='success.png' alt='OK' />";
+				//	$('.ajax-respond').html( html );
+					//document.getElementById("ajax-respond").innerHTML="";
+					ajax_respond.style.visibility='visible'; //Показываем ответ сервера
+					
+				}
+				else{
+					console.log('ОШИБКИ ОТВЕТА сервера: ' + respond.error );
+				}
+			},
+			error: function( jqXHR, textStatus, errorThrown ){
+				console.log('ОШИБКИ AJAX запроса: ' + textStatus );
+			}
+		});
+	});
+
+	})(jQuery)
+}	
+
+$( document ).ready( submitFile );	//Запускаем ф-ию submitFile после полной зарузки страницы		
+//---------------------------
 
 
   
