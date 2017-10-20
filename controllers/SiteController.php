@@ -207,11 +207,42 @@ class SiteController extends Controller
         //$model = new Flights();             //создаём объект модели
 
 
-        $full_name = 'q';
+        $full_name = \Yii::$app->user->identity->username;
+        $idUser = \Yii::$app->user->identity->id;
+        //$full_name = 'q';
         //$listClients = Clients::find()->all();    //забираем из базы
         //return $this->render('guard', compact('listClients')); //compact('listClients') - передаём в вид результат   
         //return $this->render('guard'); //compact('listClients') - передаём в вид результат   
-        return $this->render( 'guard', compact('full_name') ); //compact('listClients') - передаём в вид результат   
+        
+        
+        #Вытаскиваем из базы даты выездов нужного охранника    
+        //$pdo  = connectToBase(); 
+        //$stmt = $pdo->prepare("SELECT `data_vyezda` FROM `flights` WHERE `fio` = :full_name");
+        //$stmt->execute(array(
+        //    'full_name' => $full_name
+        //));
+        //$table_array = $stmt->fetchAll(); //$table_array - массив всех дат выезда указанного охранника
+        $query = 'SELECT `data_vyezda` FROM `flights` WHERE `fio` = :full_name';
+        $table_array = flights::findBySql($query, [':full_name' => $full_name])->asArray()->all(); 
+            
+        $array_date_of_departure = Array();
+        $i                       = 0;
+        foreach ($table_array as $date_of_departure) {
+            $array_date_of_departure[$i] = $date_of_departure['data_vyezda'];
+            $i                           = $i + 1;
+        }
+
+        $js_array = json_encode($array_date_of_departure); //масив дат выездов
+
+        #Отправляем js-скрипту:
+        //echo '<script language="javascript">var user_id_current = ' . $user_id . ';</script>'; //id
+        //echo '<script language="javascript">var array_date_of_departure = ' . $js_array . ';</script>'; //масив дат выездов
+
+        
+        
+        
+        
+        return $this->render( 'guard', compact('idUser', 'full_name', 'js_array') ); //compact('listClients') - передаём в вид результат   
     }
     
     
@@ -625,9 +656,9 @@ class SiteController extends Controller
     public function actionSignup(){
         //Проверка, является ли пользователь гостем
         //?что такое user? В примере было user. Если изменить на users, то ошибка "Getting unknown property: yii\web\Application::users"
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome(); //Если НЕ гость, то редирект на домашнюю страницу
-        }
+    ///    if (!Yii::$app->user->isGuest) {
+    ///        return $this->goHome(); //Если НЕ гость, то редирект на домашнюю страницу
+    ///    }
         $model = new SignupForm();  //создаём объект модели UsersForm
         //?что за \ стоит перед Yii?
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
@@ -734,12 +765,13 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'simple'; //меняем шаблон на простой
+        
         //user - компонент содержит постоянную информацию о текущем пользователе
         //получить к ней доступ из любого места приложения: Yii::app()->user
         //isGuest - проверить, является ли пользователь гостем
         //Для проверки прав на определённые действия удобно воспользоваться CWebUser::checkAccess. Также есть возможность получить уникальный идентификатор и другие постоянные данные пользователя.
         if (!Yii::$app->user->isGuest) {
-            
             return $this->goHome(); //Если юзер не гость, то Redirects the browser to the home page.
         }
         
@@ -751,14 +783,20 @@ class SiteController extends Controller
         //Предполагаю: "Если данные пришедшие из формы ввода загружены в модель И login() прошёл удачно, то редирект к последней посещённой странице
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             //return $this->goBack(); // goBack()	-метод Redirects the browser to the last visited page.
-            ///Yii::$app->user->login();
             
+            #Вытаскиваем имя залогиненного юзера и редиректим на нужный интерфейс
+            $nameUser = \Yii::$app->user->identity->username;
+            if ($nameUser == 'manager') {
+                return $this->redirect(['manager']);
+            } else {
+                return $this->redirect(['guard']);
+            }
         }
-        $sig = Yii::$app->user->isGuest;
+        //$sig = Yii::$app->user->isGuest;
         //Иначе снова отрендерить страницу login, передав в неё $model 
         return $this->render('login', [
             'model' => $model,
-            'sig' => $sig,
+            //'sig' => $sig,
         ]);
     }
 

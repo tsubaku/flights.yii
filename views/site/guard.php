@@ -29,19 +29,16 @@
     ['depends' => 'yii\web\YiiAsset']) ?>
   
   
-<?php    
-//    echo DatePicker::widget([
-//   'name'  => 'from_date',
-//  'value'  => $value,
-   //'language' => 'ru',
-   //'dateFormat' => 'yyyy-MM-dd',
-// ]); 
+<?php 
+    echo '<script language="javascript">var array_date_of_departure = ' . $js_array . ';</script>'; //масив дат выездов
+    echo '<script language="javascript">var user_id_current = ' . $idUser . ';</script>'; //id охранника
+?>
 
-?> 
 <div id="calendar">
 </div>
 
-<p>Охранник: <?php print($full_name);?></p>
+<p>Охранник: <?php print($full_name); echo "$js_array";?></p>
+
 
 <!--  Блок модального окна -->			
 <div id="modal_form"><!-- Сaмo oкнo --> 

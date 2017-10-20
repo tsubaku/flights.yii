@@ -39,16 +39,18 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+        
+         /* 'urlManager' => [
+            //'enablePrettyUrl' => true,
+            //'showScriptName' => false,
             'rules' => [
+                '' => 'site/login', // Контроллер/экшн
             ],
-        ],
-        */
+        ],  */ 
+        
     ],
     'params' => $params,
+    'defaultRoute'=> 'site/login', //Главной страницей сайта будет страница логина
 ];
 
 if (YII_ENV_DEV) {

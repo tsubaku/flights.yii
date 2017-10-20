@@ -8,7 +8,7 @@
 function show_one_flight(dat)
 {		
 	//console.log("период введён1: " + year + " " + month);
-	user_id_current = 103;
+	//user_id_current = 103;
     console.log("dat: "+ dat + " \n");
 	console.log("user_id_current: "+ user_id_current + " \n");
 	$.ajax({
@@ -89,9 +89,10 @@ window.show_one_flight = show_one_flight;
 //Внешний вид и настройки календаря для выбора даты 
 $(function(){
 	//var array = ["2017-03-03","2017-03-04"];
-	var array_date_of_departure = ["2017-10-03","2017-10-04"];
+	//var array_date_of_departure = ["2017-10-03","2017-10-04"];
 	//console.log("выезды: "+window.array_date_of_departure);
 	//console.log("выезды2: "+array_date_of_departure);
+	//console.log("выезды3: ");
 	
 	$("#calendar").datepicker({
         inline: true,
