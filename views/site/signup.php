@@ -151,11 +151,11 @@ $this->registerJs($js); //регистрируем скрипт */
 </div>
 
 <?php 
-    echo '<pre>'; 
+    /* echo '<pre>'; 
     echo 'r1= '; 
     print_r($r1); 
     echo 'r2= '; 
-    print_r($r2); 
+    print_r($r2);  */
 ?> 
 
 

@@ -205,7 +205,7 @@ class SiteController extends Controller
     {      
         //$this->view->title = 'One Article';
         //$model = new Flights();             //создаём объект модели
-
+        $this->layout = 'simple'; //меняем шаблон на простой
 
         $full_name = \Yii::$app->user->identity->username;
         $idUser = \Yii::$app->user->identity->id;
@@ -799,6 +799,24 @@ class SiteController extends Controller
             //'sig' => $sig,
         ]);
     }
+
+    //1
+   /*  public function actionLogin()
+    {
+       if (!\Yii::$app->user->isGuest) {
+          return $this->goHome();
+       }
+     
+       $model = new LoginForm();
+       if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
+          return $this->goBack();
+       } else {
+           return $this->render('login', [
+              'model' => $model,
+           ]);
+       }
+    } */
+
 
     /**
      * Logout action.

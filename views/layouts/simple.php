@@ -25,10 +25,29 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    
 
+<div class="wrap">   
     <div class="container">
+        <?php 
+            echo Nav::widget([
+                    'options' => ['class' => 'navbar-nav navbar-right'],
+                    'items' => [
+                        Yii::$app->user->isGuest ? (
+                            ['label' => 'Login', 'url' => ['/site/login']]
+                        ) : (
+                            '<li>'
+                            . Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                ['class' => 'btn btn-link logout']
+                            )
+                            . Html::endForm()
+                            . '</li>'
+                        ),
+                    ],
+                ]);
+        ?>
+            
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

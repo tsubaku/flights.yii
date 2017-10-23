@@ -185,8 +185,8 @@ function submitFile( jQuery ) {
 			processData: false, // Не обрабатываем файлы (Don't process the files)
 			contentType: false, // Так jQuery скажет серверу что это строковой запрос
 			success: function( respond, textStatus, jqXHR ){
-				console.log(respond);
-                document.getElementById("status").innerHTML='oooo'; //удалить значок ожидания
+				//console.log(respond);
+                //document.getElementById("status").innerHTML='oooo'; //удалить значок ожидания
 				// Если все ОК
 				if( typeof respond.error === 'undefined' ){
 					// Файлы успешно загружены, делаем что-нибудь здесь
@@ -218,6 +218,5 @@ function submitFile( jQuery ) {
 
 $( document ).ready( submitFile );	//Запускаем ф-ию submitFile после полной зарузки страницы		
 //---------------------------
-
 
   
