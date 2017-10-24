@@ -116,15 +116,8 @@ function delete_line (id_line, table)
             },
             success: function (data) {
             ///    document.getElementById("status").innerHTML=''; //удалить значок ожидания
-                console.log(data);
-            ///    var SummDok = document.getElementById('div_flights_table'),
-            ///    SummSumm = data;
-            ///    SummDok.innerHTML = SummSumm;
-            ///    if (table == '11') {            
-             ///       show_list_clients(); //Обновление списка клиентов    
-            ///    } else if (table == '10') {
-            ///        show_list_guards();     //Обновление списка охранников        
-            ///    }
+                //console.log(data);
+
                 if (table == '11'){
                     dom = 'clientName-' + id_line;
                     //console.log("dom="+dom);
@@ -168,11 +161,11 @@ function get_photo(id_line) {
                 id_line:id_line,    
             },
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 document.getElementById("status").innerHTML=''; //удалить значок ожидания
                 var array_photo_flight = JSON.parse(data);
                 
-                console.log(array_photo_flight);
+                //console.log(array_photo_flight);
                 for (var i = 0; i < array_photo_flight.length; i++) {
                     //console.log(array_photo_flight[i]);
                     document.getElementById("thumbs").innerHTML=document.getElementById("thumbs").innerHTML + array_photo_flight[i];
@@ -219,56 +212,6 @@ function get_photo(id_line) {
 }
 
 
-
-// Переключение вкладок интерфейса менеджера при клике
- $(document).ready(function() {     // вся мaгия пoсле зaгрузки стрaницы
-    $('#page1').click( function(){     // лoвим клик 
-        //console.log("Показать таблицу рейсов");
-        $('#layerA').css('display', 'block');     // Показываем
-        $('#layerB').css('display', 'none');     // Делaем невидимым        
-        $('#clients').css('display', 'none');     // 
-        //$('#page1').css('font-weight', 'bold');     // Подсвечиваем выбранную вкладку
-    });
-    $('#page2').click( function(){ // лoвим клик 
-        //console.log("Показать список охранников");
-        $('#layerA').css('display', 'none');     // 
-        $('#layerB').css('display', 'block');     // 
-        $('#clients').css('display', 'none');     // Показываем
-        show_list_guards();
-    });
-    $('#page3').click( function(){ // лoвим клик 
-        //console.log("Показать список охранников");
-        $('#layerA').css('display', 'none');     // 
-        $('#layerB').css('display', 'none');     // 
-        $('#clients').css('display', 'block');     // Показываем
-        show_list_clients()
-    });
-}); 
-  
-  
-
-//Формирование и показ списка охранников
-function show_list_guards(){    
-    $.ajax({
-            url:"./core/php/show_list_guards.php",
-            type:"POST",
-            statbox:"status",
-            //data:
-            //{
-            //    nn_line:"какие-нибудь данные",    
-            //},
-            success: function (data) {
-                document.getElementById("status").innerHTML=''; //удалить значок ожидания
-                //console.log(data);
-                document.getElementById("div_list_guards").innerHTML=data; //отобразить полученные данные
-            },
-            error: function (error1) {
-                console.log("eror_delete_line");
-                //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
-            }
-        })    
-}
-  
   
   
 //Регистрация охранника
@@ -291,15 +234,6 @@ function register_user(){
                 document.getElementById("status").innerHTML='';     //удалить значок ожидания
                 console.log(data);
 
-                //var res = JSON.parse(data);
-                //if (res[1] != ""){                                    //Если есть ошибки, вывести их на экран
-                //    document.getElementById("div_register_guard_error").innerHTML=res[1];
-                //} else {                
-                //    document.getElementById("login").innerHTML='';    //Очистить поля ввода
-                //    document.getElementById("password").innerHTML='';
-                //    document.getElementById("fullName").innerHTML='';
-                //    show_list_guards();
-                //}
                 var res = JSON.parse(data);
                 console.log("res[0]=" + res[0]);
 
@@ -325,7 +259,7 @@ function register_client(){
     console.log("register_client");
     var client     = document.getElementById("client").value;
     $.ajax({
-            url:"index.php?r=site/register",
+            url:"index.php?r=site/registerclient",
             type:"POST",
             statbox:"status",
             data:
@@ -334,13 +268,7 @@ function register_client(){
             },
             success: function (data) {
                 //document.getElementById("status").innerHTML='';     //удалить значок ожидания
-                /* var res = JSON.parse(data);
-                if (res[1] != ""){                                    //Если есть ошибки, вывести их на экран
-                    //document.getElementById("div_register_client_error").innerHTML=res[1];
-                } else {                
-                    //document.getElementById("client").innerHTML='';    //Очистить поля ввода
-                    //show_list_clients();
-                } */
+                
                 //console.log("register_client-ok" + data);
                 var res = JSON.parse(data);
                 console.log("res[0]=" + res[0]);
@@ -351,33 +279,11 @@ function register_client(){
                 tr.id = "clientName-"+res[0];                       //Добавляем id элементу
                 tr.innerHTML = '<tr id="clientName"><td>' + res[0] + '</td><td>'+client+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></td></tr>';
                 list.appendChild(tr);                               // добавление в конец         
-
-                
             },
             error: function (error1) {
                 console.log("eror_register_client");
             }
         })        
-}
-
-//Формирование и показ списка охранников
-function show_list_clients(){    
-    $.ajax({
-            url:"./core/php/show_list_clients.php",
-            type:"POST",
-            statbox:"status",
-            //data:
-            //{
-            //    nn_line:"9",    
-            //},
-            success: function (data) {
-                document.getElementById("status").innerHTML=''; //удалить значок ожидания
-                document.getElementById("div_list_clients").innerHTML=data; //отобразить полученные данные
-            },
-            error: function (error1) {
-                console.log("eror_show_list_clients");
-            }
-        })    
 }
 
 
@@ -387,27 +293,27 @@ function selectPhoto(){
     var largeImg = document.getElementById('largeImg');
     var thumbs = document.getElementById('thumbs');
     thumbs.onclick = function(e) {
-      var target = e.target;
-      while (target != this) {
-        if (target.nodeName == 'A') {
-          showThumbnail(target.href, target.title);
-          return false;
+        var target = e.target;
+        while (target != this) {
+            if (target.nodeName == 'A') {
+                showThumbnail(target.href, target.title);
+                return false;
+            }
+            target = target.parentNode;
         }
-        target = target.parentNode;
-      }
     }
     
     function showThumbnail(href, title) {
-      largeImg.src = href;
-      largeImg.alt = title;
+        largeImg.src = href;
+        largeImg.alt = title;
     }
 
     /* предзагрузка */
     var imgs = thumbs.getElementsByTagName('img');
     for (var i = 0; i < imgs.length; i++) {
-      var url = imgs[i].parentNode.href;
-      var img = document.createElement('img');
-      img.src = url;
+        var url = imgs[i].parentNode.href;
+        var img = document.createElement('img');
+        img.src = url;
     }
 }
 

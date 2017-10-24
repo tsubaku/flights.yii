@@ -23,16 +23,10 @@ function show_one_flight(dat)
 		},
 		success: function (data) {
 			document.getElementById("status").innerHTML=''; //удалить значок ожидания
-			console.log("data = "+data);
+			//console.log("data = "+data);
 			//document.getElementById("div_show_one_flight").innerHTML=data;
 			var array_data_one_flight = JSON.parse(data);
-            //console.log("array_data_one_flight = "+array_data_one_flight);
-			//console.log("# "+array_data_one_flight[0]);
-			
-			console.log("# "+array_data_one_flight["sdacha_s_ohrany"]);
-			//console.log("# "+array_data_one_flight[3]);
-			//console.log("# "+array_data_one_flight[4]);
-			
+			//console.log("# "+array_data_one_flight["sdacha_s_ohrany"]);
 			if (array_data_one_flight['vremja']){	//Время
 				array_data_one_flight['vremja'] = array_data_one_flight['vremja'].replace(":00.000000","");
 				//array_data_one_flight[2] = array_data_one_flight[2].substring(0, 10);
@@ -46,12 +40,6 @@ function show_one_flight(dat)
 				array_data_one_flight['sdacha'] = array_data_one_flight['sdacha'].substring(0, 10)+"T"+array_data_one_flight['sdacha'].substring(11, 19);
 			}
 			
-
- 
-
-           // array_data_one_flight['prinjatie'] = array_data_one_flight['prinjatie'].substring(0, array_data_one_flight['prinjatie'].length-7);
-            //console.log("# "+array_data_one_flight['prinjatie']);
- 
 
 			number_flight = array_data_one_flight['id'];	//номер рейса
 			document.getElementById("div_right_string0").innerHTML=array_data_one_flight['id'];			
@@ -82,7 +70,7 @@ function show_one_flight(dat)
 window.show_one_flight = show_one_flight;
 
 
-//$('.container').append('<p>SHOW jquery SCRIPTS</p>');  //сам jQuery-скрипт для Yii
+
 
 	
 //--------------------------
@@ -92,7 +80,6 @@ $(function(){
 	//var array_date_of_departure = ["2017-10-03","2017-10-04"];
 	//console.log("выезды: "+window.array_date_of_departure);
 	//console.log("выезды2: "+array_date_of_departure);
-	//console.log("выезды3: ");
 	
 	$("#calendar").datepicker({
         inline: true,
@@ -121,7 +108,7 @@ $(function(){
 		// Что делать при клике по дате. https://habrahabr.ru/post/111155/
 		onSelect: function(date) { 		//date - дата календаря, на которую нажали
 			console.log(date);
-			show_one_flight(date); //Показать таблицу			
+			show_one_flight(date);      //Показать таблицу			
 			
 			//Показываем модальное окно с данными выбранного рейса
 			event.preventDefault(); 	// выключaем стaндaртную рoль элементa
@@ -130,17 +117,11 @@ $(function(){
 				//	$('#modal_form') 
 				//		.css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
 				//		.animate({opacity: 1}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-                        
-
                     $("#myModalBox").modal('show');
+                });
 
-			});
-
-		   
-			return false;
+            return false;
 		},
-	   
-	   
     });
 });
 
@@ -179,6 +160,11 @@ $(document).ready(function() { // вся мaгия пoсле зaгрузки с�
 				}
 			);
 	});
+   // $("#modal_close, #overlay").modal("hide");
+   /* $('#modal_close, #overlay').click(function() {
+       var qqq = $(this).closest('.modal');
+       $(qqq).modal('hide');
+    }); */
     
 });
 

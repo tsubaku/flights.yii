@@ -6,21 +6,15 @@
     use dosamigos\datepicker\DatePicker;
 
     $this->title = 'Интерфейс охранника';
-    //$this->params['breadcrumbs'][] = $this->title;
-    
-    //$full_name = 'q';
+
     use yii\bootstrap\Modal;
-    
-
 ?>
-
 
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
 </div> 
 
-
-<?php $this->registerJsFile('@web/js/jquery/jquery.js',  //подключение скрипта с указанием зависимости (брать прямо из AppAssets.php)
+<?php $this->registerJsFile('@web/js/jquery/jquery.js',  //подключение скриптов с указанием зависимости (брать прямо из AppAssets.php)
     ['depends' => 'yii\web\YiiAsset']) ?> 
 <?php $this->registerJsFile('@web/js/jquery/jquery-ui.js',  
     ['depends' => 'yii\web\YiiAsset']) ?> 
@@ -30,11 +24,13 @@
     ['depends' => 'yii\web\YiiAsset']) ?>
  <?php $this->registerJsFile('@web/js/guard.js',     
     ['depends' => 'yii\web\YiiAsset']) ?>
-  
+    
+ <?php $this->registerCssFile('@web/css/jquery-ui.css',     
+    ['depends' => 'yii\web\YiiAsset']) ?> 
   
 <?php 
     echo '<script language="javascript">var array_date_of_departure = ' . $js_array . ';</script>'; //масив дат выездов
-    echo '<script language="javascript">var user_id_current = ' . $idUser . ';</script>'; //id охранника
+    echo '<script language="javascript">var user_id_current = ' . $idUser . ';</script>';           //id охранника
     
     Modal::begin([
         'header' => '<h2>Hello world</h2>',
@@ -57,83 +53,11 @@
 
 <!--  Блок модального окна -->			
 <div id="modal_form"><!-- Сaмo oкнo --> 
-    <span id="modal_close">X</span> <!-- Кнoпкa зaкрыть --> 
-    <!-- Инфо о рейсе -->
-    <!-- <div class="container-fluid">
-        <div class="panel panel-default">
-            <div class="col-xs-12 panel-heading">
-                <h3 class="panel-title col-xs-2">№ рейса:</h3>
-                <h3 class="panel-title col-xs-2" id="div_right_string00"></h3>
-            </div>
-            <div class="panel-body">
-                
-                <div class="row">
-                    <div class="col-xs-2">Дата выезда</div>
-                    <div class="col-xs-2" id="div_right_string1"></div>
-                </div><br />
-                <div class="row">	
-                    <div class="col-xs-2">Время:</div>
-                    <div class="col-xs-2" id="div_right_string2"></div>
-                </div><br />
-                <div class="row">	
-                    <div class="col-xs-2">Клиент:</div>
-                    <div class="col-xs-2" id="div_right_string3"></div>		
-                </div><br />
-                <div class="row">	
-                    <div id="div_right_string5"></div> 
-                    <div id="div_right_string6"></div>
-                </div><br />
-            
-                <div class="row">
-                    <div class="col-xs-2">№ машины:</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-2" id="div_right_string4"></div> 
-                </div>
-                
-                <div class="row">
-                <div class="col-xs-4">Принятие:</div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-xs-4" id="div_right_string7"></div> 
-                </div>
-                <div class="row">
-                    <div class="col-xs-4">Сдача:</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4" id="div_right_string8"></div>
-                </div>
-                
-            
-            
-                <!-- Загрузка фотографий на сервер-->
-           
-                <form class="fileform" name="upload">
-                    <div class="selectbutton">Сделать фото</div>
-                    <input id="upload" type="file" name="myfile">
-                </form>
-                <div id="status">					
-                </div>
-
-                <div class="ajax-respond" id="ajax_respond"><!-- Ответ сервера на загрузку фото -->
-                    <img src='./img/success.png' alt='OK' />
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 </div>  <!--  Блок модального окна -->	
 <div id="overlay"><!-- Пoдлoжкa -->
 </div>
-
-<div id="status">					
-</div>
-
-
-
-
 <!--  -->
+
 <!-- HTML-код модального окна -->
 <div id="myModalBox" class="modal fade">
     <div class="modal-dialog">
@@ -211,31 +135,16 @@
 </div>
 <!--   -->	
 
+<div id="status">					
+</div>
 
 
 
 <?php
-/* $js = <<< JS
-    $('#btn').on('click', function(e) {
-        $.ajax({
-            url: 'index.php?r=site/clients',
-            data: {test: '123'},
-            type: 'POST',
-            success: function(res){
-                console.log(res);
-            },
-            error: function(){
-                alert('error ajax');
-            }
-        });
-    });
-JS;
-$this->registerJs($js); //регистрируем скрипт */
 
-
-//echo '<pre>'; 
+    //echo '<pre>'; 
     //echo 'listUsers= '; 
-   // print_r($flightDate); 
+    //print_r($flightDate); 
 
 ?>        
 

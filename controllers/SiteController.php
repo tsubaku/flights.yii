@@ -9,15 +9,12 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\Manager;
 
 use app\models\Clients; //Подключаем модель для обработки списка клиентов;
-use app\models\User;    //Подключаем модель для обработки списка охранников;
+use app\models\User;    //Подключаем модель для авторизации;
 use app\models\Flights; //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
-
-use app\models\SignupForm; //Подключаем модель
-
+use app\models\SignupForm; //Подключаем модель для обработки списка охранников
 
 class SiteController extends Controller
 {
@@ -30,8 +27,6 @@ class SiteController extends Controller
         //rules -задаёт правила доступа    
             //Разрешить всем гостям (ещё не прошедшим авторизацию) доступ к действиям login и signup. Опция roles содержит знак вопроса ?, это специальный токен обозначающий "гостя".
             //Разрешить аутентифицированным пользователям доступ к действию logout. Символ @ — это другой специальный токен, обозначающий аутентифицированного пользователя.
-
-        //
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -84,13 +79,12 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    
-    
-    #+Показ страницы интерфейса охранника
+       
+    #+Показ календаря на странице интерфейса охранника
     public function actionShowflight()
     {      
         //$this->view->title = 'One Article';
-        $model = new Flights();             //создаём объект модели
+        //$model = new Flights();             //создаём объект модели
 
         #Принимаем из формы дату и фамилию охранника
         if( Yii::$app->request->isAjax ){
@@ -99,33 +93,11 @@ class SiteController extends Controller
             
             $date_flights_mysql = date('Y-m-d', strtotime($data)); //php date dd.mm.yyyy to mysql format 'YYYY-MM-DD'
             $query = 'SELECT `id`,`data_vyezda`, `vremja`, `klient`, `nomer_mashiny`, `prinjatie_pod_ohranu`, `sdacha_s_ohrany`, `prinjatie`, `sdacha`, `status` FROM `flights` WHERE (`data_vyezda` = :date_flights_mysql) AND `fio` = (SELECT `full_name` FROM `user` WHERE `id` = :userId) GROUP BY `id`';
-            $flightDate = flights::findBySql($query, [':date_flights_mysql' => $date_flights_mysql, ':userId' => $userId])->asArray()->one(); //получим все записи, сотв. условию
-            
-            
-            //$query = "SELECT * FROM flights WHERE data_vyezda between :date1 and :date2";
-            //$listFlights = flights::findBySql($query, [':date1' => $date1, ':date2' => $date2])->asArray()->all(); 
-            
+            $flightDate = flights::findBySql($query, [':date_flights_mysql' => $date_flights_mysql, ':userId' => $userId])->asArray()->one(); //получим все записи, сотв. условию  
         } else {
             $flightDate = '0000';
         }
-        //$flight = Flight::find()->select('full_name')->asArray()->where('id'=$userId);    //забираем из базы
-/*         $array_data_one_flight = array();
-        foreach ($flightDate as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - ячейка в ряду
-            $i = 0;
-            foreach ($row_content as $column_name => $data) {
-                //print_r($data);
-                $array_data_one_flight[$i] = $data;
-                $i                         = $i + 1;
-            }
-        } */
-        //$json_data = array(0 => $listFlights);
-        echo json_encode($flightDate);
-        
-
-        
-        //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('guard', compact('listClients')); //compact('listClients') - передаём в вид результат   
-        //return $this->render('guard'); //compact('listClients') - передаём в вид результат   
+        echo json_encode($flightDate);  
     }
     
     
@@ -134,96 +106,69 @@ class SiteController extends Controller
     {      
         // Здесь нужно сделать все проверки передавемых файлов и вывести ошибки если нужно
 
-       
         $data = array(); // Переменная ответа
-
-        //if (isset($_GET['uploadfiles'])) {
-     ///   if( Yii::$app->request->get('uploadfiles') ){
-            $error = false;
-            $files = array();
-            $uploaddir = 'img/photo/'; //каталог для сохраняемых файлов
-            
-            # Создадим папку если её нет
-            //if( ! is_dir( $uploaddir ) ) mkdir( $uploaddir, 0777 );
-            
-            # переместим файлы из временной директории в указанную
-            foreach ($_FILES as $file) {
-                #Проверка типа файла
-                if ($file['type'] == "image/jpeg") {
-                    $file['name'] = date('Y-m-d_H-i-s') . ".jpg";
-                } elseif ($file['type'] == "image/png") {
-                    $file['name'] = date('Y-m-d_H-i-s') . ".png";
-                } elseif ($file['type'] == "image/gif") {
-                    $file['name'] = date('Y-m-d_H-i-s') . ".gif";
-                } else {
-                    // $error .= 'Изображения могут быть в формате JPG, PNG или GIF';
-                    $error = true;
-                    break;
-                }
-         
-                if (move_uploaded_file($file['tmp_name'], $uploaddir . basename($file['name']))) {
-                    $files[] = realpath($uploaddir . $file['name']);
-                    //chmod($uploaddir . basename($file['name']), 777);
-
-                    //Создание миниатюры
-                    //header('Content-Type: image/png'); //или /png /gif, т.е то что нам надо
-                    //createThumbnail($files[], 'false', 100, 100);    
-                    
-                } else {
-                    $error = true;
-                }
-                
-                #Записываем в таблицу photo 
-                //$pdo = connectToBase();
-                //$stmt = $pdo->prepare('INSERT INTO `photo` (n_flight,path) VALUES(:flight_n, :file_name)');
-                //$stmt->execute(array(
-                //    'file_name' => $file['name'],
-                //    'flight_n' => $_POST['number_flight']
-                //));
-               
-                $model = new Photo();             //создаём объект модели
-                $model->path = $file['name'];
-                $model->n_flight = $_POST['number_flight'];
-                $model->save(); 
+        $error = false;
+        $files = array();
+        $uploaddir = 'img/photo/'; //каталог для сохраняемых файлов
+        
+        # Создадим папку если её нет
+        //if( ! is_dir( $uploaddir ) ) mkdir( $uploaddir, 0777 );
+        
+        # переместим файлы из временной директории в указанную
+        foreach ($_FILES as $file) {
+            #Проверка типа файла
+            if ($file['type'] == "image/jpeg") {
+                $file['name'] = date('Y-m-d_H-i-s') . ".jpg";
+            } elseif ($file['type'] == "image/png") {
+                $file['name'] = date('Y-m-d_H-i-s') . ".png";
+            } elseif ($file['type'] == "image/gif") {
+                $file['name'] = date('Y-m-d_H-i-s') . ".gif";
+            } else {
+                // $error .= 'Изображения могут быть в формате JPG, PNG или GIF';
+                $error = true;
+                break;
             }
-            
-            $data = $error ? array(
-                'error' => 'Ошибка загрузки файлов.'
-            ) : array(
-                'files' => $files
-            );
-            
-            echo json_encode($data);
-    ///    }
+     
+            if (move_uploaded_file($file['tmp_name'], $uploaddir . basename($file['name']))) {
+                $files[] = realpath($uploaddir . $file['name']);
+                //chmod($uploaddir . basename($file['name']), 777);
+
+                //Создание миниатюры
+                //header('Content-Type: image/png'); //или /png /gif, т.е то что нам надо
+                //createThumbnail($files[], 'false', 100, 100);    
+                
+            } else {
+                $error = true;
+            }
+            #Записываем в таблицу photo 
+            $model = new Photo();             //создаём объект модели
+            $model->path = $file['name'];
+            $model->n_flight = $_POST['number_flight'];
+            $model->save(); 
+        }
+        
+        $data = $error ? array(
+            'error' => 'Ошибка загрузки файлов.'
+        ) : array(
+            'files' => $files
+        );
+        
+        echo json_encode($data);
     }
     
     
-    
-    
+
     #+Показ одного рейса
     public function actionGuard()
     {      
-        //$this->view->title = 'One Article';
-        //$model = new Flights();             //создаём объект модели
         $this->layout = 'simple'; //меняем шаблон на простой
 
         $full_name = \Yii::$app->user->identity->username;
         $idUser = \Yii::$app->user->identity->id;
-        //$full_name = 'q';
-        //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('guard', compact('listClients')); //compact('listClients') - передаём в вид результат   
-        //return $this->render('guard'); //compact('listClients') - передаём в вид результат   
         
-        
-        #Вытаскиваем из базы даты выездов нужного охранника    
-        //$pdo  = connectToBase(); 
-        //$stmt = $pdo->prepare("SELECT `data_vyezda` FROM `flights` WHERE `fio` = :full_name");
-        //$stmt->execute(array(
-        //    'full_name' => $full_name
-        //));
-        //$table_array = $stmt->fetchAll(); //$table_array - массив всех дат выезда указанного охранника
+        #Вытаскиваем из базы даты выездов нужного охранника     
         $query = 'SELECT `data_vyezda` FROM `flights` WHERE `fio` = :full_name';
-        $table_array = flights::findBySql($query, [':full_name' => $full_name])->asArray()->all(); 
+        $table_array = flights::findBySql($query, [':full_name' => $full_name])->asArray()->all(); //$table_array - массив всех дат выезда указанного охранника
             
         $array_date_of_departure = Array();
         $i                       = 0;
@@ -234,15 +179,7 @@ class SiteController extends Controller
 
         $js_array = json_encode($array_date_of_departure); //масив дат выездов
 
-        #Отправляем js-скрипту:
-        //echo '<script language="javascript">var user_id_current = ' . $user_id . ';</script>'; //id
-        //echo '<script language="javascript">var array_date_of_departure = ' . $js_array . ';</script>'; //масив дат выездов
-
-        
-        
-        
-        
-        return $this->render( 'guard', compact('idUser', 'full_name', 'js_array') ); //compact('listClients') - передаём в вид результат   
+        return $this->render( 'guard', compact('idUser', 'full_name', 'js_array') ); //передаём в вид результат   
     }
     
     
@@ -369,59 +306,20 @@ class SiteController extends Controller
     
         #Вытаскиваем все пути к фотографиям рейса
         $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
-        
-                            
-        //$json_data = array(0 => $listFlights);
-        //echo json_encode($json_data);
-        
-        //$listUsers = [9,0,9,6];
-        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //compact('listFlights') - передаём в вид результат 
 
-   //  }
-    
+        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //передаём в вид результат 
     }
     
     
-    
+    #+
     public function actionClients()
     {      
-         $this->view->title = 'One Article';
-        //$model = new Clients();                        //создаём объект модели
-        //return $this->render('client', compact('model')); //Передаём объект модели в вид
-        
-        #Добавление строки в таблицу clients, с текстом "1111" в поле client
-        //$model = new Clients();
-        //$model->client = '11121';
-        //$model->save();
-        
-        //return $this->render('clients');
-
         $listClients = Clients::find()->all();    //забираем из базы
         return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
     }
     
     
     
-    #+Удаление клиента или юзера через данные, пришедшие из аякса
-    public function actionDelete(){
-         #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
-         if(Yii::$app->request->isAjax){
-            $idRow = Yii::$app->request->post('id_line');
-            $tableName = Yii::$app->request->post('table');
-            //print_r($idRow);
-            $model = new Clients(); //говорят, лишняя
-            if ($tableName == '11') {
-                $model = Clients::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-            } elseif ($tableName == '10') {
-                $model = User::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-            } elseif ($tableName == '20') {
-                $model = Flights::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-            }
-            //$listClients = Clients::find()->all();    //забираем из базы
-            //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат 
-        }
-
-    }
     #+Изменение данных в ячейке таблицы
     public function actionChange(){
          #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
@@ -429,29 +327,26 @@ class SiteController extends Controller
             $cellValue = Yii::$app->request->post('cell_value');   
             $cellId = Yii::$app->request->post('id_in_db');
             $cellColumn = Yii::$app->request->post('column_in_db');
-            //print_r($idRow);
 
             #Обновить ячейку в таблице 
             $model = Flights::findOne($cellId); //Выбрать из таблицы Flights первую запись с id=$cellId
             $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
             $model->save();                     //сохранить
 
-            $line_array = $model;
             #Просчёт связанных ячеек
+            $line_array = $model;
             $res_array = array();
             switch ($cellColumn) {
                 case 'prostoj_summa':
                 case 'stavka_bez_nds':
                 case 'stavka_s_nds':
-                    //echo "Счёт: $line_array[schet]";
-                    //print_r ($line_array[0]['schet']);
                     $prostoj_summa  = intval($line_array['prostoj_summa']);
                     $stavka_bez_nds = intval($line_array['stavka_bez_nds']);
                     $stavka_s_nds   = intval($line_array['stavka_s_nds']);
                     $schet          = $prostoj_summa + $stavka_bez_nds + $stavka_s_nds;
                     
                     $model->schet = $schet;   //Выбрать из этой записи ячейку в столбце schet и записать туда $schet
-                    $model->save();                     //сохранить
+                    $model->save();           //сохранить
 
                     $res_array["schet"] = $schet; // Это добавляет к массиву новый элемент с ключом "schet"
                     break;
@@ -554,24 +449,15 @@ class SiteController extends Controller
                     break;     
                                    
             }
-
-            /* header("Content-type: application/json; charset=utf-8");
-            header("Cache-Control: no-store, no-cache, must-revalidate");
-            header("Cache-Control: post-check=0, pre-check=0", false); */
             echo json_encode($res_array);
-            
-            //$listClients = Clients::find()->all();    //забираем из базы
-            //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат 
         }
-
     }
     
     
     
-    
-    public function actionRegister()
+    #+Добавление клиента
+    public function actionRegisterclient()
     {      
-        $this->view->title = 'One Article';
         #Добавление строки в таблицу clients
         if(Yii::$app->request->isAjax){
             $model = new Clients();
@@ -590,16 +476,15 @@ class SiteController extends Controller
             }
             $json_data = array(0 => $rows);
             echo json_encode($json_data);
-        }
-        //return $this->render('clients');
-        //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
+        }  
     }
     
+    
+    
+    #+Добавление нового юзера (охранника/менеджера)
     public function actionRegisteruser()
     {      
-        $this->view->title = 'One Article';
-        #Добавление строки в таблицу clients
+        #Добавление строки в таблицу user
         if(Yii::$app->request->isAjax){
             $model = new Users();
             $loginNewUser = Yii::$app->request->post('g_login');
@@ -625,96 +510,57 @@ class SiteController extends Controller
             }
             $json_data = array(0 => $rows);
             echo json_encode($json_data);
-        }
-        //return $this->render('clients');
-        //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
+        }  
     }
     
     
     
-/*     public function actionUsers()
-    {      
-         $this->view->title = 'One Article';
-        //$model = new Guards();                        //создаём объект модели
-        //return $this->render('client', compact('model')); //Передаём объект модели в вид
-        
-        #Добавление строки в таблицу guards, с текстом "1111" в поле client
-        //$model = new Guards();
-        //$model->client = '11121';
-        //$model->save();
-        
-        //return $this->render('guards');
+    #+Удаление рейса, клиента или юзера
+    public function actionDelete(){
+         #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
+         if(Yii::$app->request->isAjax){
+            $idRow = Yii::$app->request->post('id_line');
+            $tableName = Yii::$app->request->post('table');
 
-        $listUsers = Users::find()->all();    //забираем из базы
-        return $this->render('users', compact('listUsers')); //compact('listUsers') - передаём в вид результат 
-        //$listClients = Clients::find()->all();    //забираем из базы
-        //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат    
-    } */
+            if ($tableName == '11') {
+                $model = new Clients(); //говорят, лишняя
+                $model = Clients::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            } elseif ($tableName == '10') {
+                //$model = new User(); //говорят, лишняя
+                $model = new SignupForm(); //говорят, лишняя
+                $model = User::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            } elseif ($tableName == '20') {
+                $model = Flights::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            }
+        }
+    }
+    
+    
     
     //Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
     public function actionSignup(){
         //Проверка, является ли пользователь гостем
-        //?что такое user? В примере было user. Если изменить на users, то ошибка "Getting unknown property: yii\web\Application::users"
     ///    if (!Yii::$app->user->isGuest) {
     ///        return $this->goHome(); //Если НЕ гость, то редирект на домашнюю страницу
     ///    }
         $model = new SignupForm();  //создаём объект модели UsersForm
-        //?что за \ стоит перед Yii?
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             $r1 = Yii::$app->request->post(); //request - это объект, который по умолчанию является экземпляром yii\web\Request.
                                               //у него есть методы get() и post()
-            //echo '<pre>'; print_r($model); //распечатка модели
-            //die;
-            //print_r(Yii::$app->request->post());
-            //die;
             $user = new User(); //создаём объект модели User (эта модель указана в качестве компонента идентификации в файле config\web.php)
             $user->username = $model->username; //передаём атрибут модели UsersForm в атрибут модели User 
             $user->full_name = $model->full_name; //(заполним его полученными из формы данными)
             $user->password = \Yii::$app->security->generatePasswordHash($model->password); //Аналогично, только ещё и шифруем
-            //echo '<pre>'; print_r($user); //и распечатываем уже модель User
-            //die;
-            //сохраняем объект модели User
-            if($user->save()){
-                //Yii::$app->session->setFlash('success', 'signUpOk');
-                //return $this->goHome(); //если сохранили успешно, то редирект на домашнюю страницу
-                //return $this->render('users', compact('model')); //рендерим вью users, передав в него модель model
-                
-            } 
-        }
-        
-        #Срабатывание кнопки "Удалить юзера"
-        $r2 = 'zero';
-        if(Yii::$app->request->post('_csrf')){
-            //$r2 = Yii::$app->request->post('SignupForm[username]');
-            $r2 = Yii::$app->request->post();
-            ///$user = new User(); //создаём объект модели User (эта модель указана в качестве компонента идентификации в файле config\web.php)
-            ///$user->username = $model->username; //передаём атрибут модели UsersForm в атрибут модели User 
-            ///$user->full_name = $model->full_name; //(заполним его полученными из формы данными)
-            ///$user->password = \Yii::$app->security->generatePasswordHash($model->password); //Аналогично, только ещё и шифруем
-            ///if($user->save()){
-                //Yii::$app->session->setFlash('success', 'signUpOk');
-                //return $this->goHome(); //если сохранили успешно, то редирект на домашнюю страницу
-                //return $this->render('users', compact('model')); //рендерим вью users, передав в него модель model
-           /// } 
-           //Yii:: это просто глобальный неймспейс, как и $app, а $app->session это обращение через магик метод к соответсвующему DI сервису именнуеммому session
-           //вот этого долбоеба не слушай. Yii - это корневой класс фреймворка. $app - это статичная переменная класса в которой инстанс объекта фрейма. Синглетон. На а дальше в объекте $app хуева гора уже имеющихся базовых объектов компонентов - логер, бд и прочая ненужная хуерга. В мануале это всё написано.
-           //происходит обращение к инстансу фреймворка - объекту $app, далее идет обращение к свойству session объекта $app. Session - это компонент, который ты настраиваешь в config/main.php. Сздается фреймворком при старте. Ну а дальше вызывается метод компонента session. Загляни в main, там найдешь класс этого компонента, а дальше гугли этот класс и на странице мануала найдешь описание метода setFlash.
-           Yii::$app->session->setFlash('seccess', 'Данные приняты'); //флеш сообщение  setFlash(ключ, значение)
-        } else {
-            $r2 = 'no';
+
+            $user->save(); //сохраняем объект модели User
         }
 
         $listUsers = user::find()->all();    //забираем из базы
-        //$listUsers = [9,0,9,6];
         return $this->render('signup', compact('model', 'listUsers', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
     }
 
 
 
-   
-
-    
     #+Показ модального окна с фотографиями рейса
     //Посмотреть гайды:
     //http://yiico.ru/blog/493-zagruzka-izobrazhenii-i-failov-v-yii2-ih-sohranenie-v-papku-na-servere-i-v-bd
@@ -735,27 +581,17 @@ class SiteController extends Controller
             foreach ($listPhoto as $key => $val) {
                 if ($val['n_flight'] == $id_line) { 
                     //$photo_name_array[$p] = $val['path'];
-                    $patchCurrent = $val['path'];
-                    $photo_array[$p]      = "<li><a href='img/photo/$patchCurrent' onclick='selectPhoto();'><figure class='photo_prev'><img id='photo$p' src='img/photo/$val[path]' height='100' alt='$patchCurrent' title='$patchCurrent'> <figcaption>$patchCurrent</figcaption> </figure></a></li>";
-                    $p                    = $p + 1;
+                    $patchCurrent       = $val['path'];
+                    $photo_array[$p]    = "<li><a href='img/photo/$patchCurrent' onclick='selectPhoto();'><figure class='photo_prev'><img id='photo$p' src='img/photo/$val[path]' height='100' alt='$patchCurrent' title='$patchCurrent'> <figcaption>$patchCurrent</figcaption> </figure></a></li>";
+                    $p                  = $p + 1;
                 } 
             }
-            
-           
-            //$json_data = array(0 => $photo_array);
-            echo json_encode($photo_array);
-            
-            //$listClients = Clients::find()->all();    //забираем из базы
-            //return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат 
-        }
 
+            echo json_encode($photo_array);
+        }
     }
     
-    
-    
-    
-    
-    
+
     
     
     /**
@@ -792,30 +628,12 @@ class SiteController extends Controller
                 return $this->redirect(['guard']);
             }
         }
-        //$sig = Yii::$app->user->isGuest;
+
         //Иначе снова отрендерить страницу login, передав в неё $model 
-        return $this->render('login', [
-            'model' => $model,
-            //'sig' => $sig,
-        ]);
+        return $this->render('login', compact('model'));
     }
 
-    //1
-   /*  public function actionLogin()
-    {
-       if (!\Yii::$app->user->isGuest) {
-          return $this->goHome();
-       }
-     
-       $model = new LoginForm();
-       if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
-          return $this->goBack();
-       } else {
-           return $this->render('login', [
-              'model' => $model,
-           ]);
-       }
-    } */
+    
 
 
     /**
@@ -826,7 +644,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
@@ -840,7 +657,6 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
         return $this->render('contact', [
@@ -858,14 +674,7 @@ class SiteController extends Controller
         return $this->render('about');
     }
     
-    /* public function actionSignup(){
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        $model = new Users();
-
-        return $this->render('users', compact('model'));
-    } */
+    
     
     
     

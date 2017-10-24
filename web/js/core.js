@@ -173,11 +173,6 @@ function submitFile( jQuery ) {
 			url: 'index.php?r=site/uploadfiles',
 			type: 'POST',
 			statbox:"status",
-            /* data: 
-            {
-                data1:data1,
-                nFlight:nFlight,
-            }, */ 
             data: data1,
 			cache: false,
             
@@ -187,7 +182,8 @@ function submitFile( jQuery ) {
 			success: function( respond, textStatus, jqXHR ){
 				//console.log(respond);
                 //document.getElementById("status").innerHTML='oooo'; //удалить значок ожидания
-				// Если все ОК
+
+                // Если все ОК
 				if( typeof respond.error === 'undefined' ){
 					// Файлы успешно загружены, делаем что-нибудь здесь
 
@@ -201,7 +197,6 @@ function submitFile( jQuery ) {
 				//	$('.ajax-respond').html( html );
 					//document.getElementById("ajax-respond").innerHTML="";
 					ajax_respond.style.visibility='visible'; //Показываем ответ сервера
-					
 				}
 				else{
 					console.log('ОШИБКИ ОТВЕТА сервера: ' + respond.error );
