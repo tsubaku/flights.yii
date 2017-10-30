@@ -10,9 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-use app\models\Clients; //Подключаем модель для обработки списка клиентов;
+use app\models\Client; //Подключаем модель для обработки списка клиентов;
 use app\models\User;    //Подключаем модель для авторизации;
-use app\models\Flights; //Подключаем модель для обработки таблицы рейсов;
+use app\models\Flight; //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
 use app\models\SignupForm; //Подключаем модель для обработки списка охранников
 
@@ -84,7 +84,7 @@ class SiteController extends Controller
     public function actionShowflight()
     {      
         //$this->view->title = 'One Article';
-        //$model = new Flights();             //создаём объект модели
+        //$model = new Flight();             //создаём объект модели
 
         #Принимаем из формы дату и фамилию охранника
         if( Yii::$app->request->isAjax ){
@@ -92,8 +92,8 @@ class SiteController extends Controller
             $userId = Yii::$app->request->post('user_id_current'); 
             
             $date_flights_mysql = date('Y-m-d', strtotime($data)); //php date dd.mm.yyyy to mysql format 'YYYY-MM-DD'
-            $query = 'SELECT `id`,`data_vyezda`, `vremja`, `klient`, `nomer_mashiny`, `prinjatie_pod_ohranu`, `sdacha_s_ohrany`, `prinjatie`, `sdacha`, `status` FROM `flights` WHERE (`data_vyezda` = :date_flights_mysql) AND `fio` = (SELECT `full_name` FROM `user` WHERE `id` = :userId) GROUP BY `id`';
-            $flightDate = flights::findBySql($query, [':date_flights_mysql' => $date_flights_mysql, ':userId' => $userId])->asArray()->one(); //получим все записи, сотв. условию  
+            $query = 'SELECT `id`,`data_vyezda`, `vremja`, `klient`, `nomer_mashiny`, `prinjatie_pod_ohranu`, `sdacha_s_ohrany`, `prinjatie`, `sdacha`, `status` FROM `flight` WHERE (`data_vyezda` = :date_flights_mysql) AND `fio` = (SELECT `full_name` FROM `user` WHERE `id` = :userId) GROUP BY `id`';
+            $flightDate = flight::findBySql($query, [':date_flights_mysql' => $date_flights_mysql, ':userId' => $userId])->asArray()->one(); //получим все записи, сотв. условию  
         } else {
             $flightDate = '0000';
         }
@@ -167,8 +167,8 @@ class SiteController extends Controller
         $idUser = \Yii::$app->user->identity->id;
         
         #Вытаскиваем из базы даты выездов нужного охранника     
-        $query = 'SELECT `data_vyezda` FROM `flights` WHERE `fio` = :full_name';
-        $table_array = flights::findBySql($query, [':full_name' => $full_name])->asArray()->all(); //$table_array - массив всех дат выезда указанного охранника
+        $query = 'SELECT `data_vyezda` FROM `flight` WHERE `fio` = :full_name';
+        $table_array = flight::findBySql($query, [':full_name' => $full_name])->asArray()->all(); //$table_array - массив всех дат выезда указанного охранника
             
         $array_date_of_departure = Array();
         $i                       = 0;
@@ -193,11 +193,11 @@ class SiteController extends Controller
     #+Акшен страницы рейсов, показывающий рейсы за период
     public function actionManager()
     {    
-        $model = new Flights();             //создаём объект модели
+        $model = new Flight();             //создаём объект модели
         
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
-            $text = '';
+            $text = '5';
             $model->podklient = $text;
             $model->save();
         } 
@@ -210,7 +210,7 @@ class SiteController extends Controller
         } else {
             $text = 'no_post';
             $year = date("Y");
-            $month = date("m"); //SELECT * FROM flights WHERE data_vyezda between '2017-10-01' and '2017-10-31'
+            $month = date("m"); //SELECT * FROM flight WHERE data_vyezda between '2017-10-01' and '2017-10-31'
         }
         
         $table = '20'; //рейсы             !!! Костыль !!!
@@ -268,21 +268,21 @@ class SiteController extends Controller
         #забираем из базы все рейсы  between 1 and 31'
         $date1 = $year."-".$month."-01";
         $date2 = $year."-".$month."-31";
-        $query = "SELECT * FROM flights WHERE data_vyezda between :date1 and :date2";
-        $listFlights = flights::findBySql($query, [':date1' => $date1, ':date2' => $date2])->asArray()->all(); 
+        $query = "SELECT * FROM flight WHERE data_vyezda between :date1 and :date2";
+        $listFlights = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->asArray()->all(); 
         //print_r($listFlights);
         
         #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
-        $query = "SELECT * FROM flights WHERE data_vyezda IS NULL";
-        $listFlightsNoDate = flights::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+        $query = "SELECT * FROM flight WHERE data_vyezda IS NULL";
+        $listFlightsNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
         if ( empty($listFlightsNoDate) ) {
             $text = '';
             $model->podklient = $text;
             $model->save(); 
             
             #И заново вытаскиваем эту пустую строку из базы
-            $query = "SELECT * FROM flights WHERE data_vyezda IS NULL";
-            $listFlightsNoDate = flights::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию            
+            $query = "SELECT * FROM flight WHERE data_vyezda IS NULL";
+            $listFlightsNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию            
         }
 
         #добавляем пустые строки в общий результат
@@ -300,7 +300,7 @@ class SiteController extends Controller
         $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         
         #Вытаскиваем всех клиентов
-        $listClients = Clients::find()->select('client')->asArray()->column();    //забираем из базы
+        $listClients = Client::find()->select('name')->asArray()->column();    //забираем из базы
         $k = count($listClients);
         $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
     
@@ -312,10 +312,10 @@ class SiteController extends Controller
     
     
     #+
-    public function actionClients()
+    public function actionClient()
     {      
-        $listClients = Clients::find()->all();    //забираем из базы
-        return $this->render('clients', compact('listClients')); //compact('listClients') - передаём в вид результат   
+        $listClients = Client::find()->all();    //забираем из базы
+        return $this->render('client', compact('listClients')); //compact('listClients') - передаём в вид результат   
     }
     
     
@@ -329,7 +329,7 @@ class SiteController extends Controller
             $cellColumn = Yii::$app->request->post('column_in_db');
 
             #Обновить ячейку в таблице 
-            $model = Flights::findOne($cellId); //Выбрать из таблицы Flights первую запись с id=$cellId
+            $model = Flight::findOne($cellId); //Выбрать из таблицы Flight первую запись с id=$cellId
             $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
             $model->save();                     //сохранить
 
@@ -455,20 +455,51 @@ class SiteController extends Controller
     
     
     
+    #+Добавление строки в таблицу рейсов
+    public function actionAddline()
+    {      
+        #Добавление строки в таблицу flight
+        if(Yii::$app->request->isAjax){
+            $model = new Flight();
+            //$nameNewFlight = Yii::$app->request->post('flight');
+            //$model->flight = $nameNewFlight;
+            //$model->save();
+            
+            $text = '5';
+            $model->podklient = $text;
+            $model->save();
+            
+            
+            /* $rows = (new \yii\db\Query())
+                ->all()
+                ->from('flight')
+                ->where(['client'=>$nameNewClient])
+                ->one();
+            
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data); */
+        }  
+    }
+    
+    
+    
     #+Добавление клиента
     public function actionRegisterclient()
     {      
-        #Добавление строки в таблицу clients
+        #Добавление строки в таблицу client
         if(Yii::$app->request->isAjax){
-            $model = new Clients();
+            $model = new Client();
             $nameNewClient = Yii::$app->request->post('client');
-            $model->client = $nameNewClient;
+            $model->name = $nameNewClient;
             $model->save();
             
             $rows = (new \yii\db\Query())
                 ->select(['id'])
-                ->from('clients')
-                ->where(['client'=>$nameNewClient])
+                ->from('client')
+                ->where(['name'=>$nameNewClient])
                 ->one();
             
             foreach ($rows as $key => $value) {
@@ -523,14 +554,14 @@ class SiteController extends Controller
             $tableName = Yii::$app->request->post('table');
 
             if ($tableName == '11') {
-                $model = new Clients(); //говорят, лишняя
-                $model = Clients::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+                $model = new Client(); //говорят, лишняя
+                $model = Client::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
             } elseif ($tableName == '10') {
                 //$model = new User(); //говорят, лишняя
                 $model = new SignupForm(); //говорят, лишняя
                 $model = User::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
             } elseif ($tableName == '20') {
-                $model = Flights::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+                $model = Flight::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
             }
         }
     }

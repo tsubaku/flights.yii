@@ -54,11 +54,11 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
             $i = 1;   
             foreach ($listClients as $client){ 
                 $id         = $client['id'];      //id клиента
-                $clientName = $client['client'];  //Название клиента  
+                $clientName = $client['name'];  //Название клиента  
             ?>
             <tr id='clientName-<?=$id?>'>
                 <td style="width: 50px;"><?=$i?></td> 
-                <td><?=$client->client?></td> 
+                <td><?=$client->name?></td> 
                 <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
             </tr>
         <?php $i = $i + 1; } ?>  

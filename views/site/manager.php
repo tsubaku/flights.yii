@@ -63,6 +63,10 @@
                 <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
                 <?php ActiveForm::end(); ?>
             </div>  <!-- form2-->
+            
+
+            
+            
         </div>	
     </div>
         

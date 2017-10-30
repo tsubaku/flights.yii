@@ -59,39 +59,45 @@ window.show_flights_table = show_flights_table;
 
 
 
-//Добавление строки в таблицу рейсов
-function add_line()
+//+Добавление строки в таблицу рейсов
+function add_line2()
 {
-    year = GetData('year');
-    month = GetData('month');
+    user_id = '9999';
     $.ajax({
-            url:"./core/php/add_line_in_flights_table.php",
-            type:"POST",
-            //async: true,
-            statbox:"status",
-            data:
-            {
-                year:year,    
-                month:month,
-                //user_id:user_id,
-            },
-            success: function (data) {
-                document.getElementById("status").innerHTML=''; //удалить значок ожидания
-                //console.log(data);
-                var SummDok = document.getElementById('div_flights_table'),
-                SummSumm = data;
-                SummDok.innerHTML = SummSumm;
-                
-                //show_flights_table();
-            },
-            error: function (error1) {
-                console.log("eror_add_line"+" \n");
-                //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
-            }
-        })    
+        url:"index.php?r=site/addline",
+        type:"POST",
+        //async: true,
+        statbox:"status",
+        data:
+        {
+            user_id:user_id,
+        },
+        success: function (data) {
+            document.getElementById("status").innerHTML=''; //удалить значок ожидания
+            console.log('data');
+            //var SummDok = document.getElementById('div_flights_table'),
+            //SummSumm = data;
+            //SummDok.innerHTML = SummSumm;
+            
+            //show_flights_table();
+            
+            //var list = document.getElementById('clientsTable'); //элемент-таблица
+            //var tr = document.createElement('TR');              //новый элемент tr
+            ///tr.classList.add('block');                        //добавляем класс элементу
+            //tr.id = "clientName-"+res[0];                       //Добавляем id элементу
+           // tr.innerHTML = '<tr id="clientName"><td>' + res[0] + '</td><td>'+client+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></t
+            
+            
+            
+        },
+        error: function (error1) {
+            console.log("eror_add_line"+" \n");
+            //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
+        }
+    })    
         
 }
-window.add_line = add_line;
+window.add_line2 = add_line2;
 
 
 
