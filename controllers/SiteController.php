@@ -195,6 +195,8 @@ class SiteController extends Controller
     {    
         $model = new Flight();             //создаём объект модели
         
+       
+        
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
             $text = '5';
@@ -269,7 +271,7 @@ class SiteController extends Controller
         $date1 = $year."-".$month."-01";
         $date2 = $year."-".$month."-31";
         $query = "SELECT * FROM flight WHERE data_vyezda between :date1 and :date2";
-        $listFlights = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->asArray()->all(); 
+        $listFlights = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->with('photos')->asArray()->all(); 
         //print_r($listFlights);
         
         #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
@@ -304,19 +306,18 @@ class SiteController extends Controller
         $k = count($listClients);
         $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
     
+    
+        //$cats = Flight::find()->where('id=568')->all(); 
+        //$cats = Flight::findOne(568); 
+        $cats = Flight::find()->with('photos')->all(); 
+    
+    
         #Вытаскиваем все пути к фотографиям рейса
         $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
 
-        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //передаём в вид результат 
+        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text', 'cats')); //передаём в вид результат 
     }
     
-    
-    #+
-    public function actionClient()
-    {      
-        $listClients = Client::find()->all();    //забираем из базы
-        return $this->render('client', compact('listClients')); //compact('listClients') - передаём в вид результат   
-    }
     
     
     
@@ -484,6 +485,14 @@ class SiteController extends Controller
         }  
     }
     
+    
+    
+    #+
+    public function actionClient()
+    {      
+        $listClients = Client::find()->all();    //забираем из базы
+        return $this->render('client', compact('listClients')); //compact('listClients') - передаём в вид результат   
+    }
     
     
     #+Добавление клиента

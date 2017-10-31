@@ -11,6 +11,13 @@ class Client extends ActiveRecord //ActiveRecord - это встроенный �
     //    return 'clients';
    // }
     ///public $clients;
+    
+    public function rules() {
+        return [
+            //['client', 'unique'],
+            ['client', 'safe'],
+        ];
+    }
 
 }
 ?>

@@ -19,11 +19,13 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
 <div>
    <!-- <form class="form-horizontal"> -->
         <div class="form-group">
-          <label for="client" class="col-sm-2 control-label">Новый клиент:</label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" id="client" name="client">
-          </div>  
-          <button class="col-sm-2 btn btn-success" id="a_register_client" onclick="register_client();">Зарегистрировать</button>
+            <label for="client" class="col-sm-2 control-label">Новый клиент:</label>
+            <div class="col-sm-3">
+          
+                <input type="text" class="form-control" id="client" name="client"> 
+            </div>  
+          
+            <button class="col-sm-2 btn btn-success" id="a_register_client" onclick="register_client();">Зарегистрировать</button>
         </div>
   <!--    </form>     -->
 </div>
@@ -55,13 +57,13 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
             foreach ($listClients as $client){ 
                 $id         = $client['id'];      //id клиента
                 $clientName = $client['name'];  //Название клиента  
-            ?>
-            <tr id='clientName-<?=$id?>'>
-                <td style="width: 50px;"><?=$i?></td> 
-                <td><?=$client->name?></td> 
-                <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
-            </tr>
-        <?php $i = $i + 1; } ?>  
+                ?>
+                <tr id='clientName-<?=$id?>'>
+                    <td style="width: 50px;"><?=$i?></td> 
+                    <td><?=$client->name?></td> 
+                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
+                </tr>
+            <?php $i = $i + 1; } ?>  
         </tbody>
       </table>
 </div>
@@ -93,7 +95,7 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
 JS;
 $this->registerJs($js); //регистрируем скрипт */
 
-
+print_r ($client->name);
 
 ?>        
 

@@ -122,14 +122,17 @@
                                 //$listPhoto
                                 //$flightPhoto = Array();
                                 $photo_name_array = null;
-                                $p = 0;
+                                 $p = 0;
                                 foreach ($listPhoto as $key => $val) {
                                     if ($val['n_flight'] == $id_line) { 
                                         //$flightPhoto[] = $val['path']; 
                                         $photo_name_array[$p] = $val['path'];
                                         $p = $p + 1;
                                     }   
-                                }
+                                } 
+                                
+
+                                
                                 
                                 if ($photo_name_array) { //Если имеется хотя бы одно фото
                                     $photo = "<button type='button' class='a_button_photo' onclick='get_photo($id_line)'></button>";
@@ -252,7 +255,60 @@
 <!-- Блок экспериментов-->
 
 <?php
-    //echo '<pre>'; 
+    echo '<pre>'; 
+    //echo 'pre'; 
+    //print_r ($cats);
+    //echo "$cats"; 
+    
+    //print_r ($cats->photo);
+    foreach ($listFlights as $key => $vol) {
+        //print_r ($key); 
+        //print_r ($vol); 
+         foreach ($vol as $key2 => $vol2) {
+             if ($key2 == 'photo') {
+                
+                print_r ('рейс '. $key);
+                print_r ('<br />');
+                foreach ($vol2 as $key3 => $vol3) {
+                    foreach ($vol3 as $key4 => $vol4) {
+                        if ($key4 == 'path') {
+                            if (!$vol4 =='') {
+                                print_r ($key4 . ':' . $vol4); 
+                            } else {
+                                print_r ($key4 . ': без фото'); 
+                            }
+                            print_r ('<br />'); 
+                        }
+                    }
+                }
+             }
+         }
+    }
+
+        //echo count($cats[0]->products); //показать список продуктов 
+
+    
+
+        foreach($listFlights as $listFlight) {
+            echo '<ul>';
+                echo '<li>' . $listFlight->$id . '</li>';
+                $photo = $listFlight->photo;
+                echo $photo;
+                /* foreach($photo as $photo1) {
+                    echo '<ul>';
+                        echo '<li>' . $photo1->$id . '</li>';
+                    echo '</ul>';
+                }  */
+             echo '</ul>';
+        }
+
+    
+    echo count($cats->photos); 
+    echo print_r($cats);
+    
+    echo '</pre>'; 
+    
+    
     //echo 'listUsers= '; 
     //print_r($listFlights); 
   /*  echo 'model2= '; 
@@ -263,6 +319,8 @@
     print_r($ru_rows_array);
     echo '</pre>';  */
 ?>
-
+<?php echo count($cats->photos);    ?>
+<?php echo print_r($cats->photos);    ?>
+<?php echo count($listFlights->photos);    ?>
 
 <!-- /Блок экспериментов-->				

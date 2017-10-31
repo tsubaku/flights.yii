@@ -25,6 +25,12 @@ class Flight extends ActiveRecord //ActiveRecord - это встроенный �
         ];
     }
     
+    //get - обязательная приставка
+    public function getPhotos() 
+    {  
+        return $this->hasMany(Photo::className(), ['n_flight' => 'id']);
+    }
+    
     
 }
 ?>
