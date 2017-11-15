@@ -6,10 +6,10 @@ use yii\db\ActiveRecord;
 class Flight extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
 { 
     //обработка данных
-    //public static function tableName()
-    //{
-    //    return 'users';
-    //}
+    public static function tableName()
+    {
+        return 'flight';
+    }
     ///public $clients;
     
     
@@ -26,7 +26,7 @@ class Flight extends ActiveRecord //ActiveRecord - это встроенный �
     }
     
     //get - обязательная приставка
-    public function getPhotos() 
+    public function getPhoto() 
     {  
         return $this->hasMany(Photo::className(), ['n_flight' => 'id']);
     }

@@ -220,7 +220,7 @@ function get_photo(id_line) {
 
   
   
-//Регистрация охранника
+//Регистрация охранника (не используется)
 function register_user(){
     var g_login     = document.getElementById("login").value;
     var g_password  = document.getElementById("password").value;
@@ -260,7 +260,7 @@ function register_user(){
 
 
 
-//Регистрация клиента
+//Регистрация клиента (не используется)
 function register_client(){
     console.log("register_client");
     var client     = document.getElementById("client").value;

@@ -78,7 +78,7 @@
         
         <?php   
             #Рисуем таблицу рейсов
-            if ($listFlights != NULL) { //иначе варнинги идут, если рейсов нет 
+            if ($listFlight != NULL) { //иначе варнинги идут, если рейсов нет 
                 echo "<table>";
                 echo "<h1>Рейсы за $months[$month] $year</h1>"; //Название таблицы
                 
@@ -93,7 +93,7 @@
                 $js_change_cell = "change_cell(this.value, this.id)"; //Ф-ия записи данных в ячейке при их изменении
                 $js_change_list = "change_cell(GetData(this.id), this.id)"; //Ф-ия записи данных в селекте при их изменении
                 $i = 1;
-                foreach ($listFlights as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
+                foreach ($listFlight as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
                     
                     $id_line   = $row_content['id']; //$id_line - id строки в БД рейсов
                     $id_status = $row_content['fakticheskij_srok_dostavki']; //$id_status - status строки в БД
@@ -255,13 +255,13 @@
 <!-- Блок экспериментов-->
 
 <?php
-    echo '<pre>'; 
+    //echo '<pre>'; 
     //echo 'pre'; 
     //print_r ($cats);
     //echo "$cats"; 
     
     //print_r ($cats->photo);
-    foreach ($listFlights as $key => $vol) {
+    /* foreach ($listFlight as $key => $vol) {
         //print_r ($key); 
         //print_r ($vol); 
          foreach ($vol as $key2 => $vol2) {
@@ -283,30 +283,33 @@
                 }
              }
          }
-    }
+    } */
 
         //echo count($cats[0]->products); //показать список продуктов 
 
     
-
-        foreach($listFlights as $listFlight) {
-            echo '<ul>';
-                echo '<li>' . $listFlight->$id . '</li>';
-                $photo = $listFlight->photo;
+   //      echo ' list ';
+   //     foreach($listFlight as $list) {
+   //         echo '<ul>';
+   //             echo '<li>' . $list->id . '</li>';
+               /* $photo = $list->photo;
                 echo $photo;
-                /* foreach($photo as $photo1) {
+                 foreach($photo as $photo1) {
                     echo '<ul>';
                         echo '<li>' . $photo1->$id . '</li>';
                     echo '</ul>';
                 }  */
-             echo '</ul>';
-        }
-
-    
-    echo count($cats->photos); 
-    echo print_r($cats);
-    
-    echo '</pre>'; 
+    //         echo '</ul>';
+    //    }
+    //    echo '/list';
+        
+    /* echo '_a_';
+    echo count($listFlight->photo); 
+    echo '_b_';
+    print_r($listFlight);
+    echo '_c_';
+    echo count($listFlight->photo); 
+    echo '</pre>';  */
     
     
     //echo 'listUsers= '; 
@@ -319,8 +322,16 @@
     print_r($ru_rows_array);
     echo '</pre>';  */
 ?>
-<?php echo count($cats->photos);    ?>
-<?php echo print_r($cats->photos);    ?>
-<?php echo count($listFlights->photos);    ?>
+<?php //echo count($cats->photo);    ?>
+<?php //print_r($cats->photo);    ?>
+<?php //echo '---_---';    ?>
+
+<?php   
+/*     echo count($listFlights->photo);    
+    print_r($listFlights); 
+    echo '---2---';
+    echo count($listFlights->photo);    
+    print_r($listFlights->photo);  */
+?>
 
 <!-- /Блок экспериментов-->				

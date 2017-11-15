@@ -16,6 +16,8 @@ class Client extends ActiveRecord //ActiveRecord - это встроенный �
         return [
             //['client', 'unique'],
             ['client', 'safe'],
+           // ['client', 'required', 'message' => 'Заполните поле'],
+           // ['client', 'unique', 'targetClass' => User::className(),  'message' => 'Такой клиент уже существует'],
         ];
     }
 

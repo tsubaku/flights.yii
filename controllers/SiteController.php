@@ -216,24 +216,7 @@ class SiteController extends Controller
         }
         
         $table = '20'; //рейсы             !!! Костыль !!!
-        
-        #Перевод названия месяца в его номер по порядку
-        $mons       = array(
-            "Январь" => 1,
-            "Февраль" => 2,
-            "Март" => 3,
-            "Апрель" => 4,
-            "Май" => 5,
-            "Июнь" => 6,
-            "Июль" => 7,
-            "Август" => 8,
-            "Сентябрь" => 9,
-            "Октябрь" => 10,
-            "Ноябрь" => 11,
-            "Январь" => 12
-        );
-        $month_name = $mons[$month];
-        
+
         $ru_rows_array = array(
                 "№",
                 "Номер рейса",
@@ -271,29 +254,29 @@ class SiteController extends Controller
         $date1 = $year."-".$month."-01";
         $date2 = $year."-".$month."-31";
         $query = "SELECT * FROM flight WHERE data_vyezda between :date1 and :date2";
-        $listFlights = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->with('photos')->asArray()->all(); 
-        //print_r($listFlights);
+        $listFlight = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->with('photo')->asArray()->all(); 
+        //print_r($listFlight);
         
         #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
         $query = "SELECT * FROM flight WHERE data_vyezda IS NULL";
-        $listFlightsNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
-        if ( empty($listFlightsNoDate) ) {
+        $listFlightNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+        if ( empty($listFlightNoDate) ) {
             $text = '';
             $model->podklient = $text;
             $model->save(); 
             
             #И заново вытаскиваем эту пустую строку из базы
             $query = "SELECT * FROM flight WHERE data_vyezda IS NULL";
-            $listFlightsNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию            
+            $listFlightNoDate = flight::findBySql($query)->with('photo')->asArray()->all(); //получим все записи, сотв. условию            
         }
 
         #добавляем пустые строки в общий результат
-        $p = count($listFlights);
-        foreach ($listFlightsNoDate as $key => $val) {   
+        $p = count($listFlight);
+        foreach ($listFlightNoDate as $key => $val) {   
             //$flightPhoto[] = $val['path']; 
             $p = $p + 1;
-            $listFlights[$p] = $val; 
-        } 
+            $listFlight[$p] = $val; 
+        }  
                                     
                                     
         #Вытаскиваем все фамилии охранников
@@ -309,13 +292,15 @@ class SiteController extends Controller
     
         //$cats = Flight::find()->where('id=568')->all(); 
         //$cats = Flight::findOne(568); 
-        $cats = Flight::find()->with('photos')->all(); 
-    
+        $cats = Flight::find()->with('photo')->asArray()->all(); 
+        foreach ($cats as $customer) {
+            $cats2 = $customer->photo;
+        }
     
         #Вытаскиваем все пути к фотографиям рейса
         $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
 
-        return $this->render('manager', compact('model', 'listFlights', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text', 'cats')); //передаём в вид результат 
+        return $this->render('manager', compact('model', 'listFlight', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text', 'cats', 'cats2')); //передаём в вид результат 
     }
     
     
