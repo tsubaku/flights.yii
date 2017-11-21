@@ -220,6 +220,45 @@ function get_photo(id_line) {
 
   
   
+
+
+
+//Подстановка фото в главный див при выборе миниатюры
+function selectPhoto(){  
+    var largeImg = document.getElementById('largeImg');
+    var thumbs = document.getElementById('thumbs');
+    thumbs.onclick = function(e) {
+        var target = e.target;
+        while (target != this) {
+            if (target.nodeName == 'A') {
+                showThumbnail(target.href, target.title);
+                return false;
+            }
+            target = target.parentNode;
+        }
+    }
+    
+    function showThumbnail(href, title) {
+        largeImg.src = href;
+        largeImg.alt = title;
+    }
+
+    /* предзагрузка */
+    var imgs = thumbs.getElementsByTagName('img');
+    for (var i = 0; i < imgs.length; i++) {
+        var url = imgs[i].parentNode.href;
+        var img = document.createElement('img');
+        img.src = url;
+    }
+}
+
+
+
+
+
+
+//////////  Ниже только неиспользуемые куски кода  ///////////////
+
 //Регистрация охранника (не используется)
 function register_user(){
     var g_login     = document.getElementById("login").value;
@@ -291,36 +330,3 @@ function register_client(){
             }
         })        
 }
-
-
-
-//Подстановка фото в главный див при выборе миниатюры
-function selectPhoto(){  
-    var largeImg = document.getElementById('largeImg');
-    var thumbs = document.getElementById('thumbs');
-    thumbs.onclick = function(e) {
-        var target = e.target;
-        while (target != this) {
-            if (target.nodeName == 'A') {
-                showThumbnail(target.href, target.title);
-                return false;
-            }
-            target = target.parentNode;
-        }
-    }
-    
-    function showThumbnail(href, title) {
-        largeImg.src = href;
-        largeImg.alt = title;
-    }
-
-    /* предзагрузка */
-    var imgs = thumbs.getElementsByTagName('img');
-    for (var i = 0; i < imgs.length; i++) {
-        var url = imgs[i].parentNode.href;
-        var img = document.createElement('img');
-        img.src = url;
-    }
-}
-
-

@@ -10,9 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-use app\models\Client; //Подключаем модель для обработки списка клиентов;
+use app\models\Client;  //Подключаем модель для обработки списка клиентов;
 use app\models\User;    //Подключаем модель для авторизации;
-use app\models\Flight; //Подключаем модель для обработки таблицы рейсов;
+use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
 use app\models\SignupForm; //Подключаем модель для обработки списка охранников
 
@@ -472,73 +472,25 @@ class SiteController extends Controller
     
     
     
-    #+
+    #+Отрисовка страницы client и добавление клиента, если нажата копка добавления
     public function actionClient()
     {      
+        $model = new Client();  //создаём объект модели 
+        
+        #Если нажали "Добавить клиента", то проверяем введённые данные и добавляем
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            $r1 = Yii::$app->request->post('Client'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
+                                                      //у него есть методы get() и post()
+            $model->name = $r1['name']; 
+            $model->save(); //сохраняем объект модели
+        }
+
         $listClients = Client::find()->all();    //забираем из базы
-        return $this->render('client', compact('listClients')); //compact('listClients') - передаём в вид результат   
+        return $this->render('client', compact('model', 'listClients')); //передаём в вид результат   
     }
     
     
-    #+Добавление клиента
-    public function actionRegisterclient()
-    {      
-        #Добавление строки в таблицу client
-        if(Yii::$app->request->isAjax){
-            $model = new Client();
-            $nameNewClient = Yii::$app->request->post('client');
-            $model->name = $nameNewClient;
-            $model->save();
-            
-            $rows = (new \yii\db\Query())
-                ->select(['id'])
-                ->from('client')
-                ->where(['name'=>$nameNewClient])
-                ->one();
-            
-            foreach ($rows as $key => $value) {
-                $rows = $value;
-            }
-            $json_data = array(0 => $rows);
-            echo json_encode($json_data);
-        }  
-    }
-    
-    
-    
-    #+Добавление нового юзера (охранника/менеджера)
-    public function actionRegisteruser()
-    {      
-        #Добавление строки в таблицу user
-        if(Yii::$app->request->isAjax){
-            $model = new Users();
-            $loginNewUser = Yii::$app->request->post('g_login');
-            $passwordNewUser = Yii::$app->request->post('g_password');   
-            $fullNameNewUser = Yii::$app->request->post('fullName');
-            
-            $passwordNewUserHash = password_hash(trim($passwordNewUser), PASSWORD_DEFAULT);
-            
-            $model->user_login = $loginNewUser;
-            $model->user_password = $passwordNewUserHash;
-            $model->full_name = $fullNameNewUser;
-            
-            $model->save();
-            
-            $rows = (new \yii\db\Query())
-                ->select(['user_id'])
-                ->from('users')
-                ->where(['user_login'=>$loginNewUser])
-                ->one();
-            
-            foreach ($rows as $key => $value) {
-                $rows = $value;
-            }
-            $json_data = array(0 => $rows);
-            echo json_encode($json_data);
-        }  
-    }
-    
-    
+ 
     
     #+Удаление рейса, клиента или юзера
     public function actionDelete(){
@@ -562,7 +514,7 @@ class SiteController extends Controller
     
     
     
-    //Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
+    //+Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
     public function actionSignup(){
         //Проверка, является ли пользователь гостем
     ///    if (!Yii::$app->user->isGuest) {
@@ -700,6 +652,69 @@ class SiteController extends Controller
     }
     
     
+    
+    
+    
+    
+#####  Ниже только неиспользуемые куски кода  ##########################################################    
+       #-Добавление клиента (через написанный вручную аякс-скрипт)
+    public function actionRegisterclient4()
+    {      
+        #Добавление строки в таблицу client
+        if(Yii::$app->request->isAjax){
+            $model = new Client();
+            $nameNewClient = Yii::$app->request->post('client');
+            $model->name = $nameNewClient;
+            $model->save();
+            
+            $rows = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('client')
+                ->where(['name'=>$nameNewClient])
+                ->one();
+            
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data);
+        }  
+    }
+    
+    
+    
+    #-Добавление нового юзера (охранника/менеджера) (через написанный вручную аякс-скрипт)
+    public function actionRegisteruser4()
+    {      
+        #Добавление строки в таблицу user
+        if(Yii::$app->request->isAjax){
+            $model = new Users();
+            $loginNewUser = Yii::$app->request->post('g_login');
+            $passwordNewUser = Yii::$app->request->post('g_password');   
+            $fullNameNewUser = Yii::$app->request->post('fullName');
+            
+            $passwordNewUserHash = password_hash(trim($passwordNewUser), PASSWORD_DEFAULT);
+            
+            $model->user_login = $loginNewUser;
+            $model->user_password = $passwordNewUserHash;
+            $model->full_name = $fullNameNewUser;
+            
+            $model->save();
+            
+            $rows = (new \yii\db\Query())
+                ->select(['user_id'])
+                ->from('users')
+                ->where(['user_login'=>$loginNewUser])
+                ->one();
+            
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data);
+        }  
+    }
+##########################################################    
     
     
     

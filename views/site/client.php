@@ -28,6 +28,34 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
             <button class="col-sm-2 btn btn-success" id="a_register_client" onclick="register_client();">Зарегистрировать</button>
         </div>
   <!--    </form>     -->
+  
+        <!-- Регистрация клиентов --->
+        <?php $form = ActiveForm::begin([
+                'id' => 'add',
+                'layout' => 'inline',
+                'fieldConfig' => [
+                    'labelOptions' => ['class' => ''],
+                    'enableError' => true,
+                ]
+            ]) ?>
+
+
+        <?= $form->field($model, 'name', [
+                'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
+            ]) 
+            
+        ?>
+        
+            <div class="form-group">
+                <div>
+                    <?= Html::submitButton('Регистрация', ['class' => 'btn btn-success', 'id' => 'add1', 'name' => 'add2']) ?>
+                </div>
+            </div>
+        <?php ActiveForm::end() ?> 
+  
+  
+  
+  
 </div>
 
   
@@ -94,8 +122,11 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
     });
 JS;
 $this->registerJs($js); //регистрируем скрипт */
-
-print_r ($client->name);
+echo '<pre>'; 
+print_r ($client->name); //фактически - последний клиент из списка
+//print_r ($client);
+//print_r ($rows);
+echo '</pre>'; 
 
 ?>        
 
