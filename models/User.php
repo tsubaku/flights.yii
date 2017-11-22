@@ -11,6 +11,24 @@ use Yii;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+   //2
+   const ROLE_ADMIN = 20;  
+   public function rules() {
+        return [
+            ['role', 'in', 'range' => [self::ROLE_USER, self::ROLE_ADMIN]], 
+        ];  
+    }
+    public static function isUserAdmin($username)
+    {
+        if (static::findOne(['username' => $username, 'role' => self::ROLE_ADMIN]))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+   
    /*  public $id;
     public $username;
     public $password;

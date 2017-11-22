@@ -36,6 +36,9 @@ class SignupForm extends Model
             'full_name' => 'Полное имя',
         ];
     }
+    
+    
+    
 }
 ?>
 

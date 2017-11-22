@@ -30,7 +30,8 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],   
+                //'only' => ['logout'],   
+                'only' => ['logout', 'signup', 'about'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -42,6 +43,17 @@ class SiteController extends Controller
                         'actions' => ['login', 'signup'],
                         'roles' => ['?'],
                     ],
+                    
+                    //2
+                    [
+                       'actions' => ['about'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                   ],
+                   
                 ],
             ],
             'verbs' => [
@@ -199,13 +211,13 @@ class SiteController extends Controller
         
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
-            $text = '5';
+            $text = '';
             $model->podklient = $text;
             $model->save();
         } 
 
         #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
-        if( Yii::$app->request->post('refresh-button') ){
+        if( (Yii::$app->request->post('refresh-button')) or (Yii::$app->request->post('add-button')) ){
             $text = 'post';
             $year = Yii::$app->request->post('year');
             $month = Yii::$app->request->post('month'); 
@@ -594,7 +606,7 @@ class SiteController extends Controller
         //login() - public method, sets the specified identity and remembers the authentication status in session and cookie
         //$model->login() -применяем метод login() к модели
         //Предполагаю: "Если данные пришедшие из формы ввода загружены в модель И login() прошёл удачно, то редирект к последней посещённой странице
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        /* if ($model->load(Yii::$app->request->post()) && $model->login()) {
             //return $this->goBack(); // goBack()	-метод Redirects the browser to the last visited page.
             
             #Вытаскиваем имя залогиненного юзера и редиректим на нужный интерфейс
@@ -604,8 +616,20 @@ class SiteController extends Controller
             } else {
                 return $this->redirect(['guard']);
             }
-        }
+        } */
 
+
+        //2
+        if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
+            //return $this->goBack();
+            return $this->redirect(['manager']);
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+        
+        
         //Иначе снова отрендерить страницу login, передав в неё $model 
         return $this->render('login', compact('model'));
     }
@@ -631,6 +655,17 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        //создать роль и сохранить ее в RBAC
+       /*  $role = Yii::$app->authManager->createRole('manager');
+        $role->description = 'Менеджер';
+        Yii::$app->authManager->add($role);
+         
+        $role = Yii::$app->authManager->createRole('user');
+        $role->description = 'Охранник';
+        Yii::$app->authManager->add($role); */
+        
+        
+        
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');

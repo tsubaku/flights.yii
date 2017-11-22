@@ -40,6 +40,11 @@ $config = [
         ],
         'db' => $db,
         
+        //для настройки ролей пользователей
+       /*  'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ], */
+  
          /* 'urlManager' => [
             //'enablePrettyUrl' => true,
             //'showScriptName' => false,

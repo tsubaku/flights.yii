@@ -49,19 +49,22 @@
                         echo Html::dropDownList('year', 'null', $years, $param); 
                     ?>
                 </div>
-                <div class="col-xs-1">  
+                <div class="col-xs-3">  
                     <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'name' => 'refresh-button', 'value' => 'refresh-button']) ?>
+                </div> 
+                <div class="col-xs-3">  
+                    <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
                 </div> 
                 <?php ActiveForm::end(); ?>
             
             </div>	<!-- form1-->
             
             <div class="col-xs-2">
-                <?php $form2 = ActiveForm::begin([
-                    'id' => 'manager-add-form',  
-                ]); ?>
-                <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
-                <?php ActiveForm::end(); ?>
+                <?php //$form2 = ActiveForm::begin([
+                    //'id' => 'manager-add-form',  
+               // ]); ?>
+                <?//= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
+                <?php //ActiveForm::end(); ?>
             </div>  <!-- form2-->
             
 
