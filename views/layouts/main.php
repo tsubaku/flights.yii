@@ -40,6 +40,12 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
+            
+            ['label' => 'Рейсы', 'url' => ['/site/manager']],
+            ['label' => 'Интерфейс охранника', 'url' => ['/site/guard']],
+            ['label' => 'Клиенты', 'url' => ['/site/client']],
+            ['label' => 'Охранники', 'url' => ['/site/signup']],
+            ['label' => 'Оружие', 'url' => ['/site/gun']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -52,10 +58,6 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             ),
-            ['label' => 'Рейсы', 'url' => ['/site/manager']],
-            ['label' => 'Интерфейс охранника', 'url' => ['/site/guard']],
-            ['label' => 'Охранники', 'url' => ['/site/signup']],
-            ['label' => 'Клиенты', 'url' => ['/site/client']],
         ],
     ]);
     NavBar::end();

@@ -142,6 +142,12 @@ function delete_line (id_line, table)
                     var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
                     el.parentNode.removeChild(el);
                 } 
+                if (table == '31'){
+                    dom = 'gunName-' + id_line;
+                    //console.log("dom="+dom);
+                    var el = document.getElementById(dom); //удаляем нужный элемент из DOM-дерева
+                    el.parentNode.removeChild(el);
+                } 
                 //document.getElementById(dom1).parentNode.removeChild(document.getElementById(dom1));
 
                 },

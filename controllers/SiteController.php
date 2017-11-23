@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 
 use app\models\Client;  //Подключаем модель для обработки списка клиентов;
+use app\models\Gun;  //Подключаем модель для обработки списка клиентов;
 use app\models\User;    //Подключаем модель для авторизации;
 use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
@@ -23,36 +24,49 @@ class SiteController extends Controller
      */
     public function behaviors()
     {
-        //only -фильтр ACF нужно применять только к действиям logout
+        //only -фильтр ACF нужно применять только к перечисленным действиям
         //rules -задаёт правила доступа    
-            //Разрешить всем гостям (ещё не прошедшим авторизацию) доступ к действиям login и signup. Опция roles содержит знак вопроса ?, это специальный токен обозначающий "гостя".
-            //Разрешить аутентифицированным пользователям доступ к действию logout. Символ @ — это другой специальный токен, обозначающий аутентифицированного пользователя.
+            //Разрешить всем гостям (ещё не прошедшим авторизацию) доступ к действиям login и signup. 
+                //roles 
+                    //? - специальный токен, обозначающий "гостя".
+                    //@ — специальный токен, обозначающий аутентифицированного пользователя.
+            //Разрешить аутентифицированным пользователям доступ к действию logout. 
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 //'only' => ['logout'],   
-                'only' => ['logout', 'signup', 'about'],
+                'only' => ['logout', 'manager', 'guard', 'signup', 'client', 'gun'],
                 'rules' => [
+                    //страницы, доступные всем гостям
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    //страницы, доступные всем авторизованным
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    //страницы, доступные менеджеру:
                     [
-                        'allow' => true,
-                        'actions' => ['login', 'signup'],
-                        'roles' => ['?'],
-                    ],
-                    
-                    //2
-                    [
-                       'actions' => ['about'],
+                       'actions' => ['manager', 'guard', 'signup', 'client', 'gun'],
                        'allow' => true,
                        'roles' => ['@'],
                        'matchCallback' => function ($rule, $action) {
                            return User::isUserAdmin(Yii::$app->user->identity->username);
                        }
-                   ],
+                    ],
+                    //страницы, доступные охраннику:
+                    [ 
+                        'actions' => ['guard'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                           return User::isUserUser(Yii::$app->user->identity->username);
+                       }
+                    ],
                    
                 ],
             ],
@@ -175,12 +189,13 @@ class SiteController extends Controller
     {      
         $this->layout = 'simple'; //меняем шаблон на простой
 
-        $full_name = \Yii::$app->user->identity->username;
-        $idUser = \Yii::$app->user->identity->id;
-        
+        $idUser       = \Yii::$app->user->identity->id;
+        $username     = \Yii::$app->user->identity->username;
+        $full_name    = \Yii::$app->user->identity->full_name;
+           
         #Вытаскиваем из базы даты выездов нужного охранника     
-        $query = 'SELECT `data_vyezda` FROM `flight` WHERE `fio` = :full_name';
-        $table_array = flight::findBySql($query, [':full_name' => $full_name])->asArray()->all(); //$table_array - массив всех дат выезда указанного охранника
+        $query        = 'SELECT `data_vyezda` FROM `flight` WHERE `fio` = :full_name';
+        $table_array  = flight::findBySql($query, [':full_name' => $full_name])->asArray()->all(); //$table_array - массив всех дат выезда указанного охранника
             
         $array_date_of_departure = Array();
         $i                       = 0;
@@ -503,6 +518,24 @@ class SiteController extends Controller
     
     
  
+    #+Отрисовка страницы gun и добавление оружия, если нажата копка добавления
+    public function actionGun()
+    {      
+        $model = new Gun();  //создаём объект модели 
+        
+        #Если нажали "Добавить клиента", то проверяем введённые данные и добавляем
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            $r1 = Yii::$app->request->post('Gun'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
+                                                      //у него есть методы get() и post()
+            $model->name = $r1['name']; 
+            $model->save(); //сохраняем объект модели
+        }
+
+        $listGun = Gun::find()->all();    //забираем из базы
+        return $this->render('gun', compact('model', 'listGun')); //передаём в вид результат   
+    }
+    
+    
     
     #+Удаление рейса, клиента или юзера
     public function actionDelete(){
@@ -520,6 +553,9 @@ class SiteController extends Controller
                 $model = User::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
             } elseif ($tableName == '20') {
                 $model = Flight::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+            } elseif ($tableName == '31') {
+                $model = new Gun(); //говорят, лишняя
+                $model = Gun::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
             }
         }
     }
@@ -540,10 +576,17 @@ class SiteController extends Controller
             $user->username = $model->username; //передаём атрибут модели UsersForm в атрибут модели User 
             $user->full_name = $model->full_name; //(заполним его полученными из формы данными)
             $user->password = \Yii::$app->security->generatePasswordHash($model->password); //Аналогично, только ещё и шифруем
-
+            $user->role = '10'; //Присваиваем новому пользователю права охранника (а права менеджера 20 - только через ручную правку бд)
             $user->save(); //сохраняем объект модели User
         }
 
+        
+        
+        
+        
+        
+        
+        
         $listUsers = user::find()->all();    //забираем из базы
         return $this->render('signup', compact('model', 'listUsers', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
     }
@@ -607,7 +650,7 @@ class SiteController extends Controller
         //$model->login() -применяем метод login() к модели
         //Предполагаю: "Если данные пришедшие из формы ввода загружены в модель И login() прошёл удачно, то редирект к последней посещённой странице
         /* if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            //return $this->goBack(); // goBack()	-метод Redirects the browser to the last visited page.
+            //return $this->goBack(); // goBack()-метод Redirects the browser to the last visited page.
             
             #Вытаскиваем имя залогиненного юзера и редиректим на нужный интерфейс
             $nameUser = \Yii::$app->user->identity->username;
@@ -619,15 +662,19 @@ class SiteController extends Controller
         } */
 
 
-        //2
-        if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
+        #Проверка прав пользователя
+        if ($model->load(Yii::$app->request->post()) && $model->loginAdmin() ) {
             //return $this->goBack();
             return $this->redirect(['manager']);
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+        } 
+        if ($model->load(Yii::$app->request->post()) && $model->loginUser() ) {
+            //return $this->goBack();
+            return $this->redirect(['guard']);
+        } 
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+
         
         
         //Иначе снова отрендерить страницу login, передав в неё $model 

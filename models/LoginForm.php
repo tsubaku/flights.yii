@@ -89,8 +89,8 @@ class LoginForm extends Model
         return $this->user;
     }
     
-    
-    //2
+    #Проверка прав пользователя
+    //Проверка на админа
     public function loginAdmin()
     {
         if ($this->validate() && User::isUserAdmin($this->username)) {
@@ -99,5 +99,13 @@ class LoginForm extends Model
             return false;
         }
     }
-    
+    //добавил по аналогии с loginAdmin
+    public function loginUser()
+    {
+        if ($this->validate() && User::isUserUser($this->username)) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        } else {
+            return false;
+        }
+    }
 }

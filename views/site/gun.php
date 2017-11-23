@@ -8,28 +8,16 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 
-$this->title = 'Клиенты';
+$this->title = 'Оружие';
 //$this->params['breadcrumbs'][] = $this->title;
 
-$table_users = '11'; //клиенты             !!! Костыль !!!
+$table_users = '31'; //клиенты             !!! Костыль !!!
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
  
 <div>
-   <!-- <form class="form-horizontal"> -->
-      <!--  <div class="form-group">
-            <label for="client" class="col-sm-2 control-label">Новый клиент:</label>
-            <div class="col-sm-3">
-          
-                <input type="text" class="form-control" id="client" name="client"> 
-            </div>  
-          
-            <button class="col-sm-2 btn btn-success" id="a_register_client" onclick="register_client();">Зарегистрировать</button>
-        </div> -->
-  <!--    </form>     -->
-  
-        <!-- Регистрация клиентов --->
+        <!-- form Регистрация клиентов --->
         <?php $form = ActiveForm::begin([
                 'id' => 'add',
                 'layout' => 'inline',
@@ -52,7 +40,7 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
                 </div>
             </div>
         <?php ActiveForm::end() ?> 
-  
+        <!--    </form>     --> 
   
   
   
@@ -78,17 +66,17 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
                 <td><b>Удалить</b></td>
             </tr>
         </thead>
-        <tbody id="clientsTable">
+        <tbody id="gunTable">
             <?php
             #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
             $i = 1;   
-            foreach ($listClients as $client){ 
-                $id         = $client['id'];      //id клиента
-                $clientName = $client['name'];  //Название клиента  
+            foreach ($listGun as $gun){ 
+                $id     = $gun['id'];      //id клиента
+                $unName = $gun['name'];  //Название клиента  
                 ?>
-                <tr id='clientName-<?=$id?>'>
+                <tr id='gunName-<?=$id?>'>
                     <td style="width: 50px;"><?=$i?></td> 
-                    <td><?=$client->name?></td> 
+                    <td><?=$gun->name?></td> 
                     <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
                 </tr>
             <?php $i = $i + 1; } ?>  
@@ -123,8 +111,8 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
 JS;
 $this->registerJs($js); //регистрируем скрипт */
 echo '<pre>'; 
-print_r ($client->name); //фактически - последний клиент из списка
-//print_r ($client);
+//print_r ($gun->name); //фактически - последний клиент из списка
+//print_r ($gun);
 //print_r ($rows);
 echo '</pre>'; 
 
