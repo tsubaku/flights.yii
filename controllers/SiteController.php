@@ -588,7 +588,8 @@ class SiteController extends Controller
         
         
         $listUsers = user::find()->all();    //забираем из базы
-        return $this->render('signup', compact('model', 'listUsers', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
+        $listGun = gun::find()->all();    //забираем из базы
+        return $this->render('signup', compact('model', 'listUsers', 'listGun', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
     }
 
 

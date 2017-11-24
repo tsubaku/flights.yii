@@ -30,7 +30,10 @@ h3 {
 	font-weight: bold;
 }
 
-
+/* для тестов *******************************************/
+#gun1 {
+    background: #5eee3e;   
+}
 
 
 /* Blocks and selectors *******************************************/
@@ -306,7 +309,12 @@ input {
 	font: normal 16px Verdana, sans-serif
 }
 
-
+#tableGun td {
+    background: #defeee;  
+    height:8px;
+    font: normal 11px Verdana, sans-serif
+    
+}
 
 /**** Table Column Classes *****************************************/
 .number_line {
