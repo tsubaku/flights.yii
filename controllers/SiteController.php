@@ -13,6 +13,7 @@ use app\models\ContactForm;
 use app\models\Client;  //Подключаем модель для обработки списка клиентов;
 use app\models\Gun;  //Подключаем модель для обработки списка клиентов;
 use app\models\User;    //Подключаем модель для авторизации;
+use app\models\User_gun;    //Подключаем модель для авторизации;
 use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
 use app\models\SignupForm; //Подключаем модель для обработки списка охранников
@@ -560,7 +561,43 @@ class SiteController extends Controller
         }
     }
     
+    #+Принять от js-скрипта id юзера, вытащить связь, вытащить прикреплённое оружие, вернуть js-скрипту
+    public function actionGunshow(){
+        if(Yii::$app->request->isAjax){
+            $userId = Yii::$app->request->post('userId');
+            $model = new User_gun(); //говорят, лишняя
+            $listGun = User_gun::find()->where(['user_id' => $userId])->asArray()->all(); //выбираем строку с нужным id
+            
+            //$model = new Gun(); //говорят, лишняя
+            //$model = Gun::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+
+            $p = 0;
+            foreach ($listGun as $key => $val) {        
+                //$gun_id[$p]    = $val['gun_id'];
+                //$gun = Gun::find()->where(['id' => $userId])->asArray()->one(); //выбираем строку с нужным id
+                
+                $gun_id = $val['gun_id'];
+                $gun = Gun::find()->where(['id' => $gun_id])->asArray()->one(); //выбираем строку с нужным id
+                //$listGunName[$p]    = $gun['name'];
+                $listGunId[$p]    = $gun['id'];
+                $p                  = $p + 1;
+            }
+            
+            echo json_encode($listGunId);
+        }
+    }
     
+    //+Получить от js-скрипта событие чекбокса, сделать изменения в базе user_gun
+    public function checkboxChange(){
+        if(Yii::$app->request->isAjax){
+            $userId = Yii::$app->request->post('userId');
+            $checkboxPosition = Yii::$app->request->post('checkboxPosition');
+            
+            //$model = new Gun(); //говорят, лишняя
+            $model = User_gun::find()->where( (['id' => $userId]) and (['id' => $userId]) )->one()->delete(); //выбираем строку с нужным id и удаляем её
+        }
+        
+    }
     
     //+Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
     public function actionSignup(){
@@ -580,17 +617,11 @@ class SiteController extends Controller
             $user->save(); //сохраняем объект модели User
         }
 
-        
-        
-        
-        
-        
-        
-        
         $listUsers = user::find()->all();    //забираем из базы
         $listGun = gun::find()->all();    //забираем из базы
         return $this->render('signup', compact('model', 'listUsers', 'listGun', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
     }
+
 
 
 

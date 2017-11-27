@@ -80,7 +80,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                     <td><?=$user_login?></td> 
                     <td><?=$full_name?></td> 
                     <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
-                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='gun(<?=$user_id?>, <?=$table_users?>);'>Показать</button></td>
+                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>);'>Показать</button></td>
                             
                         
                 </tr>
@@ -111,7 +111,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                             ?>
                             <tr id='gunName-<?=$gun_id?>'>
                                  
-                                <td style="width: 50px;"><label class="checkbox"><input type="checkbox" value=""><?=$j?></label></td> 
+                                <td style="width: 50px;"><label class="checkbox"><input id="gunCheckbox-<?=$gun_id?>" type="checkbox" value="" onchange='checkboxChange(<?=$user_id?>, <?=$gun_id?>);'><?=$j?></label></td> 
                                 <td><?=$gun_name?></td> 
                             </tr>
                         <?php $j = $j + 1; } ?>  
