@@ -591,6 +591,7 @@ class SiteController extends Controller
     public function checkboxChange(){
         if(Yii::$app->request->isAjax){
             $userId = Yii::$app->request->post('userId');
+            $gunId = Yii::$app->request->post('gunId');
             $checkboxPosition = Yii::$app->request->post('checkboxPosition');
             
             //$model = new Gun(); //говорят, лишняя

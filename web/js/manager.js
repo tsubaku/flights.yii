@@ -162,8 +162,9 @@ window.delete_line = delete_line;
 
 
 //При клике по кнопке вытащить со страницы signup id охранника, запросить контроллер о прикреплённом оружии и отобразить его на странице
-function gunShow(userId) {
+function gunShow(userId, full_name) {
     console.log(userId);
+    console.log(full_name);
     $.ajax({
             url:"index.php?r=site/gunshow",
             type:"POST",
@@ -174,6 +175,7 @@ function gunShow(userId) {
                 userId:userId,    
             },
             success: function (data) {
+                document.getElementById("guardName").innerHTML=full_name;
                 //console.log(data);
                 var listGunName = JSON.parse(data);
                 //console.log(listGunName); 
@@ -188,24 +190,25 @@ function gunShow(userId) {
             },
             error: function (error1) {
                 console.log("eror_delete_line");
-                //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
+                
             }
     })   
 }
 
 //+Срабатывает при изменении чекбокса закреплённого оружия на странице signup, 
 // вызывает контроллер и передаёт ему id охранника, id оружия и true/false чекбокса выбора
-function checkboxChange(userId, gunId) {
+function checkboxChange(gunId) {
     //$ch = '#gunCheckbox-'+userId;
     //$ch1 = $(ch).is(':checked');
     
     //cb = document.getElementById(gunCheckbox);
     //cat = document.getElementById(cat);
     //if (cb.checked)
-    
+    userId = document.getElementById("guardName");	//Взять значение из инпута через чистый JS
+    checkboxPosition = 'true';
     console.log(userId);
     console.log(gunId);
-    console.log(ch1);
+    console.log(checkboxPosition);
     $.ajax({
             url:"index.php?r=site/checkboxChange",
             type:"POST",
