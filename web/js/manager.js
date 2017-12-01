@@ -175,10 +175,18 @@ function gunShow(userId, full_name) {
                 userId:userId,    
             },
             success: function (data) {
-                document.getElementById("guardName").innerHTML=full_name;
+                document.getElementById("userName").value=full_name;
+                gun.style.visibility='visible';
+                //gun.style.position='static';
+                
+                
+                
+                
                 //console.log(data);
                 var listGunName = JSON.parse(data);
                 //console.log(listGunName); 
+                
+                //Расстановка чекбоксов в таблице оружия.
                 $('input:checked').prop('checked', false);  //сбросить все чекбоксы
                 if (listGunName != undefined){
                     listGunName.forEach(function(item, i, listGunName) {
@@ -195,49 +203,42 @@ function gunShow(userId, full_name) {
     })   
 }
 
+
 //+Срабатывает при изменении чекбокса закреплённого оружия на странице signup, 
 // вызывает контроллер и передаёт ему id охранника, id оружия и true/false чекбокса выбора
 function checkboxChange(gunId) {
-    //$ch = '#gunCheckbox-'+userId;
-    //$ch1 = $(ch).is(':checked');
-    
-    //cb = document.getElementById(gunCheckbox);
-    //cat = document.getElementById(cat);
-    //if (cb.checked)
-    userId = document.getElementById("guardName");	//Взять значение из инпута через чистый JS
-    checkboxPosition = 'true';
-    console.log(userId);
+    ch = '#gunCheckbox-'+gunId; //id чекбокса
+    //checkboxPosition = $(ch).is(':checked'); //хром отжирает всю память и намертво виснет.
+                                               //Причина: событие onchange, которое генерируется, всплывает и снова вызывает клик.
+    checkboxPosition = $(ch).prop("checked");
+    userName = document.getElementById("userName").value;	//Взять значение из инпута через чистый JS
+
+    console.log(userName);
+    //console.log(ch);
     console.log(gunId);
     console.log(checkboxPosition);
-    $.ajax({
-            url:"index.php?r=site/checkboxChange",
+     $.ajax({
+            url:"index.php?r=site/checkboxchange",
             type:"POST",
             //async: true,
             statbox:"status",
             data:
             {
-                userId:userId,    
+                userName:userName,    
                 gunId:gunId,
                 checkboxPosition:checkboxPosition,    
             },
             success: function (data) {
-                //console.log(data);
-                var listGunName = JSON.parse(data);
+                console.log("checkboxChange ok. "+ data);
+                //var listGunName = JSON.parse(data);
                 //console.log(listGunName); 
-                $('input:checked').prop('checked', false);  //сбросить все чекбоксы
-                if (listGunName != undefined){
-                    listGunName.forEach(function(item, i, listGunName) {
-                    //alert( i + ": " + item + " (массив:" + arr + ")" );
-                    el = 'gunCheckbox-'+item;
-                    document.getElementById('gunCheckbox-'+item).checked = true;
-                    });
-                }
+                
             },
             error: function (error1) {
-                console.log("eror_delete_line");
+                console.log("eror_checkboxChange");
                 //document.getElementById("write_time_status").innerHTML='<p>ОШИБКА!</p>';
             }
-    })   
+    })    
 }
 
 $(document).ready(function() { // вся мaгия пoсле зaгрузки стрaницы

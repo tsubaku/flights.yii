@@ -588,14 +588,25 @@ class SiteController extends Controller
     }
     
     //+Получить от js-скрипта событие чекбокса, сделать изменения в базе user_gun
-    public function checkboxChange(){
+    public function actionCheckboxchange(){
         if(Yii::$app->request->isAjax){
-            $userId = Yii::$app->request->post('userId');
+            $userName = Yii::$app->request->post('userName');
             $gunId = Yii::$app->request->post('gunId');
             $checkboxPosition = Yii::$app->request->post('checkboxPosition');
             
+            $userId = User::find()->where(['full_name' => $userName])->asArray()->one(); //выбираем строку с нужным id
             //$model = new Gun(); //говорят, лишняя
-            $model = User_gun::find()->where( (['id' => $userId]) and (['id' => $userId]) )->one()->delete(); //выбираем строку с нужным id и удаляем её
+            $model = new User_gun(); //говорят, лишняя
+            if ($checkboxPosition == 'true') {    //записать в user_gun связь
+                $model->user_id = $userId['id']; 
+                $model->gun_id = $gunId; 
+                $model->save(); //сохраняем объект модели
+            } else {                            //найти и удалить из user_gun связь
+                //$userId = $userId['id'];
+                $model = User_gun::find()->where(['user_id' => $userId['id']]) ->andWhere(['gun_id' => $gunId])->one()->delete(); 
+
+            } 
+            echo json_encode("$gunId");
         }
         
     }

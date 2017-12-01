@@ -309,9 +309,32 @@ input {
 	font: normal 16px Verdana, sans-serif
 }
 
+
+/********/
+
+
+
+
+
+
+/********/
+
+
+
+
+
+
+#gun {
+    visibility: hidden;
+    position: relative;
+    
+   
+}
+
 #tableGun  {
     width:300px;  
     
+
 }
 #tableGun td {
     background: #ceffee;  

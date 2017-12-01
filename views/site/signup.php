@@ -88,11 +88,11 @@ $table_users = '10'; //охранники             !!! Костыль !!!
             </tbody>
           </table>
         </div>
-        <div class="col-md-4">	
+        <div class="col-md-4" id="gun">	
             <div class="panel panel-default">
                 <div class="panel-body">
                     <table class="table table-striped" id="tableGun">
-                        <caption><strong>Список оружия <div id="guardName"></div></strong></caption>
+                        <caption><strong>Список оружия <input type="text" id="userName"></input></strong></caption>
                         <thead>
                             <tr>  
                                 
@@ -111,7 +111,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                             ?>
                             <tr id='gunName-<?=$gun_id?>'>
                                  
-                                <td style="width: 50px;"><label class="checkbox"><input id="gunCheckbox-<?=$gun_id?>" type="checkbox" value="" onchange='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
+                                <td style="width: 50px;"><label class="checkbox"><input id="gunCheckbox-<?=$gun_id?>" type="checkbox" value="" onclick='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
                                 <td><?=$gun_name?></td> 
                             </tr>
                         <?php $j = $j + 1; } ?>  
