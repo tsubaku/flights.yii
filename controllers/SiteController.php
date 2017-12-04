@@ -17,6 +17,7 @@ use app\models\User_gun;    //Подключаем модель для авто�
 use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
 use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
 use app\models\SignupForm; //Подключаем модель для обработки списка охранников
+use app\models\Sentry; //Подключаем модель для обработки таблицы постовой ведомости
 
 class SiteController extends Controller
 {
@@ -468,6 +469,24 @@ class SiteController extends Controller
     }
     
     
+    #+Изменение данных в ячейке таблицы Постовая ведомость
+    public function actionChangesentry(){
+         #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
+         if(Yii::$app->request->isAjax){
+            $cellValue = Yii::$app->request->post('cell_value');   
+            $cellId = Yii::$app->request->post('id_in_db');
+            $cellColumn = Yii::$app->request->post('column_in_db');
+
+            #Обновить ячейку в таблице 
+            $model = Sentry::findOne($cellId); //Выбрать из таблицы Flight первую запись с id=$cellId
+            $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
+            $model->save();                     //сохранить
+ 
+            echo json_encode($res_array);
+        }
+    }
+    
+    
     
     #+Добавление строки в таблицу рейсов
     public function actionAddline()
@@ -631,10 +650,85 @@ class SiteController extends Controller
 
         $listUsers = user::find()->all();    //забираем из базы
         $listGun = gun::find()->all();    //забираем из базы
-        return $this->render('signup', compact('model', 'listUsers', 'listGun', 'r1', 'r2')); //compact('listUsers') - передаём в вид результат 
+        return $this->render('signup', compact('model', 'listUsers', 'listGun')); //compact('listUsers') - передаём в вид результат 
+    }
+
+    
+    
+    //+Акшен срабатывает при посещении страницы sentry, либо при вводе данных с неё
+    public function actionSentry(){
+        
+        $model = new Sentry();             //создаём объект модели
+
+        #Кнопка добавления строки в таблицу 
+        if ( Yii::$app->request->post('add-button') ) {
+            $text = '';
+            $model->note = '';
+            $model->save();
+        } 
+
+        #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
+        if( (Yii::$app->request->post('refresh-button')) or (Yii::$app->request->post('add-button')) ){
+            $text = 'post';
+            $year = Yii::$app->request->post('year');
+            $month = Yii::$app->request->post('month'); 
+            $day = Yii::$app->request->post('day'); 
+        } else {
+            $text = 'no_post';
+            $year = date("Y");
+            $month = date("m"); //SELECT * FROM flight WHERE data_vyezda between '2017-10-01' and '2017-10-31'
+            $day = date("d"); 
+        }
+        
+        $table = '40'; //путевая ведомость             !!! Костыль !!!
+
+        
+        #забираем из базы все рейсы на дату
+        $date1 = $year."-".$month."-".$day;
+        //$query = "SELECT * FROM sentry WHERE :date";
+        //$listSentry = sentry::findBySql($query, [':date' => $date1])->asArray()->all(); 
+        //print_r($listSentry);
+        $listSentry = Sentry::find()->asArray()->where(['date' => $date1])->all();    //забираем из базы
+        
+        #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
+        $query = "SELECT * FROM sentry WHERE date IS NULL";
+        $listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+        if ( empty($listSentryNoDate) ) {
+            $text = '';
+            $model->note = $text;
+            $model->save(); 
+            
+            #И заново вытаскиваем эту пустую строку из базы
+            $query = "SELECT * FROM sentry WHERE date IS NULL";
+            $listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию            
+        }
+
+        #добавляем пустые строки в общий результат
+        $p = count($listSentry);
+        foreach ($listSentryNoDate as $key => $val) {   
+            //$flightPhoto[] = $val['path']; 
+            $p = $p + 1;
+            $listSentry[$p] = $val; 
+        }  
+                                    
+                                    
+        #Вытаскиваем все фамилии охранников
+        $listUsers = User::find()->select('full_name')->asArray()->column();    //забираем из базы
+        $k = count($listUsers);
+        $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
+        
+        #Вытаскиваем всех клиентов
+        $listClients = Client::find()->select('name')->asArray()->column();    //забираем из базы
+        $k = count($listClients);
+        $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
+    
+    
+        
+        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listClients', 'date1')); //передаём в вид результат 
     }
 
 
+    
 
 
     #+Показ модального окна с фотографиями рейса
