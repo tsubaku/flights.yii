@@ -149,7 +149,7 @@ function changeSentry(cell_value, cell_id)
     var position_minus = cell_id.indexOf("-");        //найти позицию символа -
     var column_in_db = cell_id.substring(0, position_minus);//все символы до -, включительно (получаем название столбца в БД)
     var id_in_db = cell_id.substring(position_minus+1, cell_id.length);//все символы от - и до конца включительно (получаем id строки в БД)
-    console.log("column_in_db: "+column_in_db+" id_in_db: "+id_in_db+" cell_value: "+cell_value+" \n");
+    console.log("column_in_db: "+column_in_db+" \n"+" id_in_db: "+id_in_db+" \n"+" cell_value: "+cell_value+" \n");
     $.ajax({
             url:"index.php?r=site/changesentry",
             type:"POST",

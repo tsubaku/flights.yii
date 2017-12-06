@@ -478,10 +478,11 @@ class SiteController extends Controller
             $cellColumn = Yii::$app->request->post('column_in_db');
 
             #Обновить ячейку в таблице 
-            $model = Sentry::findOne($cellId); //Выбрать из таблицы Flight первую запись с id=$cellId
+            $model = Sentry::findOne($cellId); //Выбрать из таблицы первую запись с id=$cellId
             $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
             $model->save();                     //сохранить
  
+            $res_array =  [$cellValue, $cellId, $cellColumn];
             echo json_encode($res_array);
         }
     }
@@ -543,7 +544,7 @@ class SiteController extends Controller
     {      
         $model = new Gun();  //создаём объект модели 
         
-        #Если нажали "Добавить клиента", то проверяем введённые данные и добавляем
+        #Если нажали "Добавить", то проверяем введённые данные и добавляем
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             $r1 = Yii::$app->request->post('Gun'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
                                                       //у него есть методы get() и post()
@@ -684,11 +685,11 @@ class SiteController extends Controller
 
         
         #забираем из базы все рейсы на дату
-        $date1 = $year."-".$month."-".$day;
+        $dateFlight = $year."-".$month."-".$day;
         //$query = "SELECT * FROM sentry WHERE :date";
-        //$listSentry = sentry::findBySql($query, [':date' => $date1])->asArray()->all(); 
+        //$listSentry = sentry::findBySql($query, [':date' => $dateFlight])->asArray()->all(); 
         //print_r($listSentry);
-        $listSentry = Sentry::find()->asArray()->where(['date' => $date1])->all();    //забираем из базы
+        $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы
         
         #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
         $query = "SELECT * FROM sentry WHERE date IS NULL";
@@ -718,13 +719,17 @@ class SiteController extends Controller
         $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         
         #Вытаскиваем всех клиентов
-        $listClients = Client::find()->select('name')->asArray()->column();    //забираем из базы
-        $k = count($listClients);
-        $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
+        $listGuns = Gun::find()->select('name')->asArray()->column();    //забираем из базы
+        $k = count($listGuns);
+        $listGuns[$k] = 'Не выбран'; //Добавляем в массив невыбранное оружие
     
+        #Вытаскиваем связи охранники-оружие
+        //$userGun = User_gun::find()->select('name')->asArray()->column();    //забираем из базы
+        //$k = count($user_gun);
+
     
         
-        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listClients', 'date1')); //передаём в вид результат 
+        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listGuns', 'dateFlight')); //передаём в вид результат 
     }
 
 

@@ -129,7 +129,8 @@ $this->title = 'Постовая';
                 $i = 1;
                 foreach ($listSentry as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
                     
-                    $id_line   = $row_content['id']; //$id_line - id строки в БД рейсов
+                    $id_line   = $row_content['id']; //$id_line - id строки в БД Sentry
+                    $fullName   = $row_content['full_name']; //$fullName - full_name юзера из строки в БД Sentry
                     
                     echo "<tr id='sentry-$id_line'>";
                     echo "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
@@ -146,15 +147,72 @@ $this->title = 'Постовая';
                         $fio          = "";
                         
                         
-                       
-                        //Если столбец ФИО или Клиент, то рисуем тег select со списком
-                        if ( ($column_name == 'id') or ($column_name == 'date') ){
+                        /* if ( ($column_name == 'id') or ($column_name == 'date') ){
                             echo ""; //пропускаем столбцы id и date
-                        } else if ($column_name == 'klient') {
-                            echo "<td ><div class='$container'>$klient</div></td>"; //
+                        } else if ($column_name == 'time_on') {
+                           // $data = 
+                            echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
                         } else {    //иначе просто инпут
                             echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
+                        } */
+                        
+                        
+                        switch ($column_name) {
+                            case 'id':
+                            case 'date':
+                                echo ""; //пропускаем столбцы id и date
+                            break;
+
+                            case 'full_name':
+                                $full_name = "<select size='0' id='full_name-$id_line' name='full_name-$id_line' class='list_users' onchange='$js_change_list'>";
+                                foreach ($listUsers as $value) {
+                                    $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                    $full_name .= "<option value=$user_n";
+                                    if (($value == $data) or ($data == NULL)) {
+                                        $full_name .= " selected='selected'";
+                                    }
+                                    $full_name .= '>' . $value;
+                                }
+                                $full_name .= "</select>"; 
+                                echo "<td ><div class='$container'>$full_name</div></td>";
+                            break;
+                            
+                            case 'gun':
+                                $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
+                                
+                                //$data      -имя охранника
+                                //$listUsers -массив полный список охранников
+                                //$userGun   -массив полный список оружия
+                                //$listGuns  -массив связей
+
+
+                                
+                                foreach ($listGuns as $value) {
+                                    $gun_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                    $gun .= "<option value=$gun_n";
+                                    if (($value == $data) or ($data == NULL)) {
+                                        $gun .= " selected='selected'";
+                                    }
+                                    $gun .= '>' . $value;
+                                }
+                                $gun .= "</select>"; 
+                                echo "<td ><div class='$container'>$gun</div></td>"; 
+                                //echo"<script type='text/javascript'>userGun(value);</script>";
+                                
+                            break;
+                            
+                            
+                            default:
+                                echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>";
+                                break;
                         }
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                     }
                     echo "</tr>";
                 }
@@ -185,7 +243,7 @@ $this->title = 'Постовая';
 
 echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
-print_r ($date1);
+print_r ($dateFlight);
 //print_r ($rows);
 echo '</pre>'; 
 
