@@ -143,7 +143,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
  
 
     <div class="row-fluid">    
-      <div class="col-md-7">.col-md-7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</div>
+      <div class="col-md-7">.col-md-7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</div>
       <div class="col-md-5">.col-md-5ff</div>
 
     </div>

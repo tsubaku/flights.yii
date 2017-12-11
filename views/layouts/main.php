@@ -42,7 +42,7 @@ AppAsset::register($this);
             //['label' => 'Contact', 'url' => ['/site/contact']],
             
             ['label' => 'Рейсы', 'url' => ['/site/manager']],
-            ['label' => 'Интерфейс охранника', 'url' => ['/site/guard']],
+            ['label' => 'Охранник', 'url' => ['/site/guard']],
             ['label' => 'Клиенты', 'url' => ['/site/client']],
             ['label' => 'Охранники', 'url' => ['/site/signup']],
             ['label' => 'Оружие', 'url' => ['/site/gun']],

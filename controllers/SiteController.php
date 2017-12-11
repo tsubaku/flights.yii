@@ -11,7 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 
 use app\models\Client;  //Подключаем модель для обработки списка клиентов;
-use app\models\Gun;  //Подключаем модель для обработки списка клиентов;
+use app\models\Gun;     //Подключаем модель для обработки списка клиентов;
 use app\models\User;    //Подключаем модель для авторизации;
 use app\models\User_gun;    //Подключаем модель для авторизации;
 use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
@@ -690,27 +690,34 @@ class SiteController extends Controller
         //$listSentry = sentry::findBySql($query, [':date' => $dateFlight])->asArray()->all(); 
         //print_r($listSentry);
         $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы
+        $countListSentry = count($listSentry); //кол-во записей за этот день
         
         #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
-        $query = "SELECT * FROM sentry WHERE date IS NULL";
-        $listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
-        if ( empty($listSentryNoDate) ) {
-            $text = '';
-            $model->note = $text;
-            $model->save(); 
-            
+        //$query = "SELECT * FROM sentry WHERE date IS NULL";
+        //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+        if ( $countListSentry < 11 ) {
+            $n = 11 - $countListSentry;
+            //$n = 3;
+            for ($j = 1; $j <= $n; $j++) {
+                //$text = '';
+                $model = new Sentry();
+                $model->date = $dateFlight;
+                $model->save(); 
+                unset($model);
+            }
             #И заново вытаскиваем эту пустую строку из базы
-            $query = "SELECT * FROM sentry WHERE date IS NULL";
-            $listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию            
+            //$query = "SELECT * FROM sentry WHERE date IS NULL";
+            //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию     
+            $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы            
         }
 
         #добавляем пустые строки в общий результат
-        $p = count($listSentry);
+        /* $p = count($listSentry);
         foreach ($listSentryNoDate as $key => $val) {   
             //$flightPhoto[] = $val['path']; 
             $p = $p + 1;
             $listSentry[$p] = $val; 
-        }  
+        }   */
                                     
                                     
         #Вытаскиваем все фамилии охранников
@@ -718,18 +725,39 @@ class SiteController extends Controller
         $k = count($listUsers);
         $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         
-        #Вытаскиваем всех клиентов
+        #Вытаскиваем всё оружие
         $listGuns = Gun::find()->select('name')->asArray()->column();    //забираем из базы
         $k = count($listGuns);
         $listGuns[$k] = 'Не выбран'; //Добавляем в массив невыбранное оружие
     
-        #Вытаскиваем связи охранники-оружие
-        //$userGun = User_gun::find()->select('name')->asArray()->column();    //забираем из базы
+        #Вытаскиваем все связи
+        $usersGuns = User_gun::find()->with(['user','gun'])->asArray()->all();    //забираем из базы
+        //$k = count($listGuns);
+        //$listGuns[$k] = 'Не выбран'; //Добавляем в массив невыбранное оружие
+        
+        #
+        $gu = array();
+        //$p = 0;
+        $userGun    = User_gun::find()->select(['user_id', 'gun_id'])->asArray()->all();    //забираем из базы
+        $arrayUsers = User    ::find()->select(['id', 'full_name'])  ->asArray()->all();    //забираем из базы
+        $arrayGun   = Gun     ::find()->select(['id', 'name'])       ->asArray()->all();    //забираем из базы
         //$k = count($user_gun);
-
+        /* foreach ($arrayUsers as $key1 => $val1) {           //key1 - номера, val1 - массив [id, full_name] фамилий  $vol1['id'] - id юзера
+            foreach ($userGun as $key2 => $val2) {          //key2 - номера, val2 - массив [user_id, gun_id] связей $val2['gun_id'] - id пистолета
+                if ($val1['id'] == $val2['user_id']){
+                    foreach ($arrayGun as $key3 => $val3) { //key3 - номера, val3 - массив [id, name] оружия
+                        $val3['name'] = array();
+                        if ($val3['id'] == $val2['gun_id']){
+                            $gu[$val1['full_name']] .= $val3['name'];
+                        }
+                    }
+                }
+            }
+          //  $p                  = $p + 1;
+        }  */
     
         
-        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listGuns', 'dateFlight')); //передаём в вид результат 
+        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listGuns', 'dateFlight', 'userGun', 'usersGuns', 'countListSentry')); //передаём в вид результат 
     }
 
 

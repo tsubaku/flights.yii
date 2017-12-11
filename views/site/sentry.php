@@ -6,7 +6,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 
-$this->title = 'Постовая';
+$this->title = 'Постовая ведомость';
 //$this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -107,7 +107,7 @@ $this->title = 'Постовая';
             #Рисуем таблицу рейсов
             if ($listSentry != NULL) { //иначе варнинги идут, если рейсов нет 
                 echo "<table>";
-                echo "<h1>Рейсы за $months[$month] $year</h1>"; //Название таблицы
+                echo "<h1>Рейсы за $day $months[$month] $year</h1>"; //Название таблицы
                 
                 #Рисуем шапку таблицы
                 echo "<tr>";
@@ -136,33 +136,35 @@ $this->title = 'Постовая';
                     echo "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
                     $i = $i + 1;
                     
-                    foreach ($row_content as $column_name => $data) {
+                    foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
                         #Определяем переменные для каждой ячейки строки
-                        $button       = "";
-                        $photo        = "";
                         $container    = "container_default";
-                        $status_class = "";
-                        $readonly     = "";
                         $type         = "text";
-                        $fio          = "";
-                        
-                        
-                        /* if ( ($column_name == 'id') or ($column_name == 'date') ){
-                            echo ""; //пропускаем столбцы id и date
-                        } else if ($column_name == 'time_on') {
-                           // $data = 
-                            echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
-                        } else {    //иначе просто инпут
-                            echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
-                        } */
-                        
-                        
+
                         switch ($column_name) {
                             case 'id':
                             case 'date':
                                 echo ""; //пропускаем столбцы id и date
                             break;
 
+                            /* case 'number':
+                                echo "<td><select size='0' id='f' name='f' class='numbers' onchange='$js_change_list'> 
+                                    <option value='1'>1</option>
+                                    <option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5</option>
+                                    <option value='6'>6</option>
+                                    <option value='7'>7</option>
+                                    <option value='8'>8</option>
+                                    <option value='9'>9</option>
+                                    <option value='10'>10</option>
+                                    <option value='11'>11</option>
+                                    
+                                    </select></td>"; 
+                                //echo '1';
+                            break; */
+                            
                             case 'full_name':
                                 $full_name = "<select size='0' id='full_name-$id_line' name='full_name-$id_line' class='list_users' onchange='$js_change_list'>";
                                 foreach ($listUsers as $value) {
@@ -178,15 +180,40 @@ $this->title = 'Постовая';
                             break;
                             
                             case 'gun':
-                                $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
                                 
                                 //$data      -имя охранника
                                 //$listUsers -массив полный список охранников
                                 //$userGun   -массив полный список оружия
-                                //$listGuns  -массив связей
-
-
+                                //$usersGuns -массив связей
                                 
+                                $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
+                                $list = array();
+                                $j = 0;
+                                foreach ($usersGuns as $key => $val) {
+                                    $userOwnerName=$val['user'][0]['full_name'];
+                                    if ($userOwnerName == $fullName) {
+                                        $list[$j] = $val['gun'][0]['name'];
+                                        $gun_n = str_replace(" ", "_", $list[$j]); //Заменяем пробелы на _, иначе браузер не понимает
+                                        $gun .= "<option value=$gun_n";
+                                        if (($list[$j] == $fullName) or ($fullName == NULL)) {
+                                            $gun .= " selected='selected'";
+                                        }
+                                        $gun .= '>' . $list[$j];
+                                        $j = $j + 1;
+                                    }
+                                } 
+                                //if ($j == 0){
+                                    $gun .= "<option value=no_gun>Оружие не выбрано";; 
+                                //}
+                                $gun .= "</select>"; 
+                                echo "<td ><div class='$container'>$gun</div></td>"; 
+                                
+                                
+                                //print_r ($listSentry[$i]['gun']);
+                                //echo "</br>";
+                                
+                                
+                                /* $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
                                 foreach ($listGuns as $value) {
                                     $gun_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
                                     $gun .= "<option value=$gun_n";
@@ -196,14 +223,14 @@ $this->title = 'Постовая';
                                     $gun .= '>' . $value;
                                 }
                                 $gun .= "</select>"; 
-                                echo "<td ><div class='$container'>$gun</div></td>"; 
+                                echo "<td ><div class='$container'>$gun</div></td>";  */
                                 //echo"<script type='text/javascript'>userGun(value);</script>";
                                 
                             break;
                             
                             
                             default:
-                                echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>";
+                                echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
                                 break;
                         }
                         
@@ -243,13 +270,36 @@ $this->title = 'Постовая';
 
 echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
-print_r ($dateFlight);
+//print_r ($usersGuns[1]['gun'][0]['name']);
+//$use = "Акимов С.А.";
+$use = "Аксенов В.В.";
+$list = array();
+$i = 0;
+foreach ($usersGuns as $key => $val) {
+    $t=$val['user'][0]['full_name'];
+    echo "$t";
+    
+    if ($t == $use) {
+        $list[$i] = $val['gun'][0]['name'];
+        echo "+";
+        $i = $i + 1;
+    } else {
+        echo "-";
+    }
+    
+}
+echo " xxx1 ";
+print_r ($countListSentry);
+echo " xxx2 ";
+print_r ($usersGuns);
 //print_r ($rows);
+//echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
+
 echo '</pre>'; 
 
-?>        
+?> 
+       
+<?php //echo count($usersGuns[0]->gun); ?> 
 
- 
-    
     
 
