@@ -728,7 +728,7 @@ class SiteController extends Controller
         #Вытаскиваем всё оружие
         $listGuns = Gun::find()->select('name')->asArray()->column();    //забираем из базы
         $k = count($listGuns);
-        $listGuns[$k] = 'Не выбран'; //Добавляем в массив невыбранное оружие
+        $listGuns[$k] = 'Оружие не выбрано'; //Добавляем в массив невыбранное оружие
     
         #Вытаскиваем все связи
         $usersGuns = User_gun::find()->with(['user','gun'])->asArray()->all();    //забираем из базы
