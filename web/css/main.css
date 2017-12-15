@@ -327,13 +327,15 @@ input {
 #gun {
     visibility: hidden;
     position: relative;
-    
-   
+}
+
+#panelGun {
+ 
 }
 
 #tableGun  {
     width:300px;  
-    
+
 
 }
 #tableGun td {
@@ -352,10 +354,15 @@ input {
 #tableGun label { 
     padding: 0px; /* Поля вокруг текста */
 	margin: 0px; /* Отступы вокруг */
+	margin-left: 0px; /* Отступы вокруг */
+
+}
+.gunCheckbox{ 
+  /*  padding: 0px; /* Поля вокруг текста */
+/*	margin: 0px; /* Отступы вокруг */
 	margin-left: 20px; /* Отступы вокруг */
 
 }
-
 
 /**** Table Column Classes *****************************************/
 .number_line {
@@ -717,7 +724,7 @@ figure.photo_prev figcaption {  /* стиль описания */
 
 /*	Стили для списка охранников	*/
 .number {
-	width: 36px;
+	width: 100%;
 }
 .user_login {
 	width: 200px;
@@ -737,3 +744,85 @@ figure.photo_prev figcaption {  /* стиль описания */
 
 
 /* ---=======---- */
+@keyframes appear {
+	0%{
+		opacity: .8;
+		transform: scale(.5, .5);
+	}
+	70%{
+		opacity: .3;
+		transform: scale(1, 1);
+	}
+	100%{
+		opacity: 0;
+		transform: scale(.5, .5);
+	}
+}
+@-webkit-keyframes appear {
+	0%{
+		opacity: .8;
+		-webkit-transform: scale(.5, .5);
+	}
+	70%{
+		opacity: .3;
+		-webkit-transform: scale(1, 1);
+	}
+	100%{
+		opacity: 0;
+		-webkit-transform: scale(.5, .5);
+	}
+}
+.cursor1 {
+    /* fixed - прилипают к экрану, absolute - только вверху, relative - внизу */
+	position: fixed;
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 0 -20px;
+	border-radius: 50%;
+	background: #ef2c68;
+	animation: appear .2s;
+	-webkit-animation: appear .2s;
+}
+
+/*   */
+#cont{
+  position: relative;
+  width: 75%;
+  padding-left: 20px;
+  border: 3px solid red;
+}
+
+.btn_test{
+  display: block; 
+/*  padding: 20px;*/
+/*  background-color: green; */
+/*  color: white; */
+  width: 60px; 
+/*  border: 1px solid white; */
+/*  margin-bottom: 50px; */
+/*  text-decoration: none; */
+/*  border-radius: 5px; */
+}
+
+.floatdiv{
+  position: absolute;
+  border: 1px solid grey;
+  width: 100px;
+  min-height: 50px;
+  left: 150px;
+}
+
+.atbtn1{
+  top: 1px;
+}
+
+.atbtn2{
+  top: 110px;
+}
+
+.atbtn3{
+  top: 220px;
+}
+
+
+

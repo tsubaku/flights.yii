@@ -162,9 +162,17 @@ window.delete_line = delete_line;
 
 
 //При клике по кнопке вытащить со страницы signup id охранника, запросить контроллер о прикреплённом оружии и отобразить его на странице
-function gunShow(userId, full_name) {
+function gunShow(userId, full_name, nLine) {
     console.log(userId);
     console.log(full_name);
+    console.log(nLine);
+
+    //Двигаем панель оружия к нажатой кнопке
+    margTop = nLine * 47;
+    console.log(margTop);
+    panelGun.style.marginTop = margTop - 40 + "px"; 
+    //document.getElementById("panelGun").style.marginLeft = 100 + margTop + "px";
+    
     $.ajax({
             url:"index.php?r=site/gunshow",
             type:"POST",
@@ -202,6 +210,38 @@ function gunShow(userId, full_name) {
             }
     })   
 }
+
+//+Печать ведомости  (-рабочий в хроме код, в фф не работает, в ие печатает сайт целиком)
+function printImage() {
+    printHTML(document.getElementById('div_flights_table').innerHTML);
+}
+ 
+function printHTML(html) {
+    var frame = document.createElement('iframe');
+    frame.style.cssText = 'border:none;position:fixed;left:100%;';
+    frame.onload = function() {
+        var cssText = 'body{display:none} @media print{body{display:block}}';
+        var style = this.contentDocument.createElement('style');
+        if (style.readyState == 'loading') {
+            style.onreadystatechange = function() {
+                alert(this.readyState);
+                if (this.readyState = 'complete') {
+                    this.sheet.cssText = cssText;
+                }
+            }
+        } else {
+            style.textContent = cssText;
+        }
+        this.contentDocument.getElementsByTagName('head')[0].appendChild(style);
+        this.contentDocument.body.innerHTML = html;
+        this.contentWindow.print();
+        setTimeout(function(){
+            frame.parentNode.removeChild(frame);
+        }, 0);
+    }
+    document.body.appendChild(frame);
+}
+
 
 
 //+Срабатывает при изменении чекбокса закреплённого оружия на странице signup, 
@@ -398,29 +438,75 @@ function register_client(){
     console.log("register_client");
     var client     = document.getElementById("client").value;
     $.ajax({
-            url:"index.php?r=site/registerclient",
-            type:"POST",
-            statbox:"status",
-            data:
-            {
-                client:client,        
-            },
-            success: function (data) {
-                //document.getElementById("status").innerHTML='';     //удалить значок ожидания
-                
-                //console.log("register_client-ok" + data);
-                var res = JSON.parse(data);
-                console.log("res[0]=" + res[0]);
+        url:"index.php?r=site/registerclient",
+        type:"POST",
+        statbox:"status",
+        data:
+        {
+            client:client,        
+        },
+        success: function (data) {
+            //document.getElementById("status").innerHTML='';     //удалить значок ожидания
+            
+            //console.log("register_client-ok" + data);
+            var res = JSON.parse(data);
+            console.log("res[0]=" + res[0]);
 
-                var list = document.getElementById('clientsTable'); //элемент-таблица
-                var tr = document.createElement('TR');              //новый элемент tr
-                //tr.classList.add('block');                        //добавляем класс элементу
-                tr.id = "clientName-"+res[0];                       //Добавляем id элементу
-                tr.innerHTML = '<tr id="clientName"><td>' + res[0] + '</td><td>'+client+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></td></tr>';
-                list.appendChild(tr);                               // добавление в конец         
-            },
-            error: function (error1) {
-                console.log("eror_register_client");
-            }
-        })        
+            var list = document.getElementById('clientsTable'); //элемент-таблица
+            var tr = document.createElement('TR');              //новый элемент tr
+            //tr.classList.add('block');                        //добавляем класс элементу
+            tr.id = "clientName-"+res[0];                       //Добавляем id элементу
+            tr.innerHTML = '<tr id="clientName"><td>' + res[0] + '</td><td>'+client+'</td><td><button type="button" class="btn btn-sm btn-danger" onclick="delete_line(' + res[0] + ', 11);">Удалить</button></td></tr>';
+            list.appendChild(tr);                               // добавление в конец         
+        },
+        error: function (error1) {
+            console.log("eror_register_client");
+        }
+    })        
 }
+
+
+///////////////////
+
+/* $(document).on('click', function (e) {
+	$('<div class="cursor1">')
+		.css({
+			top: e.clientY,
+			left: e.clientX
+		})
+		.appendTo($(document.body))
+		.on('animationend webkitAnimationEnd', function (e) {
+			//$(this).remove();
+		});
+}); */
+
+/* $(document).on('click', function (e) {
+//$("#btn_test").on("click", function (e) {
+    var flt = document.querySelector("#gun");      //flt = <div class="floatdiv atbtn1">floating div</div>
+    console.log(flt); 
+    
+    var button1 = document.querySelector(".btn1");      //<a href="#" class="btn btn-success btn_test btn1" onclick="test()">button 1</a>
+    console.log(button1);
+    button1.addEventListener("click", function(event){
+        event.preventDefault();
+        flt.classList.add("atbtn1");
+        flt.classList.remove("atbtn2", "atbtn3");
+        console.log("tst1");
+    })
+
+    var button2 = document.querySelector(".btn2");
+    button2.addEventListener("click", function(event){
+        event.preventDefault();
+        console.log("tst2");
+        flt.classList.add("atbtn2");
+        flt.classList.remove("atbtn1", "atbtn3");
+    })
+
+    var button3 = document.querySelector(".btn3");
+    button3.addEventListener("click", function(event){
+        event.preventDefault();
+        console.log("tst3");
+        flt.classList.add("atbtn3");
+        flt.classList.remove("atbtn2", "atbtn1");
+    })
+}); */

@@ -15,8 +15,8 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
- 
-<div>
+<div class="container-fluid"> 
+    <div class="row">
         <!-- form Регистрация клиентов --->
         <?php $form = ActiveForm::begin([
                 'id' => 'add',
@@ -41,49 +41,46 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
             </div>
         <?php ActiveForm::end() ?> 
         <!--    </form>     --> 
-  
-  
-  
-</div>
+    </div><!-- row -->
 
-  
+        
+    <div class="row">    
+        <div class="table table-striped">
+             <table style="width: 600px;" class="table table-striped">
+             <caption><strong>Список наших клиентов</strong></caption>
+                <thead>
+                    <tr>  
+                        <td><b>№</b></td> 
+                        <td><b>Название</b></td> 
+                        <td><b>Удалить</b></td>
+                    </tr>
+                </thead>
+                <tbody id="gunTable">
+                    <?php
+                    #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
+                    $i = 1;   
+                    foreach ($listGun as $gun){ 
+                        $id     = $gun['id'];      //id клиента
+                        $unName = $gun['name'];  //Название клиента  
+                        ?>
+                        <tr id='gunName-<?=$id?>'>
+                            <td style="width: 50px;"><?=$i?></td> 
+                            <td><?=$gun->name?></td> 
+                            <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
+                        </tr>
+                    <?php $i = $i + 1; } ?>  
+                </tbody>
+              </table>
+        </div>
+    </div> <!-- row -->
 
-
-
-
-
-
-	
+    <div class="row">
+        
+    </div> <!-- row -->
+</div> <!-- container-fluid -->
     
-<div class="row">    
-<div class="table table-striped">
-     <table style="width: 600px;" class="table table-striped">
-     <caption><strong>Список наших клиентов</strong></caption>
-        <thead>
-            <tr>  
-                <td><b>№</b></td> 
-                <td><b>Название</b></td> 
-                <td><b>Удалить</b></td>
-            </tr>
-        </thead>
-        <tbody id="gunTable">
-            <?php
-            #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
-            $i = 1;   
-            foreach ($listGun as $gun){ 
-                $id     = $gun['id'];      //id клиента
-                $unName = $gun['name'];  //Название клиента  
-                ?>
-                <tr id='gunName-<?=$id?>'>
-                    <td style="width: 50px;"><?=$i?></td> 
-                    <td><?=$gun->name?></td> 
-                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
-                </tr>
-            <?php $i = $i + 1; } ?>  
-        </tbody>
-      </table>
-</div>
-</div>
+    
+    
 <br />
 
 
@@ -94,27 +91,13 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
 
 
 <?php
-/* $js = <<< JS
-    $('#btn').on('click', function(e) {
-        $.ajax({
-            url: 'index.php?r=site/clients',
-            data: {test: '123'},
-            type: 'POST',
-            success: function(res){
-                console.log(res);
-            },
-            error: function(){
-                alert('error ajax');
-            }
-        });
-    });
-JS;
-$this->registerJs($js); //регистрируем скрипт */
-echo '<pre>'; 
+
+
+//echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($gun);
 //print_r ($rows);
-echo '</pre>'; 
+//echo '</pre>'; 
 
 ?>        
 

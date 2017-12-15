@@ -100,217 +100,197 @@ $this->title = 'Постовая ведомость';
     </div>
 
         
-        
-    <!-- Блок таблицы рейсов-->
-    <div id="div_flights_table"> 
-        <?php   
-            #Рисуем таблицу рейсов
-            if ($listSentry != NULL) { //иначе варнинги идут, если рейсов нет 
-                echo "<table>";
-                echo "<h1>Рейсы за $day $months[$month] $year</h1>"; //Название таблицы
-                
-                #Рисуем шапку таблицы
-                echo "<tr>";
-                ?>
-                <td><b>№</b></td> 
-                <td><b>№ поста/маршрута</b></td> 
-                <td><b>Ф.И.О. охранника</b></td> 
-                <td><b>Время заступления на службу</b></td>
-                <td><b>Наличие оружия и спецсредств на посту</b></td>
-                <td><b>Время окончания службы</b></td>
-                <td><b>Воемя доклада об обстановке на посту</b></td>
-                <td><b>Примечания</b></td> 
-                <?php
-                echo "</tr>";
-                
-                #Рисуем строки таблицы
-                $js_change_cell = "changeSentry(this.value, this.id)"; //Ф-ия записи данных в ячейке при их изменении
-                $js_change_list = "changeSentry(GetData(this.id), this.id)"; //Ф-ия записи данных в селекте при их изменении
-                $i = 1;
-                foreach ($listSentry as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
+    <div class="row">    
+    <!-- Блок таблицы маршрутов-->
+        <div id="div_flights_table"> 
+            <?php   
+                #Рисуем таблицу маршрутов
+                if ($listSentry != NULL) { //иначе варнинги идут, если рейсов нет 
+                    echo "<table>";
+                    echo "<h1>Рейсы за $day $months[$month] $year</h1>"; //Название таблицы
                     
-                    $id_line    = $row_content['id'];           //$id_line - id строки в БД Sentry
-                    $fullName   = $row_content['full_name'];    //$fullName - full_name юзера из строки в БД Sentry
-                    $gunName    = $row_content['gun'];          //$gun - название оружия
+                    #Рисуем шапку таблицы
+                    echo "<tr>";
+                    ?>
+                    <td><b>№</b></td> 
+                    <td><b>№ поста/<br />маршрута</b></td> 
+                    <td><b>Ф.И.О. охранника</b></td> 
+                    <td><b>Время заступления на службу</b></td>
+                    <td><b>Наличие оружия и спецсредств на посту</b></td>
+                    <td><b>Время окончания службы</b></td>
+                    <td><b>Воемя доклада об обстановке на посту</b></td>
+                    <td><b>Примечания</b></td> 
+                    <?php
+                    echo "</tr>";
                     
-                    echo "<tr id='sentry-$id_line'>";
-                    echo "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
-                    $i = $i + 1;
-                    
-                    foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
-                        #Определяем переменные для каждой ячейки строки
-                        $container    = "container_default";
-                        $type         = "text";
+                    #Рисуем строки таблицы
+                    $js_change_cell = "changeSentry(this.value, this.id)"; //Ф-ия записи данных в ячейке при их изменении
+                    $js_change_list = "changeSentry(GetData(this.id), this.id)"; //Ф-ия записи данных в селекте при их изменении
+                    $i = 1;
+                    foreach ($listSentry as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
+                        
+                        $id_line    = $row_content['id'];           //$id_line - id строки в БД Sentry
+                        $fullName   = $row_content['full_name'];    //$fullName - full_name юзера из строки в БД Sentry
+                        $gunName    = $row_content['gun'];          //$gun - название оружия
+                        
+                        echo "<tr id='sentry-$id_line'>";
+                        echo "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
+                        $i = $i + 1;
+                        
+                        foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
+                            #Определяем переменные для каждой ячейки строки
+                            $container    = "container_default";
+                            $type         = "text";
 
-                        switch ($column_name) {
-                            case 'id':
-                            case 'date':
-                                echo ""; //пропускаем столбцы id и date
-                            break;
+                            switch ($column_name) {
+                                case 'id':
+                                case 'date':
+                                    echo ""; //пропускаем столбцы id и date
+                                break;
 
-                            /* case 'number':
-                                echo "<td><select size='0' id='f' name='f' class='numbers' onchange='$js_change_list'> 
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                    <option value='7'>7</option>
-                                    <option value='8'>8</option>
-                                    <option value='9'>9</option>
-                                    <option value='10'>10</option>
-                                    <option value='11'>11</option>
-                                    
-                                    </select></td>"; 
-                                //echo '1';
-                            break; */
-                            
-                            
-                            case 'time_on':
-                            case 'time_off':
-                            case 'time_report':
-                                $data = substr($data, 0, 5); // убираем секунды
-                                echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
-                            break;
-                            
-                            
-                            case 'full_name':
-                                $full_name = "<select size='0' id='full_name-$id_line' name='full_name-$id_line' class='list_users' onchange='$js_change_list'>";
-                                foreach ($listUsers as $value) {
-                                    $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                    $full_name .= "<option value=$user_n";
-                                    if (($value == $data) or ($data == NULL)) {
-                                        $full_name .= " selected='selected'";
+                                /* case 'number':
+                                    echo "<td><select size='0' id='f' name='f' class='numbers' onchange='$js_change_list'> 
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                        <option value='6'>6</option>
+                                        <option value='7'>7</option>
+                                        <option value='8'>8</option>
+                                        <option value='9'>9</option>
+                                        <option value='10'>10</option>
+                                        <option value='11'>11</option>
+                                        
+                                        </select></td>"; 
+                                    //echo '1';
+                                break; */
+                                
+                                
+                                case 'time_on':
+                                case 'time_off':
+                                case 'time_report':
+                                    $data = substr($data, 0, 5); // убираем секунды
+                                    echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                break;
+                                
+                                
+                                case 'full_name':
+                                    $full_name = "<select size='0' id='full_name-$id_line' name='full_name-$id_line' class='list_users' onchange='$js_change_list'>";
+                                    foreach ($listUsers as $value) {
+                                        $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                        $full_name .= "<option value=$user_n";
+                                        if (($value == $data) or ($data == NULL)) {
+                                            $full_name .= " selected='selected'";
+                                        }
+                                        $full_name .= '>' . $value;
                                     }
-                                    $full_name .= '>' . $value;
-                                }
-                                $full_name .= "</select>"; 
-                                echo "<td ><div class='$container'>$full_name</div></td>";
-                            break;
-                            
-                            
-                            case 'gun':
+                                    $full_name .= "</select>"; 
+                                    echo "<td ><div class='$container'>$full_name</div></td>";
+                                break;
                                 
-                                //$data      -имя охранника
-                                //$listUsers -массив полный список охранников
-                                //$userGun   -массив полный список оружия
-                                //$usersGuns -массив связей
                                 
-                                $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
-                                $list = array();
-                                $j = 0;
-                                foreach ($usersGuns as $key => $val) {
-                                    $userOwnerName=$val['user'][0]['full_name'];
-                                    if ($userOwnerName == $fullName) {
-                                        $list[$j] = $val['gun'][0]['name'];
-                                        $gun_n = str_replace(" ", "_", $list[$j]); //Заменяем пробелы на _, иначе браузер не понимает
-                                        $gun .= "<option value=$gun_n";
-                                        if ($list[$j] == $gunName) {
+                                case 'gun':
+                                    
+                                    //$data      -имя охранника
+                                    //$listUsers -массив полный список охранников
+                                    //$userGun   -массив полный список оружия
+                                    //$usersGuns -массив связей
+                                    
+                                    $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
+                                    $list = array();
+                                    $j = 0;
+                                    foreach ($usersGuns as $key => $val) {
+                                        $userOwnerName=$val['user'][0]['full_name'];
+                                        if ($userOwnerName == $fullName) {
+                                            $list[$j] = $val['gun'][0]['name'];
+                                            $gun_n = str_replace(" ", "_", $list[$j]); //Заменяем пробелы на _, иначе браузер не понимает
+                                            $gun .= "<option value=$gun_n";
+                                            if ($list[$j] == $gunName) {
+                                                $gun .= " selected='selected'";
+                                            }
+                                            $gun .= '>' . $list[$j];
+                                            $j = $j + 1;
+                                        }
+                                    } 
+                                    //if ($j == 0){
+                                        $gun .= "<option value=no_gun";
+                                        if ($gunName == 'Оружие не выбрано') {
                                             $gun .= " selected='selected'";
                                         }
-                                        $gun .= '>' . $list[$j];
-                                        $j = $j + 1;
+                                        $gun .= '>' . 'Оружие не выбрано';
+                                    //}
+                                    $gun .= "</select>"; 
+                                    echo "<td ><div class='$container'>$gun</div></td>"; 
+                                    
+                                    
+                                    //print_r ($listSentry[$i]['gun']);
+                                    //echo "</br>";
+                                    
+                                    
+                                    /* $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
+                                    foreach ($listGuns as $value) {
+                                        $gun_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                        $gun .= "<option value=$gun_n";
+                                        if (($value == $data) or ($data == NULL)) {
+                                            $gun .= " selected='selected'";
+                                        }
+                                        $gun .= '>' . $value;
                                     }
-                                } 
-                                //if ($j == 0){
-                                    $gun .= "<option value=no_gun";
-                                    if ($gunName == 'Оружие не выбрано') {
-                                        $gun .= " selected='selected'";
-                                    }
-                                    $gun .= '>' . 'Оружие не выбрано';
-                                //}
-                                $gun .= "</select>"; 
-                                echo "<td ><div class='$container'>$gun</div></td>"; 
-                                
-                                
-                                //print_r ($listSentry[$i]['gun']);
-                                //echo "</br>";
-                                
-                                
-                                /* $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
-                                foreach ($listGuns as $value) {
-                                    $gun_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                    $gun .= "<option value=$gun_n";
-                                    if (($value == $data) or ($data == NULL)) {
-                                        $gun .= " selected='selected'";
-                                    }
-                                    $gun .= '>' . $value;
-                                }
-                                $gun .= "</select>"; 
-                                echo "<td ><div class='$container'>$gun</div></td>";  */
-                                //echo"<script type='text/javascript'>userGun(value);</script>";
-                                
-                            break;
-                            
-                            
-                            default:
-                                echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                    $gun .= "</select>"; 
+                                    echo "<td ><div class='$container'>$gun</div></td>";  */
+                                    //echo"<script type='text/javascript'>userGun(value);</script>";
+                                    
                                 break;
+                                
+                                
+                                default:
+                                    echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                    break;
+                            } 
                         }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+                        echo "</tr>";
                     }
-                    echo "</tr>";
+                    echo "</table>";
+                } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
+                    //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
+                    //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран
+                    echo "таблица пуста";
                 }
-                echo "</table>";
-            } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
-                //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
-                //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран
-                echo "таблица пуста";
-            }
-           
+               
             ?>     
-        </div>
-        
-        
-        
-        
-        
-</div>
+        </div> <!-- div_flights_table -->
+    </div> <!-- row -->
+    
+    <div class="row">
+        <button class="btn btn-success" onclick="printImage()">Распечатать</button>
+    </div> <!-- row -->
+    
+</div> <!-- container-fluid -->
+
+
 <div id="status">					
 </div>
 
-	
+
 
 
 
 
 <?php
 
-echo '<pre>'; 
+//echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
-//$use = "Акимов С.А.";
-$use = "Аксенов В.В.";
-$list = array();
-$i = 0;
-foreach ($usersGuns as $key => $val) {
-    $t=$val['user'][0]['full_name'];
-    echo "$t";
-    
-    if ($t == $use) {
-        $list[$i] = $val['gun'][0]['name'];
-        echo "+";
-        $i = $i + 1;
-    } else {
-        echo "-";
-    }
-    
-}
-echo " xxx1 ";
-print_r ($countListSentry);
-echo " xxx2 ";
-print_r ($usersGuns);
+
+//echo " xxx1 ";
+//print_r ($countListSentry);
+//echo " xxx2 ";
+//print_r ($usersGuns);
 //print_r ($rows);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-echo '</pre>'; 
+//echo '</pre>'; 
 
 ?> 
        

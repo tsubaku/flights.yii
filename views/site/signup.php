@@ -76,11 +76,11 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                     $full_name   = $CurrentUser['full_name'];   //Фамилия охранника       
                 ?>
                 <tr id='userName-<?=$user_id?>'>
-                    <td style="width: 50px;"><?=$i?></td> 
+                    <td><?=$i?></td> 
                     <td><?=$user_login?></td> 
                     <td><?=$full_name?></td> 
-                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
-                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>");'>Показать</button></td>
+                    <td><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
+                    <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Показать</button></td>
                             
                         
                 </tr>
@@ -89,7 +89,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
           </table>
         </div>
         <div class="col-md-4" id="gun">	
-            <div class="panel panel-default">
+            <div class="panel panel-default" id="panelGun">
                 <div class="panel-body">
                     <table class="table table-striped" id="tableGun">
                         <caption><strong>Список оружия <input type="text" id="userName"></input></strong></caption>
@@ -111,7 +111,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                             ?>
                             <tr id='gunName-<?=$gun_id?>'>
                                  
-                                <td style="width: 50px;"><label class="checkbox"><input id="gunCheckbox-<?=$gun_id?>" type="checkbox" value="" onclick='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
+                                <td><label class="checkbox" for="gunCheckbox-<?=$gun_id?>"><input id="gunCheckbox-<?=$gun_id?>" class="gunCheckbox" type="checkbox" value="" onclick='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
                                 <td><?=$gun_name?></td> 
                             </tr>
                         <?php $j = $j + 1; } ?>  
@@ -120,15 +120,16 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                 </div>
             </div>
         </div>
+        
     </div><!-- row --->
     <br />
-
-
-
+    
+    
     <div id="status">					
     </div>
 
-
+    
+    
     <?php 
         /* echo '<pre>'; 
         echo 'r1= '; 
@@ -138,32 +139,14 @@ $table_users = '10'; //охранники             !!! Костыль !!!
     ?> 
 
 
-<!-- ---> 
-    
- 
+<!--  
 
     <div class="row-fluid">    
       <div class="col-md-7">.col-md-7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</div>
       <div class="col-md-5">.col-md-5ff</div>
 
     </div>
-
-
-
-
-
-
-
-
-
- 
 </div>
-
-
-
-
-
-
 
 <div class="container-fluid">
     <div class="row-fluid">    
@@ -191,12 +174,13 @@ $table_users = '10'; //охранники             !!! Костыль !!!
     </div>
     <div class="row">
       <div class="col-md-6">.col-md-6</div>
-      <div class="col-md-6">.col-md-6</div>
+      <div class="col-md-6">.col-md-6
+      </div>
     </div>
 </div>
 
 
-
+--->
 
 
 
