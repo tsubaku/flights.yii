@@ -468,45 +468,43 @@ function register_client(){
 
 ///////////////////
 
-/* $(document).on('click', function (e) {
-	$('<div class="cursor1">')
-		.css({
-			top: e.clientY,
-			left: e.clientX
-		})
-		.appendTo($(document.body))
-		.on('animationend webkitAnimationEnd', function (e) {
-			//$(this).remove();
-		});
-}); */
-
-/* $(document).on('click', function (e) {
-//$("#btn_test").on("click", function (e) {
-    var flt = document.querySelector("#gun");      //flt = <div class="floatdiv atbtn1">floating div</div>
-    console.log(flt); 
-    
-    var button1 = document.querySelector(".btn1");      //<a href="#" class="btn btn-success btn_test btn1" onclick="test()">button 1</a>
-    console.log(button1);
-    button1.addEventListener("click", function(event){
-        event.preventDefault();
-        flt.classList.add("atbtn1");
-        flt.classList.remove("atbtn2", "atbtn3");
-        console.log("tst1");
-    })
-
-    var button2 = document.querySelector(".btn2");
-    button2.addEventListener("click", function(event){
-        event.preventDefault();
-        console.log("tst2");
-        flt.classList.add("atbtn2");
-        flt.classList.remove("atbtn1", "atbtn3");
-    })
-
-    var button3 = document.querySelector(".btn3");
-    button3.addEventListener("click", function(event){
-        event.preventDefault();
-        console.log("tst3");
-        flt.classList.add("atbtn3");
-        flt.classList.remove("atbtn2", "atbtn1");
-    })
-}); */
+//Ловим выбор охранника в постовой ведомости, отправляем в контроллер, принимаем списо прикреплённого к охраннику оружия и обновляем ячейку оружия в постовой ведомости
+    //list_users - название селектора списка охранников
+    //object_rate - input для ввода/вывода ставки на объекте
+    //list_rbo - селектор РБО-шников
+/* $(function()    { 
+    console.log('!! ');
+    var selected = document.getElementsByClassName("list_users");
+    selected.onchange = function(){
+        //alert(this.options[this.selectedIndex].innerHTML);
+        //document.getElementById('object_name').value = this.options[this.selectedIndex].innerHTML;        
+        selectedUser = GetData('list_users');
+                
+        ajax({
+            url:"index.php?r=site/selecteduser",
+            type:"POST",
+            data:
+            {
+                selectedUser:selectedUser,
+            },
+            success: function (data) {
+                //var defSliders = JSON.parse(data);
+                //console.log(defSliders.def0);
+                //$("#object_rate").val(defSliders.def0);        //Установить инпут со ставкой объекта
+                //$("#rbo").val(defSliders.def1);        //Установить инпут РБО
+            
+                //document.getElementById("object_rate").innerHTML=data;
+                //document.getElementById("div_object_info").innerHTML=data;
+                ///document.getElementById('object_rate').value = data;
+                //document.getElementById("layer_console").innerHTML=document.getElementById("layer_console").innerHTML+"Показана ставка и РБО на объекте </br>";
+                console.log('пришло в data: ');
+                console.log(data);
+            },
+            error: function (error1) {
+                console.log("eror_show_employee_on_object");
+            }
+        })    
+            
+        
+    }
+});  */

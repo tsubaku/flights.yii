@@ -166,6 +166,31 @@ function changeSentry(cell_value, cell_id)
             success: function (data) {
                 document.getElementById("status").innerHTML=''; //удалить значок ожидания
                 console.log(data);
+                //если изменяли охранника в постовой ведомости, то изменить и его оружие в соседней графе таблицы
+                if (column_in_db == 'full_name') {   
+                    var changed_cells = JSON.parse(data);
+                    //console.log("изменён охранник "+cell_value+" \n");
+                    //decodeURIComponent(data.listGun);
+                    console.log("изменён охранник "+cell_value+" " + changed_cells[3] + "\n");
+                    var list = document.getElementById('gun-'+id_in_db); //элемент
+                    while (list.lastChild) {
+                        list.removeChild(list.lastChild);
+                    }
+                    
+                    //Добавим "Оружие не выбрано"
+                    var option = document.createElement("option");
+                    option.value = "no_gun";
+                    option.text = "Оружие не выбрано";
+                    list.appendChild(option);
+                    
+                    array = changed_cells[3];
+                    for (var i = 0; i < array.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = array[i];
+                        option.text = array[i];
+                        list.appendChild(option);
+                    }
+                }
 
             },
             error: function (error) {

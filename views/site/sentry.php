@@ -91,9 +91,11 @@ $this->title = 'Постовая ведомость';
         <div class="col-xs-3">  
             <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'name' => 'refresh-button', 'value' => 'refresh-button']) ?>
         </div> 
+        <!--
         <div class="col-xs-3">  
-            <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
+            <?//= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
         </div> 
+        -->
         <?php ActiveForm::end(); ?>
         
         
@@ -105,9 +107,9 @@ $this->title = 'Постовая ведомость';
         <div id="div_flights_table"> 
             <?php   
                 #Рисуем таблицу маршрутов
-                if ($listSentry != NULL) { //иначе варнинги идут, если рейсов нет 
+                if ($listSentry != NULL) { //иначе варнинги идут, если пусто 
                     echo "<table>";
-                    echo "<h1>Рейсы за $day $months[$month] $year</h1>"; //Название таблицы
+                    echo "<h1>Постовая ведомость за $day $months[$month] $year</h1>"; //Название таблицы
                     
                     #Рисуем шапку таблицы
                     echo "<tr>";
@@ -279,18 +281,18 @@ $this->title = 'Постовая ведомость';
 
 <?php
 
-//echo '<pre>'; 
+echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
 //echo " xxx1 ";
 //print_r ($countListSentry);
 //echo " xxx2 ";
-//print_r ($usersGuns);
+print_r ($res_array);
 //print_r ($rows);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-//echo '</pre>'; 
+echo '</pre>'; 
 
 ?> 
        

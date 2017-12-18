@@ -482,7 +482,19 @@ class SiteController extends Controller
             $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
             $model->save();                     //сохранить
  
-            $res_array =  [$cellValue, $cellId, $cellColumn];
+            $listGun = array();
+            if ($cellColumn == 'full_name') {   //Если изменена фамилия охранника, то вытаскиваем приписанное к нему оружие
+                #Вытаскиваем все связи
+                $usersGuns = User_gun::find()->with(['user','gun'])->asArray()->all();    //забираем из базы
+                $p = 0;
+                foreach ($usersGuns as $key => $val) {
+                    if ($val['user'][0]['full_name'] == $cellValue) { 
+                        $listGun[$p]    = $val['gun'][0]['name'];
+                        $p                  = $p + 1;
+                    } 
+                }  
+            }
+            $res_array = [$cellValue, $cellId, $cellColumn, $listGun];
             echo json_encode($res_array);
         }
     }
@@ -906,6 +918,35 @@ class SiteController extends Controller
     
     
     
+    //+Акшен срабатывает при изменении охранника в любой строке постовой ведомости, принимает ФИО, возвращает список приписанного к нему оружия
+   /*  public function actionSelecteduser(){
+        if(Yii::$app->request->isAjax){
+            $fullName = Yii::$app->request->post('selectedUser');
+
+            #Вытаскиваем все связи
+            $usersGuns = User_gun::find()->with(['user','gun'])->asArray()->all();    //забираем из базы
+            
+            
+            #Вытаскиваем все пути к фотографиям рейса
+            //$listPhoto = Photo::find()->asArray()->all();    //забираем из базы
+            
+            //$photo_name_array = null; //собираем в один массив все фото с данного рейса
+            $p = 0;
+            $listGun = array(
+                0 => "Оружие отсутствует"
+            );
+            foreach ($usersGuns as $key => $val) {
+                if ($val['user'][0]['full_name'] == $fullName) { 
+                    //$photo_name_array[$p] = $val['path'];
+                    //$patchCurrent       = $val['path'];
+                    $listGun[$p]    = $val['gun'][0]['name'];
+                    $p                  = $p + 1;
+                } 
+            }
+ 
+            echo json_encode($fullName);
+        }
+    } */
     
     
     
