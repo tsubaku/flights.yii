@@ -91,11 +91,15 @@ $this->title = 'Постовая ведомость';
         <div class="col-xs-3">  
             <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'name' => 'refresh-button', 'value' => 'refresh-button']) ?>
         </div> 
-        <!--
+        
         <div class="col-xs-3">  
-            <?//= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
+            <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
+        </div>
+        
+        <div class="col-xs-3">  
+            <?= Html::submitButton('Печать', ['class' => 'btn btn-success', 'name' => 'print-button', 'value' => 'print-button']) ?>
         </div> 
-        -->
+       
         <?php ActiveForm::end(); ?>
         
         
@@ -271,7 +275,8 @@ $this->title = 'Постовая ведомость';
 </div> <!-- container-fluid -->
 
 
-<div id="status">					
+<div id="status">	
+jhgug				
 </div>
 
 

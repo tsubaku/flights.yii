@@ -1,5 +1,27 @@
 /* Simple tags ======================================================== */
 
+/* @media screen {
+    input {
+        font-family: verdana,sans-serif;
+
+        background: #1f5678;
+    }
+
+} */
+
+
+
+
+/* @media print {
+    input {
+        font-family: times, serif;
+
+        background: #f45567;
+    }
+
+} */
+
+
 body {
 	background: #eeeeee;
 }
@@ -714,7 +736,13 @@ figure.photo_prev figcaption {  /* стиль описания */
 
 /* Список охранников, выводимый в таблицу менеджера	*/
 .list_users {
-	height:100%;
+	height:100%;   
+}
+/* Список оружия, выводимый в Постовую ведомость	*/
+.list_guns {
+	height:100px;
+    width: 200px;
+    
 }
 
 /* Блок оошибок, возникших при регистрации охранника*/

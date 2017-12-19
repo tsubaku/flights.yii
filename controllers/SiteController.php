@@ -673,10 +673,65 @@ class SiteController extends Controller
         
         $model = new Sentry();             //создаём объект модели
 
+        /* #Кнопка печати таблицы постовой ведомости. Принимает из js аяксом дату, отдаёт печатаемую таблицу 
+        if ( Yii::$app->request->post('add-button') ) {
+            $year = Yii::$app->request->post('year');
+            $month = Yii::$app->request->post('month'); 
+            $day = Yii::$app->request->post('day'); 
+            $dateFlight = $year."-".$month."-".$day;
+            $listSentry = Sentry::find()->where(['date' => $dateFlight])->asArray()->all();    //забираем из базы
+            
+            #Рисуем таблицу маршрутов
+            if ($listSentry != NULL) { //иначе варнинги идут, если пусто 
+                $tyu = "<table>";
+                $tyu .= "<h1>Постовая ведомость за $day $month $year</h1>"; //Название таблицы
+                #Рисуем шапку таблицы
+                $tyu .= "<tr>
+                            <td><b>№</b></td> 
+                            <td><b>№ поста/<br />маршрута</b></td> 
+                            <td><b>Ф.И.О. охранника</b></td> 
+                            <td><b>Время заступления на службу</b></td>
+                            <td><b>Наличие оружия и спецсредств на посту</b></td>
+                            <td><b>Время окончания службы</b></td>
+                            <td><b>Воемя доклада об обстановке на посту</b></td>
+                            <td><b>Примечания</b></td> 
+                        </tr>";
+                
+                #Рисуем строки таблицы
+                $i = 1;
+                foreach ($listSentry as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
+                    
+                    $id_line    = $row_content['id'];           //$id_line - id строки в БД Sentry
+                    $fullName   = $row_content['full_name'];    //$fullName - full_name юзера из строки в БД Sentry
+                    $gunName    = $row_content['gun'];          //$gun - название оружия
+                    
+                    $tyu .= "<tr id='sentry-$id_line'>";
+                    $tyu .= "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
+                    $i = $i + 1;
+                                $tyu .= "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data'></input></div></td>";
+                                break;
+                        } 
+                    }
+                    $tyu .= "</tr>";
+                }
+                $tyu .= "</table>";
+            } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
+                $tyu .= "таблица пуста";
+            }
+               
+            
+           echo json_encode($photo_array); 
+        }  */
+        
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
             $text = '';
-            $model->note = '';
+            $year = Yii::$app->request->post('year');
+            $month = Yii::$app->request->post('month'); 
+            $day = Yii::$app->request->post('day'); 
+            $dateFlight = $year."-".$month."-".$day;
+            //$model->note = '';
+            $model->date = $dateFlight;
             $model->save();
         } 
 
