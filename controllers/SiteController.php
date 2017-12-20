@@ -725,13 +725,14 @@ class SiteController extends Controller
         
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
-            $text = '';
-            $year = Yii::$app->request->post('year');
-            $month = Yii::$app->request->post('month'); 
-            $day = Yii::$app->request->post('day'); 
-            $dateFlight = $year."-".$month."-".$day;
+            $text           = '';
+            $year           = Yii::$app->request->post('year');
+            $month          = Yii::$app->request->post('month'); 
+            $day            = Yii::$app->request->post('day'); 
+            $dateFlight     = $year."-".$month."-".$day;
             //$model->note = '';
-            $model->date = $dateFlight;
+            $model->date    = $dateFlight;
+            $model->date_off= $dateFlight;
             $model->save();
         } 
 
@@ -769,15 +770,26 @@ class SiteController extends Controller
                 //$text = '';
                 $model = new Sentry();
                 $model->date = $dateFlight;
+                //$model->date_off= $dateFlight;
                 $model->save(); 
                 unset($model);
             }
             #И заново вытаскиваем эту пустую строку из базы
             //$query = "SELECT * FROM sentry WHERE date IS NULL";
-            //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию     
-            $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы            
+            //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию   
+            
+            
+
         }
 
+        #Добавляем охранников, которым было выдано оружее ранее
+        //$listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['date'=> $dateFlight], ['date_off' => 1]])->all();    //забираем из базы      
+        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['!=', 'date', $dateFlight], ['date_off' => 0000-00-00]])->all();    //забираем из базы      
+        $listSentry = $listSentry + $listSentryNotReturned;
+        //$listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->andWhere(['date_off' => 0000-00-00])->all();//забираем из базы  
+        //$listSentry = Sentry::find()->asArray()->where(['OR',['date' => $dateFlight],['date_off' => 0000-00-00]]);->all();//забираем из базы  
+
+        
         #добавляем пустые строки в общий результат
         /* $p = count($listSentry);
         foreach ($listSentryNoDate as $key => $val) {   

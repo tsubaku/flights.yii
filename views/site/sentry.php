@@ -97,7 +97,7 @@ $this->title = 'Постовая ведомость';
         </div>
         
         <div class="col-xs-3">  
-            <?= Html::submitButton('Печать', ['class' => 'btn btn-success', 'name' => 'print-button', 'value' => 'print-button']) ?>
+            <?//= Html::submitButton('Печать', ['class' => 'btn btn-success', 'name' => 'print-button', 'value' => 'print-button']) ?>
         </div> 
        
         <?php ActiveForm::end(); ?>
@@ -121,8 +121,10 @@ $this->title = 'Постовая ведомость';
                     <td><b>№</b></td> 
                     <td><b>№ поста/<br />маршрута</b></td> 
                     <td><b>Ф.И.О. охранника</b></td> 
-                    <td><b>Время заступления на службу</b></td>
+                    <td><b>Дата заступления<br />на службу</b></td>
+                    <td><b>Время заступления<br />на службу</b></td>
                     <td><b>Наличие оружия и спецсредств на посту</b></td>
+                    <td><b>Дата окончания<br />службы</b></td>
                     <td><b>Время окончания службы</b></td>
                     <td><b>Воемя доклада об обстановке на посту</b></td>
                     <td><b>Примечания</b></td> 
@@ -150,7 +152,7 @@ $this->title = 'Постовая ведомость';
 
                             switch ($column_name) {
                                 case 'id':
-                                case 'date':
+                                //case 'date':
                                     echo ""; //пропускаем столбцы id и date
                                 break;
 
@@ -172,6 +174,11 @@ $this->title = 'Постовая ведомость';
                                     //echo '1';
                                 break; */
                                 
+                                case 'date':
+                                case 'date_off':
+                                     $type         = "date";
+                                     echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                break;
                                 
                                 case 'time_on':
                                 case 'time_off':
@@ -276,7 +283,7 @@ $this->title = 'Постовая ведомость';
 
 
 <div id="status">	
-jhgug				
+				
 </div>
 
 
@@ -286,18 +293,18 @@ jhgug
 
 <?php
 
-echo '<pre>'; 
+//echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
 //echo " xxx1 ";
 //print_r ($countListSentry);
 //echo " xxx2 ";
-print_r ($res_array);
+//print_r ($res_array);
 //print_r ($rows);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-echo '</pre>'; 
+//echo '</pre>'; 
 
 ?> 
        
