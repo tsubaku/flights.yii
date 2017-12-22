@@ -228,7 +228,7 @@ $this->title = 'Постовая ведомость';
                                     } 
                                     //if ($j == 0){
                                         $gun .= "<option value=no_gun";
-                                        if ($gunName == 'Оружие не выбрано') {
+                                        if ( (empty($gunName)) or ($gunName == 'Оружие не выбрано') ) {
                                             $gun .= " selected='selected'";
                                         }
                                         $gun .= '>' . 'Оружие не выбрано';
@@ -293,7 +293,7 @@ $this->title = 'Постовая ведомость';
 
 <?php
 
-//echo '<pre>'; 
+echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
@@ -301,10 +301,10 @@ $this->title = 'Постовая ведомость';
 //print_r ($countListSentry);
 //echo " xxx2 ";
 //print_r ($res_array);
-//print_r ($rows);
+print_r ($currentDate);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-//echo '</pre>'; 
+echo '</pre>'; 
 
 ?> 
        

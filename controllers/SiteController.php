@@ -8,7 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+//use app\models\ContactForm;
 
 use app\models\Client;  //Подключаем модель для обработки списка клиентов;
 use app\models\Gun;     //Подключаем модель для обработки списка клиентов;
@@ -783,20 +783,9 @@ class SiteController extends Controller
         }
 
         #Добавляем охранников, которым было выдано оружее ранее
-        //$listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['date'=> $dateFlight], ['date_off' => 1]])->all();    //забираем из базы      
-        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['!=', 'date', $dateFlight], ['date_off' => 0000-00-00]])->all();    //забираем из базы      
-        $listSentry = $listSentry + $listSentryNotReturned;
-        //$listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->andWhere(['date_off' => 0000-00-00])->all();//забираем из базы  
-        //$listSentry = Sentry::find()->asArray()->where(['OR',['date' => $dateFlight],['date_off' => 0000-00-00]]);->all();//забираем из базы  
-
-        
-        #добавляем пустые строки в общий результат
-        /* $p = count($listSentry);
-        foreach ($listSentryNoDate as $key => $val) {   
-            //$flightPhoto[] = $val['path']; 
-            $p = $p + 1;
-            $listSentry[$p] = $val; 
-        }   */
+        //$currentDate = date('Y-m-d');
+        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
+        $listSentry = $listSentry + $listSentryNotReturned; 
                                     
                                     
         #Вытаскиваем все фамилии охранников
@@ -944,25 +933,17 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         return $this->goHome();
     }
-
+    
+    
+    
+#####  Ниже только неиспользуемые куски кода  ##########################################################  
     /**
      * Displays contact page.
      *
      * @return Response|string
      */
-    public function actionContact()
+    /* public function actionContact()
     {
-        //создать роль и сохранить ее в RBAC
-       /*  $role = Yii::$app->authManager->createRole('manager');
-        $role->description = 'Менеджер';
-        Yii::$app->authManager->add($role);
-         
-        $role = Yii::$app->authManager->createRole('user');
-        $role->description = 'Охранник';
-        Yii::$app->authManager->add($role); */
-        
-        
-        
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
@@ -971,17 +952,17 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
+    } */
 
     /**
      * Displays about page.
      *
      * @return string
      */
-    public function actionAbout()
+    /* public function actionAbout()
     {
         return $this->render('about');
-    }
+    } */
     
     
     
@@ -1017,7 +998,7 @@ class SiteController extends Controller
     
     
     
-#####  Ниже только неиспользуемые куски кода  ##########################################################    
+  
        #-Добавление клиента (через написанный вручную аякс-скрипт)
     public function actionRegisterclient4()
     {      
