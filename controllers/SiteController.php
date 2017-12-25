@@ -500,6 +500,25 @@ class SiteController extends Controller
     }
     
     
+    #+Изменение данных в ячейке таблицы User
+    public function actionChangeuser(){
+         #Проверяем, пришли ли данные методом аякс (метод request проверяет, откуда пришли данные - пост, гет, аякс)
+         if(Yii::$app->request->isAjax){
+            $cellValue = Yii::$app->request->post('cell_value');   
+            $cellId = Yii::$app->request->post('id_in_db');
+            $cellColumn = Yii::$app->request->post('column_in_db');
+
+            #Обновить ячейку в таблице 
+            $model = User::findOne($cellId); //Выбрать из таблицы первую запись с id=$cellId
+            $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
+            $model->save();                     //сохранить
+ 
+            
+            //$res_array = [$cellValue, $cellId, $cellColumn, $listGun];
+            //echo json_encode($res_array);
+        }
+    }
+    
     
     #+Добавление строки в таблицу рейсов
     public function actionAddline()
@@ -658,7 +677,13 @@ class SiteController extends Controller
             $user->full_name = $model->full_name; //(заполним его полученными из формы данными)
             $user->password = \Yii::$app->security->generatePasswordHash($model->password); //Аналогично, только ещё и шифруем
             $user->role = '10'; //Присваиваем новому пользователю права охранника (а права менеджера 20 - только через ручную правку бд)
+            $user->department = $model->department; 
             $user->save(); //сохраняем объект модели User
+        } else {
+            $listUsers = user::find()->all();    //забираем из базы
+            $listGun = gun::find()->all();    //забираем из базы
+            $error = 'error validate actionSignup';
+            return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
         }
 
         $listUsers = user::find()->all();    //забираем из базы

@@ -41,6 +41,23 @@ $table_users = '10'; //охранники             !!! Костыль !!!
             'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
         ]) 
     ?>
+    <?/* = $form->field($model, 'department', [
+            'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
+        ])  */ 
+    ?>
+    
+    <?php
+        $listDepartment=[
+           'Без отдела'=>'Без отдела',
+           'Сопровождение'=>'Сопровождение',
+        ];
+        $param = ['options' =>[ $currentDepartment => ['Selected' => true]]];
+        //echo Html::dropDownList('department', 'null', $listDepartment, $param); 
+        echo $form->field($model, 'department', [
+            'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
+        ])->dropDownList($listDepartment, $param);
+    ?>
+
     <?= $form->field($model, 'password', [
             'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
         ])->passwordInput() ?>
@@ -62,6 +79,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                     <td><b>№</b></td> 
                     <td><b>Логин</b></td> 
                     <td><b>Полное имя</b></td> 
+                    <td><b>Отдел</b></td> 
                     <td><b>Удалить</b></td>
                     <td><b>Оружие</b></td>
                 </tr>
@@ -74,13 +92,30 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                     $user_id     = $CurrentUser['id'];          //id охранника
                     $user_login  = $CurrentUser['username'];    //login охранника
                     $full_name   = $CurrentUser['full_name'];   //Фамилия охранника       
+                    $currentDepartment  = $CurrentUser['department'];   //Фамилия охранника       
                 ?>
                 <tr id='userName-<?=$user_id?>'>
                     <td><?=$i?></td> 
                     <td><?=$user_login?></td> 
                     <td><?=$full_name?></td> 
+                    <td style='width: 300px;'><?
+                        $listDepartment=[
+                               'Без отдела'=>'Без отдела',
+                               'Сопровождение'=>'Сопровождение',
+                        ];
+                        $param = [
+                            'options' =>[ $currentDepartment => ['Selected' => true]],
+                            'id' => 'department-'.$user_id,
+                            //'class' => 'currentDepartment',
+                            //'template' => '{select}',
+                            'onchange' => 'changeUser(GetData(this.id), this.id)',
+                        ];
+                        echo $form->field($model, 'department', ['template' => '{input}'])->dropDownList($listDepartment, $param);
+
+
+                    ?></td> 
                     <td><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
-                    <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Показать</button></td>
+                    <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Оружие</button></td>
                             
                         
                 </tr>
@@ -131,11 +166,11 @@ $table_users = '10'; //охранники             !!! Костыль !!!
     
     
     <?php 
-        /* echo '<pre>'; 
-        echo 'r1= '; 
-        print_r($r1); 
-        echo 'r2= '; 
-        print_r($r2);  */
+         echo '<pre>'; 
+       // echo 'r1= '; 
+        print_r($error); 
+        //echo 'r2= '; 
+        print_r($r2);  
     ?> 
 
 
