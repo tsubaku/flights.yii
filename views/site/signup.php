@@ -115,7 +115,16 @@ $table_users = '10'; //охранники             !!! Костыль !!!
 
                     ?></td> 
                     <td><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
-                    <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Оружие</button></td>
+                    
+                    
+                    <?php //if ($currentDepartment == 'Сопровождение'): ?>
+                        <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Оружие</button></td>
+                    <? //else: ?>
+                        <!-- <td></td> -->
+                    <? //endif; ?>
+
+                    
+                    
                             
                         
                 </tr>

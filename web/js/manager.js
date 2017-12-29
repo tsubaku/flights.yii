@@ -3,30 +3,6 @@
  */
 
  
-//Ловим выбор месяца/года, чтобы сразу показать таблицу для этого периода
-    //year  - выбранный селектора года
-    //month - выбранный селектор месяца
-/* $(function()    { 
-    var selected_year = document.getElementById("year");
-    selected_year.onchange = function(){        
-        show_flights_table();    
-    }
-}); 
-$(function()    { 
-    var selected_month = document.getElementById("month");
-    selected_month.onchange = function(){        
-        show_flights_table();    
-    }
-});  */
-
-
-
-//После полной загрузки страницы выполнить показ таблицы для залогиненного пользователя
-/* window.onload=function(){
-    $('#a_show_flights_table').trigger('click');
-}  */   
-
-
 
 //-Показать таблицу рейсов менеджеру
 function show_flights_table()
@@ -281,12 +257,6 @@ function checkboxChange(gunId) {
     })    
 }
 
-$(document).ready(function() { // вся мaгия пoсле зaгрузки стрaницы
-	$('input:checked').click( function(event){ // лoвим клик пo ссылке с id="date_of_departure"
-        console.log('data9');
-    })
-});
-
 
 
 //Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
@@ -388,6 +358,20 @@ function selectPhoto(){
 
 
 
+/* $(document).ready(function() {                  // срабатывает пoсле зaгрузки стрaницы
+	$('input:checked').click( function(event){  // лoвим клик пo input
+        console.log('нажатие');
+    })
+}); */
+
+
+
+//При смене даты обновить постовую ведомость (при изменении любого селекта даты нажать кнопку "Обновить таблицу"
+function changeDate() {
+    refreshButton.click();
+} 
+window.changeDate = changeDate;
+
 
 
 
@@ -467,6 +451,32 @@ function register_client(){
 
 
 ///////////////////
+
+//Ловим выбор месяца/года, чтобы сразу показать таблицу для этого периода
+    //year  - выбранный селектора года
+    //month - выбранный селектор месяца
+/* $(function()    { 
+    var selected_year = document.getElementById("year");
+    selected_year.onchange = function(){        
+        show_flights_table();    
+    }
+}); 
+$(function()    { 
+    var selected_month = document.getElementById("month");
+    selected_month.onchange = function(){        
+        show_flights_table();    
+    }
+});  */
+
+
+
+//После полной загрузки страницы выполнить показ таблицы для залогиненного пользователя
+/* window.onload=function(){
+    $('#a_show_flights_table').trigger('click');
+}  */   
+
+
+
 
 //Ловим выбор охранника в постовой ведомости, отправляем в контроллер, принимаем списо прикреплённого к охраннику оружия и обновляем ячейку оружия в постовой ведомости
     //list_users - название селектора списка охранников

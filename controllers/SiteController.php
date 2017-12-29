@@ -10,14 +10,14 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 //use app\models\ContactForm;
 
-use app\models\Client;  //Подключаем модель для обработки списка клиентов;
-use app\models\Gun;     //Подключаем модель для обработки списка клиентов;
-use app\models\User;    //Подключаем модель для авторизации;
-use app\models\User_gun;    //Подключаем модель для авторизации;
-use app\models\Flight;  //Подключаем модель для обработки таблицы рейсов;
-use app\models\Photo;   //Подключаем модель для обработки таблицы фотографий;
-use app\models\SignupForm; //Подключаем модель для обработки списка охранников
-use app\models\Sentry; //Подключаем модель для обработки таблицы постовой ведомости
+use app\models\Client;      //список фирм клиентов;
+use app\models\Gun;         //список оружия;
+use app\models\User;        //встроенная авторизация;
+use app\models\User_gun;    //таблица связей юзер-оружие (многие ко многим);
+use app\models\Flight;      //таблица рейсов;
+use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
+use app\models\SignupForm;  //таблица охранников и прочих юзеров
+use app\models\Sentry;      //таблица постовой ведомости
 
 class SiteController extends Controller
 {
@@ -223,9 +223,7 @@ class SiteController extends Controller
     public function actionManager()
     {    
         $model = new Flight();             //создаём объект модели
-        
-       
-        
+
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
             $text = '';
@@ -234,7 +232,7 @@ class SiteController extends Controller
         } 
 
         #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
-        if( (Yii::$app->request->post('refresh-button')) or (Yii::$app->request->post('add-button')) ){
+        if( (Yii::$app->request->post('refreshButton')) or (Yii::$app->request->post('add-button')) ){
             $text = 'post';
             $year = Yii::$app->request->post('year');
             $month = Yii::$app->request->post('month'); 
@@ -279,14 +277,13 @@ class SiteController extends Controller
                 "Статус"
         );
         
-        #забираем из базы все рейсы  between 1 and 31'
+        #забираем из базы все рейсы  between 1 and 31
         $date1 = $year."-".$month."-01";
         $date2 = $year."-".$month."-31";
         $query = "SELECT * FROM flight WHERE data_vyezda between :date1 and :date2";
         $listFlight = flight::findBySql($query, [':date1' => $date1, ':date2' => $date2])->with('photo')->asArray()->all(); 
-        //print_r($listFlight);
         
-        #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
+        #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём один такой
         $query = "SELECT * FROM flight WHERE data_vyezda IS NULL";
         $listFlightNoDate = flight::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
         if ( empty($listFlightNoDate) ) {
@@ -317,19 +314,11 @@ class SiteController extends Controller
         $listClients = Client::find()->select('name')->asArray()->column();    //забираем из базы
         $k = count($listClients);
         $listClients[$k] = 'Не выбран'; //Добавляем в массив невыбранного клиента
-    
-    
-        //$cats = Flight::find()->where('id=568')->all(); 
-        //$cats = Flight::findOne(568); 
-        $cats = Flight::find()->with('photo')->asArray()->all(); 
-        foreach ($cats as $customer) {
-            $cats2 = $customer->photo;
-        }
-    
+
         #Вытаскиваем все пути к фотографиям рейса
         $listPhoto = Photo::find()->asArray()->all();    //забираем из базы
 
-        return $this->render('manager', compact('model', 'listFlight', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text', 'cats', 'cats2')); //передаём в вид результат 
+        return $this->render('manager', compact('model', 'listFlight', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //передаём в вид результат 
     }
     
     
@@ -361,7 +350,7 @@ class SiteController extends Controller
                     $schet          = $prostoj_summa + $stavka_bez_nds + $stavka_s_nds;
                     
                     $model->schet = $schet;   //Выбрать из этой записи ячейку в столбце schet и записать туда $schet
-                    $model->save();           //сохранить
+                    $model->save();           
 
                     $res_array["schet"] = $schet; // Это добавляет к массиву новый элемент с ключом "schet"
                     break;
@@ -384,20 +373,20 @@ class SiteController extends Controller
                         $fakticheskij_srok_dostavki = $hh . ":" . $mm; //string    
                         
                     } else {
-                        $fakticheskij_srok_dostavki = "--:--"; // 
+                        $fakticheskij_srok_dostavki = "--:--";  
                     }
                     
                     if ($sdacha == NULL) {
-                        $fakticheskij_srok_dostavki = "В рейсе"; // 
+                        $fakticheskij_srok_dostavki = "В рейсе"; 
                     }
                     if ($prinjatie == NULL) {
-                        $fakticheskij_srok_dostavki = "--:--"; // 
+                        $fakticheskij_srok_dostavki = "--:--"; 
                     }
                     
-                    $res_array["fakticheskij_srok_dostavki"] = $fakticheskij_srok_dostavki; //Доб.к массиву новый эл.с ключом fakticheskij_srok_dostavki
+                    $res_array["fakticheskij_srok_dostavki"] = $fakticheskij_srok_dostavki; 
 
                     $model->fakticheskij_srok_dostavki = $fakticheskij_srok_dostavki;   
-                    $model->save();                     //сохранить
+                    $model->save();                    
   
                     break;                
 
@@ -408,9 +397,9 @@ class SiteController extends Controller
                     $prostoj_summa               = $prostoj_chasy * $prostoj_stavka_za_ohrannika * 2;
 
                     $model->prostoj_summa = $prostoj_summa;   
-                    $model->save();                     //сохранить
+                    $model->save();                    
 
-                    $res_array["prostoj_summa"] = $prostoj_summa; // Это добавляет к массиву новый элемент с ключом "prostoj_summa"
+                    $res_array["prostoj_summa"] = $prostoj_summa; 
                     
                     //От prostoj_summa зависит schet, так что пересчитываем его
                     $stavka_bez_nds = intval($line_array['stavka_bez_nds']);
@@ -418,18 +407,18 @@ class SiteController extends Controller
                     $schet          = $prostoj_summa + $stavka_bez_nds + $stavka_s_nds;
 
                     $model->schet = $schet;   
-                    $model->save();                     //сохранить
+                    $model->save();                     
 
-                    $res_array["schet"] = $schet; // Это добавляет к массиву новый элемент с ключом "schet"
+                    $res_array["schet"] = $schet; 
                     break;
                     
                case 'arenda_mashin':
                     $arenda_mashin = intval($line_array['arenda_mashin']);
                     $oplata_mashin = $arenda_mashin * 1700;
 
-                    $model->oplata_mashin = $schet;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $schet
-                    $model->save();                     //сохранить
-                    $res_array["oplata_mashin"] = $oplata_mashin; // Это добавляет к массиву новый элемент с ключом "schet"
+                    $model->oplata_mashin = $schet;  
+                    $model->save();                     
+                    $res_array["oplata_mashin"] = $oplata_mashin; 
                     
                     //От arenda_mashin зависит itogo, так что пересчитываем его
                     $zp      = intval($line_array['zp']);
@@ -437,8 +426,8 @@ class SiteController extends Controller
                     $itogo   = $zp + $prostoj + $oplata_mashin;
 
                     $model->itogo = $itogo;   
-                    $model->save();                     //сохранить
-                    $res_array["itogo"] = $itogo; // Это добавляет к массиву новый элемент с ключом "schet"
+                    $model->save();                     
+                    $res_array["itogo"] = $itogo; 
                     break;     
                     
                case 'zp':
@@ -449,15 +438,15 @@ class SiteController extends Controller
                     $oplata_mashin = intval($line_array['oplata_mashin']);
                     $itogo         = $zp + $prostoj + $oplata_mashin;
 
-                    $model->itogo = $schet;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $schet
-                    $model->save();                     //сохранить
-                    $res_array["itogo"] = $itogo; // Это добавляет к массиву новый элемент с ключом "schet"
+                    $model->itogo = $schet;   
+                    $model->save();                     
+                    $res_array["itogo"] = $itogo; 
                     
                     $zp_plus_prostoj = $zp + $prostoj;
 
-                    $model->zp_plus_prostoj = $zp_plus_prostoj;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $schet
-                    $model->save();                     //сохранить
-                    $res_array["zp_plus_prostoj"] = $zp_plus_prostoj; // Это добавляет к массиву новый элемент с ключом "schet"            
+                    $model->zp_plus_prostoj = $zp_plus_prostoj;   
+                    $model->save();                     
+                    $res_array["zp_plus_prostoj"] = $zp_plus_prostoj; 
                     break;
                 
                 default:
@@ -513,44 +502,12 @@ class SiteController extends Controller
             $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
             $model->save();                     //сохранить
  
-            
             //$res_array = [$cellValue, $cellId, $cellColumn, $listGun];
             //echo json_encode($res_array);
         }
     }
     
-    
-    #+Добавление строки в таблицу рейсов
-    public function actionAddline()
-    {      
-        #Добавление строки в таблицу flight
-        if(Yii::$app->request->isAjax){
-            $model = new Flight();
-            //$nameNewFlight = Yii::$app->request->post('flight');
-            //$model->flight = $nameNewFlight;
-            //$model->save();
-            
-            $text = '5';
-            $model->podklient = $text;
-            $model->save();
-            
-            
-            /* $rows = (new \yii\db\Query())
-                ->all()
-                ->from('flight')
-                ->where(['client'=>$nameNewClient])
-                ->one();
-            
-            foreach ($rows as $key => $value) {
-                $rows = $value;
-            }
-            $json_data = array(0 => $rows);
-            echo json_encode($json_data); */
-        }  
-    }
-    
-    
-    
+
     #+Отрисовка страницы client и добавление клиента, если нажата копка добавления
     public function actionClient()
     {      
@@ -558,9 +515,9 @@ class SiteController extends Controller
         
         #Если нажали "Добавить клиента", то проверяем введённые данные и добавляем
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
-            $r1 = Yii::$app->request->post('Client'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
-                                                      //у него есть методы get() и post()
-            $model->name = $r1['name']; 
+            $clientName = Yii::$app->request->post('Client'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
+                                                              //у него есть методы get() и post()
+            $model->name = $clientName['name']; 
             $model->save(); //сохраняем объект модели
         }
 
@@ -615,47 +572,37 @@ class SiteController extends Controller
     #+Принять от js-скрипта id юзера, вытащить связь, вытащить прикреплённое оружие, вернуть js-скрипту
     public function actionGunshow(){
         if(Yii::$app->request->isAjax){
-            $userId = Yii::$app->request->post('userId');
-            $model = new User_gun(); //говорят, лишняя
+            $userId  = Yii::$app->request->post('userId');
             $listGun = User_gun::find()->where(['user_id' => $userId])->asArray()->all(); //выбираем строку с нужным id
-            
-            //$model = new Gun(); //говорят, лишняя
-            //$model = Gun::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
 
             $p = 0;
             foreach ($listGun as $key => $val) {        
-                //$gun_id[$p]    = $val['gun_id'];
-                //$gun = Gun::find()->where(['id' => $userId])->asArray()->one(); //выбираем строку с нужным id
-                
-                $gun_id = $val['gun_id'];
+                $gun_id         = $val['gun_id'];
                 $gun = Gun::find()->where(['id' => $gun_id])->asArray()->one(); //выбираем строку с нужным id
-                //$listGunName[$p]    = $gun['name'];
-                $listGunId[$p]    = $gun['id'];
-                $p                  = $p + 1;
+                $listGunId[$p]  = $gun['id'];
+                $p              = $p + 1;
             }
             
             echo json_encode($listGunId);
         }
     }
     
+    
     //+Получить от js-скрипта событие чекбокса, сделать изменения в базе user_gun
     public function actionCheckboxchange(){
         if(Yii::$app->request->isAjax){
-            $userName = Yii::$app->request->post('userName');
-            $gunId = Yii::$app->request->post('gunId');
-            $checkboxPosition = Yii::$app->request->post('checkboxPosition');
+            $userName           = Yii::$app->request->post('userName');
+            $gunId              = Yii::$app->request->post('gunId');
+            $checkboxPosition   = Yii::$app->request->post('checkboxPosition');
             
             $userId = User::find()->where(['full_name' => $userName])->asArray()->one(); //выбираем строку с нужным id
-            //$model = new Gun(); //говорят, лишняя
             $model = new User_gun(); //говорят, лишняя
             if ($checkboxPosition == 'true') {    //записать в user_gun связь
                 $model->user_id = $userId['id']; 
                 $model->gun_id = $gunId; 
                 $model->save(); //сохраняем объект модели
             } else {                            //найти и удалить из user_gun связь
-                //$userId = $userId['id'];
                 $model = User_gun::find()->where(['user_id' => $userId['id']]) ->andWhere(['gun_id' => $gunId])->one()->delete(); 
-
             } 
             echo json_encode("$gunId");
         }
@@ -680,15 +627,16 @@ class SiteController extends Controller
             $user->department = $model->department; 
             $user->save(); //сохраняем объект модели User
         } else {
-            $listUsers = user::find()->all();    //забираем из базы
-            $listGun = gun::find()->all();    //забираем из базы
+            //иначе то же самое, но пишем 
+            //$listUsers = user::find()->all();    //забираем из базы
+            //$listGun = gun::find()->all();    //забираем из базы
             $error = 'error validate actionSignup';
-            return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
+            //return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
         }
 
         $listUsers = user::find()->all();    //забираем из базы
         $listGun = gun::find()->all();    //забираем из базы
-        return $this->render('signup', compact('model', 'listUsers', 'listGun')); //compact('listUsers') - передаём в вид результат 
+        return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
     }
 
     
@@ -762,7 +710,7 @@ class SiteController extends Controller
         } 
 
         #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
-        if( (Yii::$app->request->post('refresh-button')) or (Yii::$app->request->post('add-button')) ){
+        if( (Yii::$app->request->post('refreshButton')) or (Yii::$app->request->post('add-button')) ){
             $text = 'post';
             $year = Yii::$app->request->post('year');
             $month = Yii::$app->request->post('month'); 
@@ -779,61 +727,43 @@ class SiteController extends Controller
         
         #забираем из базы все рейсы на дату
         $dateFlight = $year."-".$month."-".$day;
-        //$query = "SELECT * FROM sentry WHERE :date";
-        //$listSentry = sentry::findBySql($query, [':date' => $dateFlight])->asArray()->all(); 
-        //print_r($listSentry);
         $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы
         $countListSentry = count($listSentry); //кол-во записей за этот день
         
-        #Ищем рейсы без даты и добавляем их в таблицу, а если таких нет, то передварительно создаём их
-        //$query = "SELECT * FROM sentry WHERE date IS NULL";
-        //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию
+        #Проверяем количество маршрутов. Если меньшще 11, то создаём их до 11 на текущую дату.
         if ( $countListSentry < 11 ) {
             $n = 11 - $countListSentry;
-            //$n = 3;
             for ($j = 1; $j <= $n; $j++) {
-                //$text = '';
                 $model = new Sentry();
                 $model->date = $dateFlight;
-                //$model->date_off= $dateFlight;
                 $model->save(); 
                 unset($model);
             }
-            #И заново вытаскиваем эту пустую строку из базы
-            //$query = "SELECT * FROM sentry WHERE date IS NULL";
-            //$listSentryNoDate = sentry::findBySql($query)->asArray()->all(); //получим все записи, сотв. условию   
-            
-            
-
         }
 
         #Добавляем охранников, которым было выдано оружее ранее
-        //$currentDate = date('Y-m-d');
         $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
         $listSentry = $listSentry + $listSentryNotReturned; 
-                                    
-                                    
+
         #Вытаскиваем все фамилии охранников
-        $listUsers = User::find()->select('full_name')->asArray()->column();    //забираем из базы
+        $listUsers = User::find()->select('full_name')->where(['department' => 'Сопровождение'])->asArray()->column();    //забираем из базы
         $k = count($listUsers);
         $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         
         #Вытаскиваем всё оружие
-        $listGuns = Gun::find()->select('name')->asArray()->column();    //забираем из базы
-        $k = count($listGuns);
-        $listGuns[$k] = 'Оружие не выбрано'; //Добавляем в массив невыбранное оружие
+        //$listGuns = Gun::find()->select('name')->asArray()->column();    //забираем из базы
+        //$k = count($listGuns);
+        //$listGuns[$k] = 'Оружие не выбрано'; //Добавляем в массив невыбранное оружие
     
         #Вытаскиваем все связи
         $usersGuns = User_gun::find()->with(['user','gun'])->asArray()->all();    //забираем из базы
-        //$k = count($listGuns);
-        //$listGuns[$k] = 'Не выбран'; //Добавляем в массив невыбранное оружие
         
         #
-        $gu = array();
+        //$userGun    = User_gun::find()->select(['user_id', 'gun_id'])->asArray()->all();    //забираем из базы
+        //$arrayUsers = User    ::find()->select(['id', 'full_name'])  ->asArray()->all();    //забираем из базы
+        //$arrayGun   = Gun     ::find()->select(['id', 'name'])       ->asArray()->all();    //забираем из базы
+        //$gu = array();
         //$p = 0;
-        $userGun    = User_gun::find()->select(['user_id', 'gun_id'])->asArray()->all();    //забираем из базы
-        $arrayUsers = User    ::find()->select(['id', 'full_name'])  ->asArray()->all();    //забираем из базы
-        $arrayGun   = Gun     ::find()->select(['id', 'name'])       ->asArray()->all();    //забираем из базы
         //$k = count($user_gun);
         /* foreach ($arrayUsers as $key1 => $val1) {           //key1 - номера, val1 - массив [id, full_name] фамилий  $vol1['id'] - id юзера
             foreach ($userGun as $key2 => $val2) {          //key2 - номера, val2 - массив [user_id, gun_id] связей $val2['gun_id'] - id пистолета
@@ -849,8 +779,7 @@ class SiteController extends Controller
           //  $p                  = $p + 1;
         }  */
     
-        
-        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'listGuns', 'dateFlight', 'userGun', 'usersGuns', 'countListSentry')); //передаём в вид результат 
+        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'usersGuns', 'countListSentry')); //передаём в вид результат 
     }
 
 
@@ -1079,6 +1008,36 @@ class SiteController extends Controller
             }
             $json_data = array(0 => $rows);
             echo json_encode($json_data);
+        }  
+    }
+    
+    
+    #Добавление строки в таблицу рейсов (через аякс)
+    public function actionAddline()
+    {      
+        #Добавление строки в таблицу flight
+        if(Yii::$app->request->isAjax){
+            $model = new Flight();
+            //$nameNewFlight = Yii::$app->request->post('flight');
+            //$model->flight = $nameNewFlight;
+            //$model->save();
+            
+            $text = '5';
+            $model->podklient = $text;
+            $model->save();
+            
+            
+            /* $rows = (new \yii\db\Query())
+                ->all()
+                ->from('flight')
+                ->where(['client'=>$nameNewClient])
+                ->one();
+            
+            foreach ($rows as $key => $value) {
+                $rows = $value;
+            }
+            $json_data = array(0 => $rows);
+            echo json_encode($json_data); */
         }  
     }
 ##########################################################    

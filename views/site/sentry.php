@@ -11,7 +11,7 @@ $this->title = 'Постовая ведомость';
 
 ?>
 
-<h1><?= Html::encode($this->title) ?></h1>
+<h1><?//= Html::encode($this->title) ?></h1>
 
 <div class="container-fluid"> 
     <div class="row">  
@@ -25,7 +25,10 @@ $this->title = 'Постовая ведомость';
                    2018=>'2018',
                    2019=>'2019',
                 ];
-                $param = ['options' =>[ $year => ['Selected' => true]]];
+                $param = [
+                    'options'   => [ $year => ['Selected' => true]],
+                    'onchange'  => 'changeDate()',
+                ];
                 echo Html::dropDownList('year', 'null', $years, $param); 
             ?>
         </div>
@@ -45,7 +48,10 @@ $this->title = 'Постовая ведомость';
                    11=>'Ноябрь',
                    12=>'Декабрь',
                 ];
-                $param = ['options' =>[ $month => ['Selected' => true]]];
+                $param = [
+                    'options'   =>[ $month => ['Selected' => true] ],
+                    'onchange'  => 'changeDate()',
+                ];
                 echo Html::dropDownList('month', 'null', $months, $param);
             ?>
         </div> 
@@ -84,12 +90,17 @@ $this->title = 'Постовая ведомость';
                     30=>'30',
                     31=>'31',
                 ];
-                $param = ['options' =>[ $day => ['Selected' => true]]];
+                $param = [
+                    'options'   => [ $day => ['Selected' => true] ],
+                    'onchange'  => 'changeDate()',
+                    'class'     => 'dateSelect',
+                    'id'        => 'dateSelectDay',
+                ];
                 echo Html::dropDownList('day', 'null', $days, $param);
             ?>
         </div> 
         <div class="col-xs-3">  
-            <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'name' => 'refresh-button', 'value' => 'refresh-button']) ?>
+            <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'id' => 'refreshButton', 'name' => 'refreshButton', 'value' => 'refreshButton']) ?>
         </div> 
         
         <div class="col-xs-3">  
@@ -101,7 +112,6 @@ $this->title = 'Постовая ведомость';
         </div> 
        
         <?php ActiveForm::end(); ?>
-        
         
     </div>
 
@@ -301,7 +311,7 @@ echo '<pre>';
 //print_r ($countListSentry);
 //echo " xxx2 ";
 //print_r ($res_array);
-print_r ($currentDate);
+//print_r ($currentDate);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
 echo '</pre>'; 
