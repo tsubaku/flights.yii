@@ -251,6 +251,16 @@ h3 {
 	vertical-align: top;
 }
 
+.a_button_set_time {
+	display: inline-block;
+	background-image: url(../img/photo.png);
+	background-size: cover; /* Фон занимает всю доступную площадь */
+	height:23px;
+	width: 23px;
+	float: right;
+	padding-right: 2px;
+	vertical-align: top;
+}
 
 /*	--- Button Send photo --- -*/
 .fileform { 
@@ -510,7 +520,7 @@ input {
 }
 .container_id {
 	display: inline-block;
-	width:110px;
+	width:50px;
 	height:100%;
 }
 

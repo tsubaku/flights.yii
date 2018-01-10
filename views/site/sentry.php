@@ -156,45 +156,39 @@ $this->title = 'Постовая ведомость';
                         $i = $i + 1;
                         
                         foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
+                            //$data      -имя охранника
+                            //$listUsers -массив полный список охранников
+                            //$userGun   -массив полный список оружия
+                            //$usersGuns -массив связей
+                            
                             #Определяем переменные для каждой ячейки строки
-                            $container    = "container_default";
-                            $type         = "text";
+                            $container      = "container_default";
+                            $type           = "text";
+                            $buttonTimeOn   = "";
+                            $buttonTimeOff  = "";
 
                             switch ($column_name) {
                                 case 'id':
-                                //case 'date':
-                                    echo ""; //пропускаем столбцы id и date
+                                    $cellHtml = "";
+                                    
                                 break;
 
-                                /* case 'number':
-                                    echo "<td><select size='0' id='f' name='f' class='numbers' onchange='$js_change_list'> 
-                                        <option value='1'>1</option>
-                                        <option value='2'>2</option>
-                                        <option value='3'>3</option>
-                                        <option value='4'>4</option>
-                                        <option value='5'>5</option>
-                                        <option value='6'>6</option>
-                                        <option value='7'>7</option>
-                                        <option value='8'>8</option>
-                                        <option value='9'>9</option>
-                                        <option value='10'>10</option>
-                                        <option value='11'>11</option>
-                                        
-                                        </select></td>"; 
-                                    //echo '1';
-                                break; */
                                 
                                 case 'date':
                                 case 'date_off':
                                      $type         = "date";
-                                     echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                     $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                     
                                 break;
+                                
                                 
                                 case 'time_on':
                                 case 'time_off':
                                 case 'time_report':
                                     $data = substr($data, 0, 5); // убираем секунды
-                                    echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                    $container      = "container_id";
+                                    $buttonTimeOff = "<button type='button' class='a_button_set_time' onclick='get_photo($id_line)'></button>";
+                                    $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div>$buttonTimeOff</td>";
                                 break;
                                 
                                 
@@ -209,17 +203,11 @@ $this->title = 'Постовая ведомость';
                                         $full_name .= '>' . $value;
                                     }
                                     $full_name .= "</select>"; 
-                                    echo "<td ><div class='$container'>$full_name</div></td>";
+                                    $cellHtml = "<td><div class='$container'>$full_name</div></td>";
                                 break;
                                 
                                 
-                                case 'gun':
-                                    
-                                    //$data      -имя охранника
-                                    //$listUsers -массив полный список охранников
-                                    //$userGun   -массив полный список оружия
-                                    //$usersGuns -массив связей
-                                    
+                                case 'gun': 
                                     $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
                                     $list = array();
                                     $j = 0;
@@ -236,41 +224,22 @@ $this->title = 'Постовая ведомость';
                                             $j = $j + 1;
                                         }
                                     } 
-                                    //if ($j == 0){
-                                        $gun .= "<option value=no_gun";
-                                        if ( (empty($gunName)) or ($gunName == 'Оружие не выбрано') ) {
-                                            $gun .= " selected='selected'";
-                                        }
-                                        $gun .= '>' . 'Оружие не выбрано';
-                                    //}
-                                    $gun .= "</select>"; 
-                                    echo "<td ><div class='$container'>$gun</div></td>"; 
-                                    
-                                    
-                                    //print_r ($listSentry[$i]['gun']);
-                                    //echo "</br>";
-                                    
-                                    
-                                    /* $gun = "<select size='0' id='gun-$id_line' name='gun-$id_line' class='list_guns' onchange='$js_change_list'>";
-                                    foreach ($listGuns as $value) {
-                                        $gun_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                        $gun .= "<option value=$gun_n";
-                                        if (($value == $data) or ($data == NULL)) {
-                                            $gun .= " selected='selected'";
-                                        }
-                                        $gun .= '>' . $value;
+                                    $gun .= "<option value=no_gun";
+                                    if ( (empty($gunName)) or ($gunName == 'Оружие не выбрано') ) {
+                                        $gun .= " selected='selected'";
                                     }
+                                    $gun .= '>' . 'Оружие не выбрано';
                                     $gun .= "</select>"; 
-                                    echo "<td ><div class='$container'>$gun</div></td>";  */
-                                    //echo"<script type='text/javascript'>userGun(value);</script>";
-                                    
+                                    $cellHtml = "<td><div class='$container'>$gun</div></td>"; 
                                 break;
                                 
                                 
                                 default:
-                                    echo "<td ><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                    $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
                                     break;
-                            } 
+                            } //end switch
+                            echo $cellHtml; //нарисовать ячейку
+                            
                         }
                         echo "</tr>";
                     }
@@ -278,7 +247,7 @@ $this->title = 'Постовая ведомость';
                 } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
                     //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
                     //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран
-                    echo "таблица пуста";
+                    echo "Таблица пуста";
                 }
                
             ?>     
