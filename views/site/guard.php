@@ -5,7 +5,7 @@
     use yii\bootstrap\ActiveForm;
     use dosamigos\datepicker\DatePicker;
 
-    $this->title = 'Интерфейс охранника';
+    $this->title = 'Рейсы';
 
     use yii\bootstrap\Modal;
 ?>
