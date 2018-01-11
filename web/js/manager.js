@@ -374,6 +374,49 @@ window.changeDate = changeDate;
 
 
 
+//+Установка текущего времени. Принимает название столбца и id строки, отправляет их контроллеру. Принмает от контроллера статус выполнения.
+function setTime(idTime) {
+    //Вытаскиваем название столбца и ид строки
+    var positionMinus = idTime.indexOf("-");                        //найти позицию символа "-"
+    var columnInDb = idTime.substring(0, positionMinus);            //все символы до "-", включительно (название столбца в БД)
+    var idInDb = idTime.substring(positionMinus+1, idTime.length);  //все символы от "-" и до конца включительно (id строки в БД) 
+    //console.log(columnInDb + " " + idInDb); 
+    
+    $.ajax({
+            url:"index.php?r=site/settime",
+            type:"POST",
+            statbox:"status",
+            data:
+            {
+                columnInDb:columnInDb,    
+                idInDb:idInDb,       
+            },
+            success: function (data) {
+                //document.getElementById("status").innerHTML='';     //удалить значок ожидания
+                //console.log("ok"+data); 
+                
+                //Раздербаниваем, пишедшее и меняем в ячейке время на то, которое пришло от сервера
+                var currentDateTime = JSON.parse(data);  
+                document.getElementById(idTime).value = currentDateTime.currentTime; //Обновляем ячейку времени
+                
+                //Если устанавливаем время принятия/сдачи, то устанавливаем и дату
+                if (columnInDb == "time_on") {
+                    nameCell = "date-"+idInDb; 
+                    document.getElementById(nameCell).value = currentDateTime.currentDate; //Обновляем ячейку даты заступления                   
+                }
+                if (columnInDb == "time_off") {
+                    nameCell = "date_off-"+idInDb;  
+                    document.getElementById(nameCell).value = currentDateTime.currentDate; //Обновляем ячейку даты окончания
+                } 
+            },
+            error: function (error1) {
+                console.log("eror_setTime");
+            }
+        })    
+    
+}
+
+
 
 //////////  Ниже только неиспользуемые куски кода  ///////////////
 

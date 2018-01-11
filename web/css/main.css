@@ -251,9 +251,9 @@ h3 {
 	vertical-align: top;
 }
 
-.a_button_set_time {
+.button_set_time {
 	display: inline-block;
-	background-image: url(../img/photo.png);
+	background-image: url(../img/set_time.png);
 	background-size: cover; /* Фон занимает всю доступную площадь */
 	height:23px;
 	width: 23px;

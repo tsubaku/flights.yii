@@ -608,6 +608,38 @@ class SiteController extends Controller
         }
         
     }
+
+    
+    
+    //+Получить от js-скрипта событие "установить текущее время", сделать изменения в базе sentry, вернуть в js текущие дату и время
+    public function actionSettime(){
+        if(Yii::$app->request->isAjax){
+            $columnInDb  = Yii::$app->request->post('columnInDb');
+            $idInDb      = Yii::$app->request->post('idInDb');
+
+            $currentDate = date('Y-m-d');
+            $currentTime = date('H:i:s');
+            
+            $model = Sentry::findOne($idInDb);  //Выбрать из таблицы первую запись с id=$idInDb
+            $model->$columnInDb = $currentTime; //Выбрать из этой записи ячейку в столбце $columnInDb и записать туда $currentTime
+     
+            if ($columnInDb =='time_on') {
+                $model->date = $currentDate;   
+            }
+            if ($columnInDb =='time_off') {
+                $model->date_off = $currentDate;   
+            }
+            $model->save();                     //сохранить
+            
+            $currentDateTime = array(
+                currentDate => $currentDate,
+                currentTime => $currentTime
+            ); 
+            echo json_encode($currentDateTime);
+        }
+    }
+
+    
     
     //+Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
     public function actionSignup(){

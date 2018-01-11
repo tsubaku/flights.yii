@@ -187,7 +187,7 @@ $this->title = 'Постовая ведомость';
                                 case 'time_report':
                                     $data = substr($data, 0, 5); // убираем секунды
                                     $container      = "container_id";
-                                    $buttonTimeOff = "<button type='button' class='a_button_set_time' onclick='get_photo($id_line)'></button>";
+                                    $buttonTimeOff = "<button type='button' id='$column_name-$id_line' class='button_set_time' onclick='setTime(this.id)'></button>";
                                     $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div>$buttonTimeOff</td>";
                                 break;
                                 
