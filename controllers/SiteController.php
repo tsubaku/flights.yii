@@ -521,7 +521,7 @@ class SiteController extends Controller
             $model->save(); //сохраняем объект модели
         }
 
-        $listClients = Client::find()->all();    //забираем из базы
+        $listClients = Client::find()->orderBy(['name' => 'SORT_ASC'])->all();    //забираем из базы
         return $this->render('client', compact('model', 'listClients')); //передаём в вид результат   
     }
     
@@ -540,7 +540,7 @@ class SiteController extends Controller
             $model->save(); //сохраняем объект модели
         }
 
-        $listGun = Gun::find()->all();    //забираем из базы
+        $listGun = Gun::find()->orderBy(['name' => 'SORT_ASC'])->all();    //забираем из базы
         return $this->render('gun', compact('model', 'listGun')); //передаём в вид результат   
     }
     
@@ -666,7 +666,7 @@ class SiteController extends Controller
             //return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
         }
 
-        $listUsers = user::find()->all();    //забираем из базы
+        $listUsers = user::find()->orderBy(['full_name' => 'SORT_ASC'])->all();    //забираем из базы
         $listGun = gun::find()->all();    //забираем из базы
         return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
     }
@@ -730,7 +730,7 @@ class SiteController extends Controller
         
         #Кнопка добавления строки в таблицу 
         if ( Yii::$app->request->post('add-button') ) {
-            $text           = '';
+            //$text           = '';
             $year           = Yii::$app->request->post('year');
             $month          = Yii::$app->request->post('month'); 
             $day            = Yii::$app->request->post('day'); 
@@ -743,23 +743,25 @@ class SiteController extends Controller
 
         #Если период введён, подставляем его. Если нет, то подставляем текущий год и месяц
         if( (Yii::$app->request->post('refreshButton')) or (Yii::$app->request->post('add-button')) ){
-            $text = 'post';
+            //$text = 'post';
             $year = Yii::$app->request->post('year');
             $month = Yii::$app->request->post('month'); 
             $day = Yii::$app->request->post('day'); 
         } else {
-            $text = 'no_post';
+            //$text = 'no_post';
             $year = date("Y");
-            $month = date("m"); //SELECT * FROM flight WHERE data_vyezda between '2017-10-01' and '2017-10-31'
+            //$month = date("m"); 
+            $month = date("n"); //№ месяца без ведущего нуля
+            //$month = "1"; 
             $day = date("d"); 
         }
         
         $table = '40'; //путевая ведомость             !!! Костыль !!!
 
         
-        #забираем из базы все рейсы на дату
+        #забираем из базы все маршруты на выбранную дату
         $dateFlight = $year."-".$month."-".$day;
-        $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //забираем из базы
+        $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->orderBy(['time_on' => 'SORT_ASC'])->all();    //забираем из базы
         $countListSentry = count($listSentry); //кол-во записей за этот день
         
         #Проверяем количество маршрутов. Если меньшще 11, то создаём их до 11 на текущую дату.
@@ -771,10 +773,11 @@ class SiteController extends Controller
                 $model->save(); 
                 unset($model);
             }
+            $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->all();    //обновляем список рейсов на выбранную дату
         }
 
-        #Добавляем охранников, которым было выдано оружее ранее
-        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
+        #Добавляем охранников, которым было выдано оружее ранее и которые его ещё не сдали
+        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->orderBy(['date' => 'SORT_ASC'])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
         $listSentry = $listSentry + $listSentryNotReturned; 
 
         #Вытаскиваем все фамилии охранников

@@ -23,7 +23,7 @@
 ![Список фирм клиентов](scrinshots/Guns.png)
 
 Постовая ведомость
-![Список фирм клиентов](scrinshots/Guns.png)
+![Список фирм клиентов](scrinshots/Sentry.png)
 
 Галерея фотографий с рейса
 ![Галерея фотографий с рейса](scrinshots/Manager5.png)

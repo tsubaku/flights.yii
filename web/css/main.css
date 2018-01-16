@@ -342,6 +342,19 @@ input {
 }
 
 
+.blueText {
+    color: #0026FF;
+	font: bold;
+}
+.purpleText {
+    color: #B200FF;
+	font: bold;
+}
+.redText {
+    color: #FF263B;
+	font: bold;
+}
+
 /********/
 
 

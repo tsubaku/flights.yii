@@ -156,7 +156,6 @@ $this->title = 'Постовая ведомость';
                         $i = $i + 1;
                         
                         foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
-                            //$data      -имя охранника
                             //$listUsers -массив полный список охранников
                             //$userGun   -массив полный список оружия
                             //$usersGuns -массив связей
@@ -169,16 +168,32 @@ $this->title = 'Постовая ведомость';
 
                             switch ($column_name) {
                                 case 'id':
-                                    $cellHtml = "";
-                                    
+                                    $cellHtml = "";  
                                 break;
 
                                 
                                 case 'date':
                                 case 'date_off':
-                                     $type         = "date";
-                                     $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div></td>";
+                                     #Проверяем, на сколько дней дата получения оружия отстоит от выбранного числа
+                                     $currentDate = strtotime("$year" . "-" . "$month" . "-" . "$day");   //Выбранная дата
+                                     $selectedDate = strtotime($data);                      //Дата в ячейке
+                                     $diffDay = ($currentDate - $selectedDate)/86400;       //Разница в днях
+                                     #И перекрашиваем дату в браузере в нужный цвет
+                                     if ( $diffDay <= 0 ) {
+                                         $colourClass = '';
+                                     }
+                                     if ( $diffDay > 0 ) {
+                                         $colourClass = 'blueText';
+                                     }
+                                     if ( $diffDay > 3 ) {
+                                         $colourClass = 'purpleText';
+                                     }
+                                     if ( $diffDay > 7 ) {
+                                         $colourClass = 'redText';
+                                     }
                                      
+                                     $type         = "date";
+                                     $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $colourClass' value='$data' onchange='$js_change_cell'></input></div></td>";
                                 break;
                                 
                                 
