@@ -17,10 +17,7 @@ class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'css/site.css',
-        'css/main.css',
-    ];
+    
     public $js = [
         'js/core.js',
         'js/manager.js',
@@ -30,7 +27,10 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
-    
+    public $css = [
+        'css/site.css',
+        'css/main.css',
+    ];
     #пробую подключить jquery
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 }

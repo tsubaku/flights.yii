@@ -309,26 +309,28 @@ h3 {
 
 
 /**************************** Table content ************************/
-table{
+/* table{
     display: table;
 	border: 1px solid #777; /* Параметры рамки */
-	border-collapse: collapse; /* Убираем двойные линии между ячейками */
-	background: #9d9;
+/*	border-collapse: collapse; /* Убираем двойные линии между ячейками */
+/*	background: #9d9;
 	width: 100%; /* Ширина таблицы в процентах */
 /*	table-layout: auto;	*/
-	float: left;
-}
+/*	float: left;
+} */
+
 tr {
-    display: table-row;
-	border: 0px solid #451; /* Параметры рамки */
-	padding: 0px;
+/*    display: table-row; */
+/*	border: 0px solid #451; /* Параметры рамки */
+/*	padding: 0px;
+/*    margin: 0px; */
 	
 }
 td { 
-	border: 1px solid #951; /* Параметры рамки */
-	height: 23px;
-	padding: 0px;
-	margin: 0px;
+/*	border: 1px solid #951; /* Параметры рамки */
+/*	height: 23px; */
+/*	padding: 0px;
+/*	margin: 0px; */
 }
 
 
@@ -342,6 +344,7 @@ input {
 }
 
 
+/* Цвет текста дат в Постовой водомости у охранников, длительное время не сдающих оружие.  */
 .blueText {
     color: #0026FF;
 	font: bold;
@@ -354,7 +357,6 @@ input {
     color: #FF263B;
 	font: bold;
 }
-
 /********/
 
 
@@ -380,8 +382,6 @@ input {
 
 #tableGun  {
     width:300px;  
-
-
 }
 #tableGun td {
     background: #ceffee;  
@@ -537,11 +537,27 @@ input {
 	height:100%;
 }
 
-.completed {
-	color: #1C57D8;
-	font: bold;
-}
 
+.cont1 {
+  min-width: 30px;
+  max-width: 75%;
+  margin: 0 auto;
+  padding: 0;
+  }
+
+.cont1{
+    margin:0 auto;/*Центрирование блока*/
+    background:#ccc;/*Цвет блока*/
+    max-width:200px;/*Максимальная ширина при больших разрешениях*/
+    min-width:40px;/*Минимальная ширина при маленьких разрешениях*/
+    width:auto;/*Ширина в зависимости от разрешения экрана*/
+}
+.cont2{
+    display: inline-block;
+    float: right;
+    width:23px;
+	height:100%;
+}
 
 /********************** Modal forms **********************/
 #modal_form {
