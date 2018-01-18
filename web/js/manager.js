@@ -395,9 +395,10 @@ function setTime(idTime) {
                 //document.getElementById("status").innerHTML='';     //удалить значок ожидания
                 //console.log("ok"+data); 
                 
-                //Раздербаниваем, пишедшее и меняем в ячейке время на то, которое пришло от сервера
+                //Раздербаниваем, пришедшее и меняем в ячейке время на то, которое пришло от сервера
                 var currentDateTime = JSON.parse(data);  
-                document.getElementById(idTime).value = currentDateTime.currentTime; //Обновляем ячейку времени
+                currentTime = currentDateTime.currentTime;  
+                document.getElementById(idTime).value = currentTime.substr(0,5); //Обновляем ячейку времени, убрав секунды
                 
                 //Если устанавливаем время принятия/сдачи, то устанавливаем и дату
                 if (columnInDb == "time_on") {

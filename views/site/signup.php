@@ -72,16 +72,16 @@ $table_users = '10'; //охранники             !!! Костыль !!!
      
     <div class="row-fluid">    
         <div class="col-md-7">
-         <table class="table table-striped">
+         <table class="table table-striped table-bordered table-hover">
          <caption><strong>Список охранников</strong></caption>
             <thead>
                 <tr>  
-                    <td><b>№</b></td> 
-                    <td><b>Логин</b></td> 
-                    <td><b>Полное имя</b></td> 
-                    <td><b>Отдел</b></td> 
-                    <td><b>Удалить</b></td>
-                    <td><b>Оружие</b></td>
+                    <th scope='col'>№</th> 
+                    <th scope='col'>Логин</th> 
+                    <th scope='col'>Полное имя</th> 
+                    <th scope='col'>Отдел</th> 
+                    <th scope='col'>Удалить</th>
+                    <th scope='col'>Оружие</th>
                 </tr>
             </thead>
             <tbody id="usersTable">
@@ -95,7 +95,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                     $currentDepartment  = $CurrentUser['department'];   //Фамилия охранника       
                 ?>
                 <tr id='userName-<?=$user_id?>'>
-                    <td><?=$i?></td> 
+                    <th scope='row'><?=$i?></td> 
                     <td><?=$user_login?></td> 
                     <td><?=$full_name?></td> 
                     <td style='width: 300px;'><?
@@ -112,22 +112,16 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                         ];
                         echo $form->field($model, 'department', ['template' => '{input}'])->dropDownList($listDepartment, $param);
 
-
                     ?></td> 
                     <td><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$user_id?>, <?=$table_users?>);'>Удалить</button></td>
-                    
                     
                     <?php //if ($currentDepartment == 'Сопровождение'): ?>
                         <td><button type='button' class='btn btn-sm btn-danger' onclick='gunShow(<?=$user_id?>, "<?=$full_name?>", <?=$i?>);'>Оружие</button></td>
                     <? //else: ?>
                         <!-- <td></td> -->
-                    <? //endif; ?>
-
-                    
-                    
-                            
-                        
+                    <? //endif; ?>  
                 </tr>
+                
             <?php $i = $i + 1; } ?>  
             </tbody>
           </table>
@@ -139,9 +133,8 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                         <caption><strong>Список оружия <input type="text" id="userName"></input></strong></caption>
                         <thead>
                             <tr>  
-                                
-                                <td><b>№</b></td> 
-                                <td><b>Оружие</b></td>
+                                <th scope='col'>№</th> 
+                                <th scope='col'>Оружие</th>
                             </tr>
                         </thead>
                         <tbody id="gunTable">
@@ -155,7 +148,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
                             ?>
                             <tr id='gunName-<?=$gun_id?>'>
                                  
-                                <td><label class="checkbox" for="gunCheckbox-<?=$gun_id?>"><input id="gunCheckbox-<?=$gun_id?>" class="gunCheckbox" type="checkbox" value="" onclick='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
+                                <th scope='row'><label class="checkbox" for="gunCheckbox-<?=$gun_id?>"><input id="gunCheckbox-<?=$gun_id?>" class="gunCheckbox" type="checkbox" value="" onclick='checkboxChange(<?=$gun_id?>);'><?=$j?></label></td> 
                                 <td><?=$gun_name?></td> 
                             </tr>
                         <?php $j = $j + 1; } ?>  

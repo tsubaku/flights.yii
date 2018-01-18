@@ -46,16 +46,16 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
         
     <div class="row">    
         <div class="table table-striped">
-             <table style="width: 600px;" class="table table-striped">
-             <caption><strong>Список наших клиентов</strong></caption>
+             <table id="tableListGun" class="table table-striped table-bordered table-hover">
+             <caption><strong>Список оружия на балансе организации</strong></caption>
                 <thead>
-                    <tr>  
-                        <td><b>№</b></td> 
-                        <td><b>Название</b></td> 
-                        <td><b>Удалить</b></td>
+                    <tr class='bg-primary'>  
+                        <th scope='col'>№</th> 
+                        <th scope='col'>Название</th> 
+                        <th scope='col'>Удалить</th>
                     </tr>
                 </thead>
-                <tbody id="gunTable">
+                <tbody>
                     <?php
                     #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
                     $i = 1;   
@@ -64,9 +64,9 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
                         $unName = $gun['name'];  //Название клиента  
                         ?>
                         <tr id='gunName-<?=$id?>'>
-                            <td style="width: 50px;"><?=$i?></td> 
+                            <th scope='row'><?=$i?></th> 
                             <td><?=$gun->name?></td> 
-                            <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
+                            <td class="buttonDelGun"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
                         </tr>
                     <?php $i = $i + 1; } ?>  
                 </tbody>

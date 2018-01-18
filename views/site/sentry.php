@@ -127,18 +127,18 @@ $this->title = 'Постовая ведомость';
                     
                     #Рисуем шапку таблицы
                     echo "<thead>";
-                        echo "<tr>";
+                        echo "<tr class='bg-primary'>";
                         ?>
-                        <th scope='col'><b>№</b></th> 
-                        <th scope='col'><b>№ поста/<br />маршрута</b></th> 
-                        <th scope='col'><b>Ф.И.О. охранника</b></th> 
-                        <th scope='col'><b>Дата заступления<br />на службу</b></th>
-                        <th scope='col'><b>Время заступления<br />на службу</b></th>
-                        <th scope='col'><b>Наличие оружия и спецсредств на посту</b></th>
-                        <th scope='col'><b>Дата окончания<br />службы</b></th>
-                        <th scope='col'><b>Время окончания службы</b></th>
-                        <th scope='col'><b>Воемя доклада об обстановке на посту</b></th>
-                        <th scope='col'><b>Примечания</b></th> 
+                        <th scope='col'>№</th> 
+                        <th scope='col'>№ поста/<br />маршрута</th> 
+                        <th scope='col'>Ф.И.О. охранника</th> 
+                        <th scope='col'>Дата заступления<br />на службу</th>
+                        <th scope='col'>Время заступления<br />на службу</th>
+                        <th scope='col'>Наличие оружия и спецсредств на посту</th>
+                        <th scope='col'>Дата окончания<br />службы</th>
+                        <th scope='col'>Время окончания службы</th>
+                        <th scope='col'>Воемя доклада об обстановке на посту</th>
+                        <th scope='col'>Примечания</th> 
                         <?php
                         echo "</tr>";
                     echo "</thead>";
@@ -155,7 +155,7 @@ $this->title = 'Постовая ведомость';
                             $gunName    = $row_content['gun'];          //$gun - название оружия
                             
                             echo "<tr id='sentry-$id_line'>";
-                            echo "<th  scope='row'>$i</th>"; //Вывод № строки
+                            echo "<th scope='row'>$i</th>"; //Вывод № строки
                             $i = $i + 1;
                             
                             foreach ($row_content as $column_name => $data) {  //$column_name - название столбца, $data - содержимое ячейки
@@ -207,9 +207,10 @@ $this->title = 'Постовая ведомость';
                                     case 'time_off':
                                     case 'time_report':
                                         $data = substr($data, 0, 5); // убираем секунды
-                                        $container      = "container_id";
+                                        //$container      = "container_id";
+                                        $container      = "inputTime";
                                         $buttonTimeOff = "<button type='button' id='$column_name-$id_line' class='button_set_time' onclick='setTime(this.id)'></button>";
-                                        $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div><div class='cont2'>$buttonTimeOff</div></td>";
+                                        $cellHtml = "<td><div class='$container'><input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name' value='$data' onchange='$js_change_cell'></input></div><div class='divButtonSetTime'>$buttonTimeOff</div></td>";
                                     break;
                                     
                                     
