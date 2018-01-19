@@ -336,7 +336,7 @@ td {
 
 input {
 	width:100%;
-	height:25px;
+	height:29px;
 	padding: 0px; /* Поля вокруг текста */
 	margin: 0px; /* Отступы вокруг */
 	border: 0px;
@@ -381,15 +381,21 @@ input {
 
 
 
-/*** Таблица со списком оружия на странице gun*****/
+/* Таблица со списком оружия на странице gun */
 #tableListGun {
     width:400px;
 }
+
+/* Таблица со списком клиентов на странице client */
+#tableListClient {
+    width:400px;
+}
+/* Ширина ячейки с кнопкой Удалить у таблиц клиентов, оружия, охранников и кнопки Оружие у таблицы охранников */
 .buttonDelGun {
     width:70px;
 }
-/********/
 
+/********/
 
 
 
@@ -403,32 +409,39 @@ input {
 }
 
 #tableGun  {
-    width:400px;  
+     
 }
 #tableGun td {
-    background: #ceffee;  
+/*    background: #ceffee;  
     font: normal 11px Verdana, sans-serif;
     margin: 0px; /* Отступы вокруг */    
-    padding: 2px; /* Поля вокруг текста */
+/*    padding: 2px; /* Поля вокруг текста */
 }
 #tableGun tr {
-    background: #ceffee;  
+/*    background: #ceffee;  */
     height:10px;
-    padding: 0px; /* Поля вокруг текста */
-	margin: 0px; /* Отступы вокруг */
+/*    padding: 0px; /* Поля вокруг текста */
+/*	margin: 0px; /* Отступы вокруг */
 
 }
 #tableGun label { 
-    padding: 0px; /* Поля вокруг текста */
-	margin: 0px; /* Отступы вокруг */
-	margin-left: 0px; /* Отступы вокруг */
+/*   padding: 0px; /* Поля вокруг текста */
+/*	margin: 0px; /* Отступы вокруг */
+/*	margin-left: 0px; /* Отступы вокруг */
+
+}
+#tableGun th { 
+/*   padding: 0px; /* Поля вокруг текста */
+/*	margin: 0px; /* Отступы вокруг */
+	padding: 0px; /* Отступы вокруг */
 
 }
 .gunCheckbox{ 
   /*  padding: 0px; /* Поля вокруг текста */
 /*	margin: 0px; /* Отступы вокруг */
-	margin-left: 20px; /* Отступы вокруг */
-
+/*	margin-left: 0px; /* Отступы вокруг */
+/*    position: relative; */
+    height:20px;
 }
 
 /**** Table Column Classes *****************************************/
@@ -909,4 +922,10 @@ figure.photo_prev figcaption {  /* стиль описания */
 }
 
 
+/* Убираем отступ снизу у форм, чтобы на странице охранников таблица была компактнее */
+.form-group {
+    margin-bottom: 0px;
+    /*height: 20px; */
+    padding: 0px;
+}
 

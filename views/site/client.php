@@ -13,22 +13,10 @@ $this->title = 'Клиенты';
 
 $table_users = '11'; //клиенты             !!! Костыль !!!
 ?>
-<div class="site-about">
+<div class="container-fluid">
     <h1><?= Html::encode($this->title) ?></h1>
  
-<div>
-   <!-- <form class="form-horizontal"> -->
-      <!--  <div class="form-group">
-            <label for="client" class="col-sm-2 control-label">Новый клиент:</label>
-            <div class="col-sm-3">
-          
-                <input type="text" class="form-control" id="client" name="client"> 
-            </div>  
-          
-            <button class="col-sm-2 btn btn-success" id="a_register_client" onclick="register_client();">Зарегистрировать</button>
-        </div> -->
-  <!--    </form>     -->
-  
+    <div class="row">
         <!-- Регистрация клиентов --->
         <?php $form = ActiveForm::begin([
                 'id' => 'add',
@@ -39,96 +27,83 @@ $table_users = '11'; //клиенты             !!! Костыль !!!
                 ]
             ]) ?>
 
-
         <?= $form->field($model, 'name', [
                 'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
             ]) 
-            
         ?>
         
-            <div class="form-group">
-                <div>
-                    <?= Html::submitButton('Регистрация', ['class' => 'btn btn-success', 'id' => 'add1', 'name' => 'add2']) ?>
-                </div>
+        <div class="form-group">
+            <div>
+                <?= Html::submitButton('Регистрация', ['class' => 'btn btn-success', 'id' => 'add1', 'name' => 'add2']) ?>
             </div>
+        </div>
         <?php ActiveForm::end() ?> 
-  
-  
-  
-  
-</div>
-
-  
+    </div>
 
 
 
-
-
-
-	
-    
-<div class="row">    
-<div class="table table-striped">
-     <table style="width: 600px;" class="table table-striped">
-     <caption><strong>Список наших клиентов</strong></caption>
-        <thead>
-            <tr>  
-                <td><b>№</b></td> 
-                <td><b>Название</b></td> 
-                <td><b>Удалить</b></td>
-            </tr>
-        </thead>
-        <tbody id="clientsTable">
-            <?php
-            #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
-            $i = 1;   
-            foreach ($listClients as $client){ 
-                $id         = $client['id'];      //id клиента
-                $clientName = $client['name'];  //Название клиента  
-                ?>
-                <tr id='clientName-<?=$id?>'>
-                    <td style="width: 50px;"><?=$i?></td> 
-                    <td><?=$client->name?></td> 
-                    <td style="width: 70px;"><button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button></td>  
+        
+        
+    <div class="row">    
+        <table id="tableListClient" class="table table-striped table-bordered table-hover table-success">
+         <caption><strong>Список наших клиентов</strong>
+         </caption>
+            <thead>
+                <tr class='bg-primary'>  
+                    <th scope='col'>№</th> 
+                    <th scope='col'>Название</th> 
+                    <th scope='col'>Удалить</th>
                 </tr>
-            <?php $i = $i + 1; } ?>  
-        </tbody>
-      </table>
-</div>
-</div>
-<br />
+            </thead>
+            <tbody id="clientsTable">
+                <?php
+                #Выводим последовательно строки с именами клиентов, начиная с порядкового номера
+                $i = 1;   
+                foreach ($listClients as $client){ 
+                    $id         = $client['id'];      //id клиента
+                    $clientName = $client['name'];  //Название клиента  
+                    ?>
+                    <tr id='clientName-<?=$id?>'>
+                        <th scope='row'><?=$i?></td> 
+                        <td><?=$client->name?></td> 
+                        <td class="buttonDelGun">
+                            <button type='button' class='btn btn-sm btn-danger' onclick='delete_line(<?=$id?>, <?=$table_users?>);'>Удалить</button>
+                        </td>  
+                    </tr>
+                <?php $i = $i + 1; } ?>  
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div id="status">					
+    </div>
 
 
-	
-
-<div id="status">					
-</div>
-
-
-<?php
-/* $js = <<< JS
-    $('#btn').on('click', function(e) {
-        $.ajax({
-            url: 'index.php?r=site/clients',
-            data: {test: '123'},
-            type: 'POST',
-            success: function(res){
-                console.log(res);
-            },
-            error: function(){
-                alert('error ajax');
-            }
+    <?php
+    /* $js = <<< JS
+        $('#btn').on('click', function(e) {
+            $.ajax({
+                url: 'index.php?r=site/clients',
+                data: {test: '123'},
+                type: 'POST',
+                success: function(res){
+                    console.log(res);
+                },
+                error: function(){
+                    alert('error ajax');
+                }
+            });
         });
-    });
-JS;
-$this->registerJs($js); //регистрируем скрипт */
-echo '<pre>'; 
-print_r ($client->name); //фактически - последний клиент из списка
-//print_r ($client);
-//print_r ($rows);
-echo '</pre>'; 
+    JS;
+    $this->registerJs($js); //регистрируем скрипт */
+    //echo '<pre>'; 
+    //print_r ($client->name); //фактически - последний клиент из списка
+    //print_r ($client);
+    //print_r ($rows);
+    //echo '</pre>'; 
 
-?>        
+    ?>        
 
  
     

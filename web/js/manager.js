@@ -137,17 +137,18 @@ window.delete_line = delete_line;
 
 
 
-//При клике по кнопке вытащить со страницы signup id охранника, запросить контроллер о прикреплённом оружии и отобразить его на странице
+//При клике по кнопке Оружие вытащить со страницы signup id охранника, 
+//запросить контроллер о прикреплённом оружии и отобразить его на странице
 function gunShow(userId, full_name, nLine) {
     console.log(userId);
     console.log(full_name);
     console.log(nLine);
 
     //Двигаем панель оружия к нажатой кнопке
-    margTop = nLine * 47;
+    margTop = nLine * 35;
     console.log(margTop);
-    panelGun.style.marginTop = margTop - 40 + "px"; 
-    //document.getElementById("panelGun").style.marginLeft = 100 + margTop + "px";
+    tableGun.style.marginTop = margTop - 53 + "px"; 
+    //document.getElementById("tableGun").style.marginLeft = 100 + margTop + "px";
     
     $.ajax({
             url:"index.php?r=site/gunshow",
@@ -162,10 +163,7 @@ function gunShow(userId, full_name, nLine) {
                 document.getElementById("userName").value=full_name;
                 gun.style.visibility='visible';
                 //gun.style.position='static';
-                
-                
-                
-                
+
                 //console.log(data);
                 var listGunName = JSON.parse(data);
                 //console.log(listGunName); 
