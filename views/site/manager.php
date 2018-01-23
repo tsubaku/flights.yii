@@ -74,144 +74,168 @@
                 <?php   
                     #Рисуем таблицу рейсов
                     if ($listFlight != NULL) { //иначе варнинги идут, если рейсов нет 
-                        echo "<table>";
+                        echo "<table class='table table-striped table-bordered table-hover'>";
                         echo "<h1>Рейсы за $months[$month] $year</h1>"; //Название таблицы
                         
                         #Рисуем шапку таблицы
-                        echo "<tr>";
-                        foreach ($ru_rows_array as $key => $value) {
-                            echo "<td><strong>" . $value . "</strong></td>"; 
-                        } 
-                        echo "</tr>";
-                        
-                        #Рисуем строки таблицы
-                        $js_change_cell = "change_cell(this.value, this.id)"; //Ф-ия записи данных в ячейке при их изменении
-                        $js_change_list = "change_cell(GetData(this.id), this.id)"; //Ф-ия записи данных в селекте при их изменении
-                        $i = 1;
-                        foreach ($listFlight as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
-                            
-                            $id_line   = $row_content['id']; //$id_line - id строки в БД рейсов
-                            $id_status = $row_content['fakticheskij_srok_dostavki']; //$id_status - status строки в БД
-                            echo "<tr id='flight-$id_line'>";
-                            echo "<td><input type='text' id='number_line-$i' class='number_line' value='$i' disabled='disabled'> </input></td>"; //Вывод № строки
-                            $i = $i + 1;
-                            
-                            foreach ($row_content as $column_name => $data) {
-                                #Определяем переменные для каждой ячейки строки
-                                $button       = "";
-                                $photo        = "";
-                                $container    = "container_default";
-                                $status_class = "";
-                                $readonly     = "";
-                                $type         = "text";
-                                $fio          = "";
-                                switch ($column_name) {
-                                    case 'id':
-                                        #Вытаскиваем все пути к фотографиям рейса
-                                        //$stmt = $pdo->prepare('SELECT `path` FROM `photo` WHERE `n_flight` = :id_line');
-                                        //$stmt->execute(array(
-                                        //    'id_line' => $id_line
-                                        //));
-                                        //$photo_name_array = $stmt->fetchAll(); //Обработать запрос, переведя ВСЕ данные в массив $photo_name_array
-                                        
-                                        //$listPhoto
-                                        //$flightPhoto = Array();
-                                        $photo_name_array = null;
-                                         $p = 0;
-                                        foreach ($listPhoto as $key => $val) {
-                                            if ($val['n_flight'] == $id_line) { 
-                                                //$flightPhoto[] = $val['path']; 
-                                                $photo_name_array[$p] = $val['path'];
-                                                $p = $p + 1;
-                                            }   
-                                        } 
-                                        
-
-                                        
-                                        
-                                        if ($photo_name_array) { //Если имеется хотя бы одно фото
-                                            $photo = "<button type='button' class='a_button_photo' onclick='get_photo($id_line)'></button>";
-                                        } else {
-                                            $photo = "<button type='button' class='a_button_no_photo' onclick='get_photo($id_line)'></button>";
-                                        }
-                                        $readonly  = "readonly";
-                                        $container = "container_id";
-                                        $button    = "<button type='button' class='a_button_delete' onclick='delete_line($data, $table);'></button>";
-                                        break;
-                                    
-                                    case 'data_vyezda':
-                                        $type = "date"; //Ставим в ячейку дату;
-                                        break;
-                                    
-                                    case 'vremja':
-                                    case 'srok_dostavki':
-                                        $type = "text";
-                                        $data = substr($data, 0, 5); //убираем лишнее из формата ячейки TIME
-                                        break;
-                                    
-                                    case 'prinjatie':
-                                    case 'sdacha':
-                                        $type = "datetime-local"; //Ставим в ячейку тип "дата и время"
-                                        if (isset($data)) { //хз как, но оно работает, но время показывается и прописывается правильно
-                                            $data = date("Y-m-d\TH:i:s", strtotime($data));
-                                        }
-                                        $input_class = '';
-                                        break;
-                                    
-                                    case 'klient':
-                                         $klient = "<select size='0' id='klient-$id_line' name='klient-$id_line' class='list_users' onchange='$js_change_list'>";
-                                        foreach ($listClients as $value) {
-                                            $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                            $klient .= "<option value=$user_n";
-                                            if (($value == $data) or ($data == NULL)) {
-                                                $klient .= " selected='selected'";
-                                            }
-                                            $klient .= '>' . $value;
-                                        }
-                                        $klient .= "</select>"; 
-                                        break;
-                                    
-                                    case 'fio':
-                                         $fio = "<select size='0' id='fio-$id_line' name='fio-$id_line' class='list_users' onchange='$js_change_list'>";
-                                        foreach ($listUsers as $value) {
-                                            $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                            $fio .= "<option value=$user_n";
-                                            if (($value == $data) or ($data == NULL)) {
-                                                $fio .= " selected='selected'";
-                                            }
-                                            $fio .= '>' . $value;
-                                        }
-                                        $fio .= "</select>"; 
-                                        break;
-                                    
-                                    case 'fakticheskij_srok_dostavki':
-                                    case 'prostoj_summa':
-                                    case 'schet':
-                                    case 'oplata_mashin':
-                                    case 'itogo':
-                                    case 'zp_plus_prostoj':
-                                        $readonly = "readonly";
-                                        break;
-                                    
-                                    default:
-                                        break;
-                                }
-                                if ($id_status == 'В рейсе') {
-                                    $status_class = 'completed';
-                                }
-                                
-                                //Если столбец ФИО или Клиент, то рисуем тег select со списком
-                                if ($column_name == 'fio') {
-                                    echo "<td ><div class='$container'>$fio</div></td>"; //
-                                } else if ($column_name == 'klient') {
-                                    echo "<td ><div class='$container'>$klient</div></td>"; //
-                                } else {    //иначе просто инпут
-                                    echo "<td ><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
-                                }
-                            }
+                        echo "<thead>";
+                            echo "<tr class='bg-primary'>";
+                            foreach ($ru_rows_array as $key => $value) {
+                                echo "<th scope='col'>" . $value . "</th>"; 
+                            } 
                             echo "</tr>";
-                        }
-                        echo "</table>";
+                        echo "</thead>";
+                        #Рисуем строки таблицы
+                        echo "<tbody>";
+                            $js_change_cell = "change_cell(this.value, this.id)"; //Ф-ия записи данных в ячейке при их изменении
+                            $js_change_list = "change_cell(GetData(this.id), this.id)"; //Ф-ия записи данных в селекте при их изменении
+                            $i = 1;
+                            foreach ($listFlight as $key_id => $row_content) { //$key_id - номер строки в таблице, $row_content - массив ячеек в ряду
+                                
+                                $id_line   = $row_content['id']; //$id_line - id строки в БД рейсов
+                                $id_status = $row_content['fakticheskij_srok_dostavki']; //$id_status - status строки в БД
+                                echo "<tr id='flight-$id_line'>";
+                                echo "<th scope='row'>$i</th>"; //Вывод № строки
+                                $i = $i + 1;
+                                
+                                foreach ($row_content as $column_name => $data) {
+                                    #Определяем переменные для каждой ячейки строки
+                                    $button       = "";
+                                    $photo        = "";
+                                    $container    = "container_default";
+                                    $status_class = "";
+                                    $readonly     = "";
+                                    $type         = "text";
+                                    $fio          = "";
+                                    switch ($column_name) {
+                                        case 'id':
+                                            #Вытаскиваем все пути к фотографиям рейса
+                                            //$stmt = $pdo->prepare('SELECT `path` FROM `photo` WHERE `n_flight` = :id_line');
+                                            //$stmt->execute(array(
+                                            //    'id_line' => $id_line
+                                            //));
+                                            //$photo_name_array = $stmt->fetchAll(); //Обработать запрос, переведя ВСЕ данные в массив $photo_name_array
+                                            
+                                            //$listPhoto
+                                            //$flightPhoto = Array();
+                                            $photo_name_array = null;
+                                             $p = 0;
+                                            foreach ($listPhoto as $key => $val) {
+                                                if ($val['n_flight'] == $id_line) { 
+                                                    //$flightPhoto[] = $val['path']; 
+                                                    $photo_name_array[$p] = $val['path'];
+                                                    $p = $p + 1;
+                                                }   
+                                            } 
+
+                                            
+                                            if ($photo_name_array) { //Если имеется хотя бы одно фото
+                                                $photo = "<button type='button' class='a_button_photo' onclick='get_photo($id_line)'></button>";
+                                            } else {
+                                                $photo = "<button type='button' class='a_button_no_photo' onclick='get_photo($id_line)'></button>";
+                                            }
+                                            $readonly  = "readonly";
+                                            $container = "container_id";
+                                            $button    = "<button type='button' class='a_button_delete' onclick='delete_line($data, $table);'></button>";
+                                            break;
+                                        
+                                        case 'data_vyezda':
+                                            $type = "date"; //Ставим в ячейку дату;
+                                            break;
+                                        
+                                        case 'vremja':
+                                        case 'srok_dostavki':
+                                            $type = "text";
+                                            $data = substr($data, 0, 5); //убираем лишнее из формата ячейки TIME
+                                            break;
+                                        
+                                        case 'prinjatie':
+                                        case 'sdacha':
+                                            $type = "datetime-local"; //Ставим в ячейку тип "дата и время"
+                                            if (isset($data)) { //хз как, но оно работает, но время показывается и прописывается правильно
+                                                $data = date("Y-m-d\TH:i:s", strtotime($data));
+                                            }
+                                            $input_class = '';
+                                            break;
+                                        
+                                        case 'klient':
+                                             $klient = "<select size='0' id='klient-$id_line' name='klient-$id_line' class='list_users' onchange='$js_change_list'>";
+                                            foreach ($listClients as $value) {
+                                                $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                                $klient .= "<option value=$user_n";
+                                                if (($value == $data) or ($data == NULL)) {
+                                                    $klient .= " selected='selected'";
+                                                }
+                                                $klient .= '>' . $value;
+                                            }
+                                            $klient .= "</select>"; 
+                                            break;
+                                        
+                                        case 'fio':
+                                             $fio = "<select size='0' id='fio-$id_line' name='fio-$id_line' class='list_users' onchange='$js_change_list'>";
+                                            foreach ($listUsers as $value) {
+                                                $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
+                                                $fio .= "<option value=$user_n";
+                                                if (($value == $data) or ($data == NULL)) {
+                                                    $fio .= " selected='selected'";
+                                                }
+                                                $fio .= '>' . $value;
+                                            }
+                                            $fio .= "</select>"; 
+                                            break;
+                                        
+                                        case 'fakticheskij_srok_dostavki':
+                                        case 'prostoj_summa':
+                                        case 'schet':
+                                        case 'oplata_mashin':
+                                        case 'itogo':
+                                        case 'zp_plus_prostoj':
+                                            $readonly = "readonly";
+                                            break;
+                                        
+                                        default:
+                                            break;
+                                    }
+                                    if ($id_status == 'В рейсе') {
+                                        $status_class = 'completed';
+                                    }
+                                    
+                                    //Если столбец ФИО или Клиент, то рисуем тег select со списком
+                                    if ($column_name == 'fio') {
+                                        echo "<td><div class='$container'>$fio</div></td>"; //
+                                    } else if ($column_name == 'klient') {
+                                        echo "<td><div class='$container'>$klient</div></td>"; //
+                                    } else {    //иначе просто инпут
+                                       // echo "<td><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
+                                        
+                                        echo "<td>
+                                           
+                                            <div class='divButtonPhoto'>
+                                                $photo
+                                            </div>
+                                            <div class='inputId'>
+                                                <input type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name'  value='$data' onchange='$js_change_cell'></input>
+                                            </div>
+                                            <div class='divButtonDelet'>
+                                                $button
+                                            </div>
+                                            
+                                        </td>";
+                                    }
+                                }
+                                echo "</tr>";
+                            }
+                            echo "</tbody>";
+                        echo "</table>
+                        
+                        
+    <div style='width: 100%;'>
+        <div style='float: left; width: 100px; height: 100px;'>content</div>
+        <div style='float: left; width: 100px; height: 100px;'>content</div>
+        <div style='float: left; width: 100px; height: 100px;'>content++</div>
+    </div>
+
+                        ";
                     } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
                         //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
                         //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран

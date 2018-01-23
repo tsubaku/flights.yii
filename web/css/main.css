@@ -233,22 +233,26 @@ h3 {
 	display: inline-block;
 	background-image: url(../img/no_photo.png);
 	background-size: cover; /* Фон занимает всю доступную площадь */
-	height:23px;
+	height:23px; 
 	width: 23px;
 	float: left;
 	padding-right: 2px;
 	vertical-align: top;
+   
+/*	height:100%; */   
 }
 
 .a_button_delete {
 	display: inline-block;
 	background-image: url(../img/delete.png);
 	background-size: cover; /* Фон занимает всю доступную площадь */
-	height:23px;
+	height:23px; 
 	width: 23px;
 	float: right;
 	padding-right: 2px;
 	vertical-align: top;
+
+/*	height:100%; */
 }
 
 .button_set_time {
@@ -354,11 +358,35 @@ input {
     display: inline-block;
 }
 
+.inputId {
+    float: left;
+    height: 20px;
+    width: calc(100% - 46px);
+    box-sizing: border-box;
+    padding: 0px; /* Поля вокруг текста */
+    margin: 0px; /* Отступы вокруг */
+    border: 0px;  
+    display: inline-block;
+}
+
 .divButtonSetTime{
     display: inline-block;
     float: right;
     width:23px;
 	height:100%;
+}
+
+.divButtonPhoto{
+    display: inline-block;
+    width:23px;
+	height:100%;
+    float: left;
+}
+.divButtonDelet{
+    display: inline-block;
+    width:23px;
+	height:100%;
+    float: left;
 }
 
 /* Цвет текста дат в Постовой водомости у охранников, длительное время не сдающих оружие.  */
@@ -449,8 +477,8 @@ input {
     width:33px;
 }
 .id {
-	width:63px;
-	display: inline-block;
+	width:40px; 
+/*	display: inline-block;*/
 }		
 .data_vyezda{
 	width:150px;
