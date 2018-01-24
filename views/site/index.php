@@ -2,53 +2,65 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Справка';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+    <!--    <h1></h1> -->
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Небольшое описание разделов</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+      <!--  <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p> -->
     </div>
 
     <div class="body-content">
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Рейсы</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Учёт рейсов. Большая таблица, заполняемая менеджером. В неё же попадают данные, внесённые охранниками с рейсов через смартфоны (реальное время принятия и сдачи, номер машины, фотографии с рейса). Автоматически подсчитывает некоторые цифры.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+       <!--         <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p> -->
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Клиенты</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Список фирм клиентов, грузы которых мы сопровождаем или охраняем.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+      <!--          <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p> -->
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>Охранники</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Список охранников. Отдел сопровождения - охранники с табельным оружием. Без отдела - охранники без прикреплённого табельного оружия. Здесь же можно прикрепить или открепить от охранника табельное оружие.</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+       <!--         <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p> -->
+            </div>
+            <div class="col-lg-4">
+                <h2>Оружие</h2>
+
+                <p>Список оружия, закреплённого за фирмой.</p>
+
+
+            </div>
+            <div class="col-lg-4">
+                <h2>Постовая</h2>
+
+                <p>Постовая ведомость. Ежедневно генерируется 11 маршрутов, на которые можно назначить охранников и выбрать взятое ими оружие. После сдачи, необходимо пометить время сдачи. Все охранники, не завершившие маршрут и не сдавшие оружие, отображаются в общем списке и помечаются цветом: чёрным - вышедшие сегодня, синим - вчера и позавчера, фиолетовым - до семи дней назад, красным - более недели назад.</p>
+
+
+            </div>
+            <div class="col-lg-4">
+                <h2>Клиенты</h2>
+
+                <p>Список фирм клиентов, грузы которых мы сопровождаем или охраняем.</p>
+
+
             </div>
         </div>
 
     </div>
 </div>
-v.031 22.12.2017
+v.042 22.12.2017

@@ -34,7 +34,10 @@
                            11=>'Ноябрь',
                            12=>'Декабрь',
                         ];
-                        $param = ['options' =>[ $month => ['Selected' => true]]];
+                        $param = [
+                            'options' =>[ $month => ['Selected' => true]],
+                            'onchange'  => 'changeDate()',
+                            ];
                         echo Html::dropDownList('month', 'null', $months, $param);
                     ?>
                 </div> 
@@ -45,12 +48,15 @@
                            2017=>'2017',
                            2018=>'2018',
                         ];
-                        $param = ['options' =>[ $year => ['Selected' => true]]];
+                        $param = [
+                            'options' =>[ $year => ['Selected' => true]],
+                            'onchange'  => 'changeDate()',
+                            ];
                         echo Html::dropDownList('year', 'null', $years, $param); 
                     ?>
                 </div>
                 <div class="col-xs-3">  
-                    <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'name' => 'refresh-button', 'value' => 'refresh-button']) ?>
+                    <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'id' => 'refreshButton', 'name' => 'refreshButton', 'value' => 'refreshButton']) ?>
                 </div> 
                 <div class="col-xs-3">  
                     <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
@@ -207,9 +213,7 @@
                                         echo "<td><div class='$container'>$klient</div></td>"; //
                                     } else {    //иначе просто инпут
                                        // echo "<td><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
-                                        
                                         echo "<td>
-                                           
                                             <div class='divButtonPhoto'>
                                                 $photo
                                             </div>
@@ -219,23 +223,13 @@
                                             <div class='divButtonDelet'>
                                                 $button
                                             </div>
-                                            
                                         </td>";
                                     }
                                 }
                                 echo "</tr>";
                             }
                             echo "</tbody>";
-                        echo "</table>
-                        
-                        
-    <div style='width: 100%;'>
-        <div style='float: left; width: 100px; height: 100px;'>content</div>
-        <div style='float: left; width: 100px; height: 100px;'>content</div>
-        <div style='float: left; width: 100px; height: 100px;'>content++</div>
-    </div>
-
-                        ";
+                        echo "</table>";
                     } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
                         //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
                         //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран
@@ -274,7 +268,7 @@
 
 <?php
     //echo '<pre>'; 
-    //print_r ($cats);
+    //print_r ($text);
     //echo "$cats"; 
     
   

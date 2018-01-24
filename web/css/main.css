@@ -323,20 +323,21 @@ h3 {
 /*	float: left;
 } */
 
-tr {
+/*tr {
 /*    display: table-row; */
 /*	border: 0px solid #451; /* Параметры рамки */
 /*	padding: 0px;
-/*    margin: 0px; */
-	
+/*    margin: 0px; 
 }
-td { 
+*/
+
+/*td { 
 /*	border: 1px solid #951; /* Параметры рамки */
 /*	height: 23px; */
 /*	padding: 0px;
-/*	margin: 0px; */
+/*	margin: 0px; 
 }
-
+*/
 
 input {
 	width:100%;
@@ -477,9 +478,10 @@ input {
     width:33px;
 }
 .id {
-	width:40px; 
+	width:100px; 
 /*	display: inline-block;*/
-}		
+}
+		
 .data_vyezda{
 	width:150px;
 }

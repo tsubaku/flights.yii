@@ -295,7 +295,7 @@ $this->title = 'Постовая ведомость';
 
 <?php
 
-echo '<pre>'; 
+//echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
@@ -306,7 +306,7 @@ echo '<pre>';
 //print_r ($currentDate);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-echo '</pre>'; 
+//echo '</pre>'; 
 
 ?> 
        
