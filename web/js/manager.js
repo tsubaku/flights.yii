@@ -151,7 +151,7 @@ function gunShow(userId, full_name, nLine) {
     //document.getElementById("tableGun").style.marginLeft = 100 + margTop + "px";
     
     $.ajax({
-            url:"index.php?r=site/gunshow",
+            url:"index.php?r=signup/gunshow",
             type:"POST",
             //async: true,
             statbox:"status",
@@ -232,7 +232,7 @@ function checkboxChange(gunId) {
     console.log(gunId);
     console.log(checkboxPosition);
      $.ajax({
-            url:"index.php?r=site/checkboxchange",
+            url:"index.php?r=signup/checkboxchange",
             type:"POST",
             //async: true,
             statbox:"status",
@@ -260,7 +260,7 @@ function checkboxChange(gunId) {
 //Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
 function get_photo(id_line) {
     $.ajax({
-            url:"index.php?r=site/getphoto",
+            url:"index.php?r=manager/getphoto",
             type:"POST",
             //async: true,
             statbox:"status",
@@ -372,7 +372,8 @@ window.changeDate = changeDate;
 
 
 
-//+Установка текущего времени. Принимает название столбца и id строки, отправляет их контроллеру. Принмает от контроллера статус выполнения.
+//+Установка текущего времени. Принимает название столбца и id строки, отправляет их в SentryController.php. 
+//Принимает от контроллера статус выполнения.
 function setTime(idTime) {
     //Вытаскиваем название столбца и ид строки
     var positionMinus = idTime.indexOf("-");                        //найти позицию символа "-"
@@ -381,7 +382,7 @@ function setTime(idTime) {
     //console.log(columnInDb + " " + idInDb); 
     
     $.ajax({
-            url:"index.php?r=site/settime",
+            url:"index.php?r=sentry/settime",
             type:"POST",
             statbox:"status",
             data:

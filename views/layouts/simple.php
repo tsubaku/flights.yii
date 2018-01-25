@@ -33,10 +33,10 @@ AppAsset::register($this);
                     'options' => ['class' => 'navbar-nav navbar-right'],
                     'items' => [
                         Yii::$app->user->isGuest ? (
-                            ['label' => 'Login', 'url' => ['/site/login']]
+                            ['label' => 'Login', 'url' => ['/login/login']]
                         ) : (
                             '<li>'
-                            . Html::beginForm(['/site/logout'], 'post')
+                            . Html::beginForm(['/login/logout'], 'post')
                             . Html::submitButton(
                                 'Logout (' . Yii::$app->user->identity->username . ')',
                                 ['class' => 'btn btn-link logout']

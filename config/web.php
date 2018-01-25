@@ -41,7 +41,7 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    'defaultRoute'=> 'site/login', //Главной страницей сайта будет страница логина
+    'defaultRoute'=> 'login/login', //Главной страницей сайта будет страница логина
 ];
 
 if (YII_ENV_DEV) {

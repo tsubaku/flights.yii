@@ -77,7 +77,7 @@ function change_cell(cell_value, cell_id)
     var id_in_db = cell_id.substring(position_minus+1, cell_id.length);//все символы от - и до конца включительно (получаем id строки в БД)
     console.log("column_in_db: "+column_in_db+" id_in_db: "+id_in_db+" cell_value: "+cell_value+" \n");
     $.ajax({
-            url:"index.php?r=site/change",
+            url:"index.php?r=manager/change",
             type:"POST",
             async: true,
             statbox:"status",
@@ -142,7 +142,7 @@ function change_cell(cell_value, cell_id)
 }
 
 
-// +Запись изменённой ячейки Постовой ведомости (отправка её содержимого, column и id php-скрипту)
+// +Запись изменённой ячейки Постовой ведомости (отправка её содержимого, column и id в SentryController.php)
 function changeSentry(cell_value, cell_id)
 {
     //console.log("cell_value: "+cell_value+" cell_id: "+cell_id+" \n");
@@ -151,7 +151,7 @@ function changeSentry(cell_value, cell_id)
     var id_in_db = cell_id.substring(position_minus+1, cell_id.length);//все символы от - и до конца включительно (получаем id строки в БД)
     console.log("column_in_db: "+column_in_db+" \n"+" id_in_db: "+id_in_db+" \n"+" cell_value: "+cell_value+" \n");
     $.ajax({
-            url:"index.php?r=site/changesentry",
+            url:"index.php?r=sentry/changesentry",
             type:"POST",
             async: true,
             statbox:"status",
@@ -169,9 +169,7 @@ function changeSentry(cell_value, cell_id)
                 //если изменяли охранника в постовой ведомости, то изменить и его оружие в соседней графе таблицы
                 if (column_in_db == 'full_name') {   
                     var changed_cells = JSON.parse(data);
-                    //console.log("изменён охранник "+cell_value+" \n");
-                    //decodeURIComponent(data.listGun);
-                    console.log("изменён охранник "+cell_value+" " + changed_cells[3] + "\n");
+                    //console.log("изменён охранник "+cell_value+" " + changed_cells[3] + "\n");
                     var list = document.getElementById('gun-'+id_in_db); //элемент
                     while (list.lastChild) {
                         list.removeChild(list.lastChild);
@@ -199,7 +197,8 @@ function changeSentry(cell_value, cell_id)
         })    
 }
 
-// +Запись изменённой ячейки списка юзеров (отправка её содержимого, column и id php-скрипту)
+// +Запись изменённой ячейки в списке юзеров (отправка её содержимого, column и id php-скрипту)
+// Пока что используется только для смены отдела охранника.
 function changeUser(cell_value, cell_id)
 {
     //console.log("cell_value: "+cell_value+" cell_id: "+cell_id+" \n");
@@ -208,7 +207,7 @@ function changeUser(cell_value, cell_id)
     var id_in_db = cell_id.substring(position_minus+1, cell_id.length);//все символы от - и до конца включительно (получаем id строки в БД)
     console.log("column_in_db: "+column_in_db+" \n"+" id_in_db: "+id_in_db+" \n"+" cell_value: "+cell_value+" \n");
     $.ajax({
-            url:"index.php?r=site/changeuser",
+            url:"index.php?r=signup/changeuser",
             type:"POST",
             async: true,
             statbox:"status",
@@ -233,7 +232,7 @@ function changeUser(cell_value, cell_id)
 }
 
 
-//----- Скрипт загрузки файла ----- 
+//----- Скрипт загрузки фото для рейса из интерфейса охранника ----- 
 function submitFile( jQuery ) {
 (function($){
 	var files;  // Глобальная переменная куда будут располагаться данные файлов. С ней будем работать
