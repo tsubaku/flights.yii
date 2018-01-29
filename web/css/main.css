@@ -959,3 +959,7 @@ figure.photo_prev figcaption {  /* стиль описания */
     padding: 0px;
 }
 
+/*   */
+.sentryHeader {
+    float: right;
+}

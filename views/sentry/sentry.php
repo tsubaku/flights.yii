@@ -18,7 +18,7 @@ $this->title = 'Постовая ведомость';
         <?php $form = ActiveForm::begin([
                         'id' => 'sentryForm',  
                     ]); ?>
-        <div class="col-xs-2">  
+        <div class="col-xs-1">  
             <?php
                 $years=[
                    2017=>'2017',
@@ -32,7 +32,7 @@ $this->title = 'Постовая ведомость';
                 echo Html::dropDownList('year', 'null', $years, $param); 
             ?>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-1">
             <?php
                 $months=[
                    1=>'Январь',
@@ -55,7 +55,7 @@ $this->title = 'Постовая ведомость';
                 echo Html::dropDownList('month', 'null', $months, $param);
             ?>
         </div> 
-        <div class="col-xs-2">
+        <div class="col-xs-1">
             <?php
                 $days=[
                     1=>'01',
@@ -99,20 +99,19 @@ $this->title = 'Постовая ведомость';
                 echo Html::dropDownList('day', 'null', $days, $param);
             ?>
         </div> 
-        <div class="col-xs-3">  
+        <div class="col-xs-2">  
             <?= Html::submitButton('Обновить таблицу', ['class' => 'btn btn-primary', 'id' => 'refreshButton', 'name' => 'refreshButton', 'value' => 'refreshButton']) ?>
         </div> 
         
-        <div class="col-xs-3">  
+        <div class="col-xs-2">  
             <?= Html::submitButton('Добавить строку', ['class' => 'btn btn-success', 'name' => 'add-button', 'value' => 'add-button']) ?>
         </div>
-        
-        <div class="col-xs-3">  
-            <?//= Html::submitButton('Печать', ['class' => 'btn btn-success', 'name' => 'print-button', 'value' => 'print-button']) ?>
-        </div> 
-       
+
         <?php ActiveForm::end(); ?>
         
+        <div class="col-xs-5 sentryHeader">
+
+        </div>
     </div>
 
         
@@ -283,7 +282,12 @@ $this->title = 'Постовая ведомость';
     
 </div> <!-- container-fluid -->
 
-
+<!--
+        <div class="col-xs-3">  
+            <?//= Html::submitButton('Печать', ['class' => 'btn btn-success', 'name' => 'print-button', 'value' => 'print-button']) ?>
+        </div> 
+ -->
+ 
 <div id="status">	
 				
 </div>

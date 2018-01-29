@@ -23,6 +23,41 @@ class ManagerController extends Controller
 {
 
     /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ только админу
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['manager'],
+                'rules' => [    //страницы, доступные менеджеру:
+                    [
+                       'actions' => ['manager'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'manager' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
+
+
+
+
+
+
+    /**
      * Displays manager homepage.
      *
      * @return string

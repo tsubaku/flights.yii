@@ -99,7 +99,16 @@ class LoginForm extends Model
             return false;
         }
     }
-    //добавил по аналогии с loginAdmin
+    //Проверка на оператора
+    public function loginOperator()
+    {
+        if ($this->validate() && User::isUserOperator($this->username)) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        } else {
+            return false;
+        }
+    }
+    //юзера (охранника)
     public function loginUser()
     {
         if ($this->validate() && User::isUserUser($this->username)) {

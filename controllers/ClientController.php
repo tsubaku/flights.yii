@@ -9,9 +9,39 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 
 use app\models\Client;      //список фирм клиентов;
+use app\models\User;        //список фирм клиентов;
 
 class ClientController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ только админу
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['client'],
+                'rules' => [    //страницы, доступные менеджеру:
+                    [
+                       'actions' => ['client'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'client' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
     
     #+Отрисовка страницы client и добавление клиента, если нажата копка добавления
     public function actionClient()

@@ -17,6 +17,36 @@ use app\models\SignupForm;  //таблица охранников и прочи�
 class SignupController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ только админу
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['signup'],
+                'rules' => [    //страницы, доступные менеджеру:
+                    [
+                       'actions' => ['signup'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'signup' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
+
     #+Изменение данных в ячейке таблицы User. Пока что используется только для смены отдела охранника.
     #+Принять данные от core.js, внести в таблицу User
     public function actionChangeuser(){

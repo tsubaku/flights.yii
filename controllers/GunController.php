@@ -9,11 +9,41 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 
 use app\models\Gun;         //список оружия;
-
+use app\models\User;        //встроенная авторизация;
 
 class GunController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ только админу
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['gun'],
+                'rules' => [    //страницы, доступные менеджеру:
+                    [
+                       'actions' => ['gun'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'gun' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
+    
     #+Отрисовка страницы gun и добавление оружия, если нажата копка добавления
     public function actionGun()
     {      

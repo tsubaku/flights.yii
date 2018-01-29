@@ -15,6 +15,44 @@ use app\models\Sentry;      //таблица постовой ведомости
 class SentryController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ только админу
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['sentry'],
+                'rules' => [    //страницы, доступные админу и оператору:
+                    [
+                       'actions' => ['sentry'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserAdmin(Yii::$app->user->identity->username);
+                       }
+                    ],
+                    [
+                       'actions' => ['sentry'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                       'matchCallback' => function ($rule, $action) {
+                           return User::isUserOperator(Yii::$app->user->identity->username);
+                       }
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'sentry' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
+    
     #+Изменение данных в ячейке таблицы Постовая ведомость. 
     # Получить от core.js id строки, название столбца и данные. Внести изменения в таблицу базы. 
     # Вернуть те же данные, плюс список оружия на охраннике, если изменено его имя

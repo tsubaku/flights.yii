@@ -10,10 +10,39 @@ use yii\filters\VerbFilter;
 
 use app\models\Flight;      //таблица рейсов;
 use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
+use app\models\User;        //встроенная авторизация;
 
 #
 class GuardController extends Controller
 {
+    
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        //Разрешить доступ любому аутентифицированному юзеру
+        return [
+            'access' => [
+                'class' => AccessControl::className(),  
+                'only' => ['guard'],
+                'rules' => [    //страницы, доступные менеджеру:
+                    [
+                       'actions' => ['guard'],
+                       'allow' => true,
+                       'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [        //Доступные запросы
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'guard' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
+    
     #+Показ календаря на странице интерфейса охранника
     public function actionShowflight()
     {      

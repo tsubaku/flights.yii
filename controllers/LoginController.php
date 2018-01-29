@@ -61,20 +61,25 @@ class LoginController extends Controller
         #Проверка прав пользователя
         if ($model->load(Yii::$app->request->post()) && $model->loginAdmin() ) {
             //return $this->goBack();
-            return $this->redirect(['manager/manager']);
+            return $this->redirect(['sentry/sentry']);
+        } 
+        if ($model->load(Yii::$app->request->post()) && $model->loginOperator() ) {
+            //return $this->goBack();
+            return $this->redirect(['sentry/sentry']);
         } 
         if ($model->load(Yii::$app->request->post()) && $model->loginUser() ) {
             //return $this->goBack();
             return $this->redirect(['guard/guard']);
         } 
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-
-        
-        
         //Иначе снова отрендерить страницу login, передав в неё $model 
         return $this->render('login', compact('model'));
+        
+        /* return $this->render('login/login', [
+            'model' => $model,
+        ]); */
+
+        //Иначе снова отрендерить страницу login, передав в неё $model 
+        //return $this->render('login/login', compact('model'));
     }
 
     

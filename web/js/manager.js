@@ -4,7 +4,7 @@
 
  
 
-//-Показать таблицу рейсов менеджеру
+//?-Показать таблицу рейсов менеджеру
 function show_flights_table()
 {        
     year = GetData('year');
@@ -35,7 +35,7 @@ window.show_flights_table = show_flights_table;
 
 
 
-//+Добавление строки в таблицу рейсов
+//?+Добавление строки в таблицу рейсов
 function add_line2()
 {
     user_id = '9999';
@@ -77,7 +77,7 @@ window.add_line2 = add_line2;
 
 
 
-//При клике по номеру строки, удалить её
+//++При клике по номеру строки, удалить её
 function delete_line (id_line, table)
 {
     //console.log("id_line="+id_line+" \n");
@@ -137,7 +137,7 @@ window.delete_line = delete_line;
 
 
 
-//При клике по кнопке Оружие вытащить со страницы signup id охранника, 
+//++При клике по кнопке Оружие вытащить со страницы signup id охранника, 
 //запросить контроллер о прикреплённом оружии и отобразить его на странице
 function gunShow(userId, full_name, nLine) {
     console.log(userId);
@@ -218,7 +218,7 @@ function printHTML(html) {
 
 
 
-//+Срабатывает при изменении чекбокса закреплённого оружия на странице signup, 
+//++Срабатывает при изменении чекбокса закреплённого оружия на странице signup, 
 // вызывает контроллер и передаёт ему id охранника, id оружия и true/false чекбокса выбора
 function checkboxChange(gunId) {
     ch = '#gunCheckbox-'+gunId; //id чекбокса
@@ -257,7 +257,7 @@ function checkboxChange(gunId) {
 
 
 
-//Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
+//++Функция, показывающая при клике по значку "Фото", фотографии, приаттаченные к рейсу
 function get_photo(id_line) {
     $.ajax({
             url:"index.php?r=manager/getphoto",
@@ -372,7 +372,7 @@ window.changeDate = changeDate;
 
 
 
-//+Установка текущего времени. Принимает название столбца и id строки, отправляет их в SentryController.php. 
+//++Установка текущего времени. Принимает название столбца и id строки, отправляет их в SentryController.php. 
 //Принимает от контроллера статус выполнения.
 function setTime(idTime) {
     //Вытаскиваем название столбца и ид строки
@@ -420,7 +420,7 @@ function setTime(idTime) {
 
 //////////  Ниже только неиспользуемые куски кода  ///////////////
 
-//Регистрация охранника (не используется)
+//--Регистрация охранника (не используется)
 function register_user(){
     var g_login     = document.getElementById("login").value;
     var g_password  = document.getElementById("password").value;

@@ -68,7 +68,7 @@ function GetData(name_selector)
 
     
 
-// +Запись изменённой ячейки (отправка её содержимого, column и id php-скрипту)
+// ++Запись изменённой ячейки (отправка её содержимого, column и id php-скрипту)
 function change_cell(cell_value, cell_id)
 {
     //console.log("cell_value: "+cell_value+" cell_id: "+cell_id+" \n");
@@ -142,7 +142,7 @@ function change_cell(cell_value, cell_id)
 }
 
 
-// +Запись изменённой ячейки Постовой ведомости (отправка её содержимого, column и id в SentryController.php)
+//++Запись изменённой ячейки Постовой ведомости (отправка её содержимого, column и id в SentryController.php)
 function changeSentry(cell_value, cell_id)
 {
     //console.log("cell_value: "+cell_value+" cell_id: "+cell_id+" \n");
@@ -197,7 +197,7 @@ function changeSentry(cell_value, cell_id)
         })    
 }
 
-// +Запись изменённой ячейки в списке юзеров (отправка её содержимого, column и id php-скрипту)
+//++Запись изменённой ячейки в списке юзеров (отправка её содержимого, column и id php-скрипту)
 // Пока что используется только для смены отдела охранника.
 function changeUser(cell_value, cell_id)
 {
@@ -232,7 +232,7 @@ function changeUser(cell_value, cell_id)
 }
 
 
-//----- Скрипт загрузки фото для рейса из интерфейса охранника ----- 
+//----- ++Скрипт загрузки фото для рейса из интерфейса охранника ----- 
 function submitFile( jQuery ) {
 (function($){
 	var files;  // Глобальная переменная куда будут располагаться данные файлов. С ней будем работать
@@ -258,7 +258,7 @@ function submitFile( jQuery ) {
         //var csrfToken = $('meta[name="csrf-token"]').attr("content");
 		nFlight = 5;
         $.ajax({
-			url: 'index.php?r=site/uploadfiles',
+			url: 'index.php?r=guard/uploadfiles',
 			type: 'POST',
 			statbox:"status",
             data: data1,

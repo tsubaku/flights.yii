@@ -11,10 +11,12 @@ use Yii;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-   #Проверка прав пользователя
-   const ROLE_ADMIN = 20;  
-   const ROLE_USER = 10; //сам добавил
-   public function rules() {
+    #Проверка прав пользователя
+    const ROLE_ADMIN     = 20;  
+    const ROLE_OPERATOR  = 15;
+    const ROLE_USER      = 10; 
+   
+    public function rules() {
         return [
             ['role', 'in', 'range' => [self::ROLE_USER, self::ROLE_ADMIN]], 
         ];  
@@ -29,7 +31,17 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
     }
-    //Добавил по аналогии с isUserAdmin
+    //Оператор
+    public static function isUserOperator($username)
+    {
+        if (static::findOne(['username' => $username, 'role' => self::ROLE_OPERATOR]))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    //Юзер (охранник)
     public static function isUserUser($username)
     {
         if (static::findOne(['username' => $username, 'role' => self::ROLE_USER]))
