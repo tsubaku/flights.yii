@@ -109,7 +109,7 @@ $this->title = 'Постовая ведомость';
 
         <?php ActiveForm::end(); ?>
         
-        <div class="col-xs-5 sentryHeader">
+        <div class="col-xs-5 sentryHeader" id="sentryHeaderId">
 
         </div>
     </div>
@@ -299,18 +299,18 @@ $this->title = 'Постовая ведомость';
 
 <?php
 
-//echo '<pre>'; 
+echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
 //echo " xxx1 ";
 //print_r ($countListSentry);
-//echo " xxx2 ";
+echo "$dateFlight";
 //print_r ($res_array);
 //print_r ($currentDate);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-//echo '</pre>'; 
+echo '</pre>'; 
 
 ?> 
        

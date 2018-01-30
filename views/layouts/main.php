@@ -47,6 +47,7 @@ AppAsset::register($this);
             ['label' => 'Охранники',    'url' => ['/signup/signup']],
             ['label' => 'Оружие',       'url' => ['/gun/gun']],
             ['label' => 'Постовая',     'url' => ['/sentry/sentry']],
+            ['label' => 'Настройки',     'url' => ['/settings/settings']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login',    'url' => ['/login/login']]
             ) : (

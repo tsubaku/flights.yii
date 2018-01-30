@@ -225,7 +225,8 @@ class SentryController extends Controller
 
         #Добавляем охранников, которым было выдано оружее ранее и которые его ещё не сдали
         $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->orderBy(['date' => 'SORT_ASC'])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
-        $listSentry = $listSentry + $listSentryNotReturned; 
+        //$listSentry = $listSentry + $listSentryNotReturned; 
+        $listSentry = array_merge($listSentry, $listSentryNotReturned);
 
         #Вытаскиваем все фамилии охранников
         $listUsers = User::find()->select('full_name')->where(['department' => 'Сопровождение'])->asArray()->column();    //забираем из базы
@@ -261,7 +262,8 @@ class SentryController extends Controller
           //  $p                  = $p + 1;
         }  */
     
-        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'usersGuns', 'countListSentry')); //передаём в вид результат 
+    
+        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'usersGuns', 'countListSentry', 'dateFlight')); //передаём в вид результат 
     }
 
 

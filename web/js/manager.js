@@ -187,7 +187,11 @@ function gunShow(userId, full_name, nLine) {
 
 //+Печать ведомости  (-рабочий в хроме код, в фф не работает, в ие печатает сайт целиком)
 function printImage() {
-    printHTML(document.getElementById('div_flights_table').innerHTML);
+    printingHtml = document.getElementById('sentryHeaderId').innerHTML + document.getElementById('div_flights_table').innerHTML
+    //printingHtml = document.getElementById('div_flights_table').innerHTML
+    //console.log(printingHtml);
+    printHTML(printingHtml);
+    
 }
  
 function printHTML(html) {
