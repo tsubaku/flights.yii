@@ -110,7 +110,9 @@ $this->title = 'Постовая ведомость';
         <?php ActiveForm::end(); ?>
         
         <div class="col-xs-5 sentryHeader" id="sentryHeaderId">
-
+            <h4>Утверждаю</h4>
+            <p>Генеральный директор "ООО ЧОП Ортекс Безопасность" </p>
+            <p>Якимов А.Н.</p>
         </div>
     </div>
 
