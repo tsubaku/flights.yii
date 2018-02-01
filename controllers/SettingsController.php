@@ -45,27 +45,41 @@ class SettingsController extends Controller
         ];
     }
     
-    #+Отрисовка страницы gun и добавление оружия, если нажата копка добавления
+    #+Отрисовка страницы settings и добавление оружия, если нажата копка добавления
     public function actionSettings()
     {      
         $model = new Settings();  //создаём объект модели 
         
-        #Если нажали "Добавить", то проверяем введённые данные и добавляем
-         if($model->load(\Yii::$app->request->post()) && $model->validate()){
-            $r1 = Yii::$app->request->post('Gun'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
-                                                      //у него есть методы get() и post()
-            $model->name = $r1['name']; 
-            $model->save(); //сохраняем объект модели
-        } 
+        #Если нажали "Изменить шапку постовой ведомости", то проверяем введённые данные и обновляем
+        if($model->load(\Yii::$app->request->post()) && $model->validate()){
+            $sentryHeaderText = Yii::$app->request->post('Settings'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
+                                                              //у него есть методы get() и post()
+            //$model->content = $sentryHeaderText['content']; 
+            //$model->save(); //сохраняем объект модели
+            
+            #Обновить ячейку в таблице 
+            //$model = Settings::findOne(['name' => 'sentryHeaderText']); //Выбрать из таблицы первую запись с id=$cellId
+            //$model = Settings::findOne(['name' => 'sentryHeaderText']); //Выбрать из таблицы первую запись с id=$cellId
+            //$model->content = $sentryHeaderText;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
+            //$model->save();                     //сохранить
+            
+            
+            /* $cellValue = $sentryHeaderText;   
+            $cellId = 1;
+            $cellColumn = 'content';
 
-        $listGun = Gun::find()->orderBy(['name' => 'SORT_ASC'])->all();    //забираем из базы
-        return $this->render('settings', compact('model', 'listGun')); //передаём в вид результат  
-
-        
-        //return $this->render('settings', compact('model')); //передаём в вид результат   
+            #Обновить ячейку в таблице 
+            $model = Settings::findOne()->where(['name' => 'sentryHeaderText']) ; //Выбрать из таблицы первую запись с id=$cellId
+            $model->$cellColumn = $cellValue;   //Выбрать из этой записи ячейку в столбце $cellColumn и записать туда $cellValue
+            $model->save();                     //сохранить
+             */
+            
+            
+        }
+        return $this->render('settings', compact('model', 'sentryHeaderText')); //передаём в вид результат  
     }
     
-    
+
     
     
 }

@@ -4,10 +4,10 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+use vova07\imperavi\Widget;     //Imperavi Redactor Widget
 $this->title = 'Настройки';
 
-$table_users = '31'; //клиенты             !!! Костыль !!!
+
 ?>
 <div class="site-about">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -15,7 +15,7 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
         <div class="row">
             <!-- form Регистрация клиентов --->
             <?php $form = ActiveForm::begin([
-                    'id' => 'add',
+                    'id' => 'settingsForm',
                     'layout' => 'inline',
                     'fieldConfig' => [
                         'labelOptions' => ['class' => ''],
@@ -24,7 +24,7 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
                 ]) ?>
 
 
-            <?= $form->field($model, 'name', [
+            <?= $form->field($model, 'content', [
                     'template' => '{label} <div class="row"><div class="col-sm-2">{input}{error}{hint}</div></div>'
                 ]) 
                 
@@ -32,7 +32,7 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
             
                 <div class="form-group">
                     <div>
-                        <?= Html::submitButton('Регистрация', ['class' => 'btn btn-success', 'id' => 'add1', 'name' => 'add2']) ?>
+                        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success', 'id' => 'saveSentryHeaderText', 'name' => 'saveSentryHeaderText']) ?>
                     </div>
                 </div>
             <?php ActiveForm::end() ?> 
@@ -40,21 +40,7 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
         </div><!-- row -->
 
             
-        <div class="row">    
-            <?php
-                echo \vova07\imperavi\Widget::widget([
-                    'name' => 'redactor',
-                    'settings' => [
-                        'lang' => 'ru',
-                        'minHeight' => 200,
-                        'plugins' => [
-                            'clips',
-                            'fullscreen',
-                        ],
-                    ],
-                ]);
-            ?>
-        </div> <!-- row -->
+        
 
     </div> <!-- container-fluid -->
         
@@ -72,11 +58,11 @@ $table_users = '31'; //клиенты             !!! Костыль !!!
     <?php
 
 
-    //echo '<pre>'; 
+    echo '<pre>'; 
     //print_r ($gun->name); //фактически - последний клиент из списка
-    //print_r ($gun);
+    print_r ($sentryHeaderText);
     //print_r ($rows);
-    //echo '</pre>'; 
+    echo '</pre>'; 
 
     ?>        
 

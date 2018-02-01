@@ -51,9 +51,9 @@ class GunController extends Controller
         
         #Если нажали "Добавить", то проверяем введённые данные и добавляем
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
-            $r1 = Yii::$app->request->post('Gun'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
+            $gunName = Yii::$app->request->post('Gun'); //request - объект, который по умолчанию является экземпляром yii\web\Request.
                                                       //у него есть методы get() и post()
-            $model->name = $r1['name']; 
+            $model->name = $gunName['name']; 
             $model->save(); //сохраняем объект модели
         }
 

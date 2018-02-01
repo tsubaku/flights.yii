@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\User;        //встроенная авторизация;
 use app\models\User_gun;    //таблица связей юзер-оружие (многие ко многим);
 use app\models\Sentry;      //таблица постовой ведомости
+use app\models\Settings;    //таблица постовой ведомости
 
 class SentryController extends Controller
 {
@@ -203,15 +204,13 @@ class SentryController extends Controller
             $day = date("d"); 
         }
         
-        $table = '40'; //путевая ведомость             !!! Костыль !!!
-
         
         #забираем из базы все маршруты на выбранную дату
         $dateFlight = $year."-".$month."-".$day;
-        $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->orderBy(['time_on' => 'SORT_ASC'])->all();    //забираем из базы
+        $listSentry = Sentry::find()->asArray()->where(['date' => $dateFlight])->orderBy(['time_on' => 'SORT_ASC'])->all();//забираем из базы
         $countListSentry = count($listSentry); //кол-во записей за этот день
         
-        #Проверяем количество маршрутов. Если меньшще 11, то создаём их до 11 на текущую дату.
+        #Проверяем количество маршрутов. Если меньшще 11, то создаём их до 11 на выбранную дату.
         if ( $countListSentry < 11 ) {
             $n = 11 - $countListSentry;
             for ($j = 1; $j <= $n; $j++) {
@@ -224,8 +223,9 @@ class SentryController extends Controller
         }
 
         #Добавляем охранников, которым было выдано оружее ранее и которые его ещё не сдали
-        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->orderBy(['date' => 'SORT_ASC'])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
-        //$listSentry = $listSentry + $listSentryNotReturned; 
+        //$listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]])->orderBy(['date' => 'SORT_ASC'])->all();    //(выдано раньше выбранной даты) и ([сдано позже выбранной даты] или [не сдано])       
+        $listSentryNotReturned = Sentry::find()->asArray()->where(['AND', ['AND', ['<', 'date', $dateFlight], ['OR', ['>=', 'date_off', $dateFlight], ['date_off' => 0000-00-00]]], ['AND', ['NOT IN', 'full_name', ''], ['NOT IN', 'full_name', 'Не выбран']]])->orderBy(['date' => 'SORT_ASC'])->all();    //(выдано раньше выбранной даты) И ([сдано позже выбранной даты] ИЛИ [не сдано]) И full_name не пусто И full_name не 'Не выбран'
+        
         $listSentry = array_merge($listSentry, $listSentryNotReturned);
 
         #Вытаскиваем все фамилии охранников
@@ -261,9 +261,10 @@ class SentryController extends Controller
             }
           //  $p                  = $p + 1;
         }  */
+        
+        $sentryHeaderText = Settings::find()->select('content')->where(['name' => 'sentryHeaderText'])->asArray()->column();    //забираем из базы шапку
     
-    
-        return $this->render('sentry', compact('model', 'listSentry', 'year', 'month', 'day', 'listUsers', 'usersGuns', 'countListSentry', 'dateFlight')); //передаём в вид результат 
+        return $this->render('sentry', compact('model', 'listSentry', 'listUsers', 'usersGuns', 'year', 'month', 'day', 'sentryHeaderText')); //передаём в вид результат 
     }
 
 
