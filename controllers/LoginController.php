@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -8,20 +7,13 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 
- use app\models\LoginForm;
-//use app\models\ContactForm;
-
-
+use app\models\LoginForm;
 use app\models\User;        //встроенная авторизация;
 
 
-
-
-# Login/Logout
+# Класс страницы Login/Logout
 class LoginController extends Controller
 {
-  
-
     /**
      * Login action.
      *
@@ -57,7 +49,6 @@ class LoginController extends Controller
             }
         } */
 
-
         #Проверка прав пользователя
         if ($model->load(Yii::$app->request->post()) && $model->loginAdmin() ) {
             //return $this->goBack();
@@ -82,8 +73,6 @@ class LoginController extends Controller
         //return $this->render('login/login', compact('model'));
     }
 
-    
-
 
     /**
      * Logout action.
@@ -95,10 +84,7 @@ class LoginController extends Controller
         Yii::$app->user->logout();
         return $this->goHome();
     }
-    
-    
-  
-    
+
     
 }
 

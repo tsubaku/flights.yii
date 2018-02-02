@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -13,10 +12,9 @@ use app\models\User;        //встроенная авторизация;
 use app\models\User_gun;    //таблица связей юзер-оружие (многие ко многим);
 use app\models\SignupForm;  //таблица охранников и прочих юзеров
 
-
+# Класс страницы охранников
 class SignupController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -47,6 +45,7 @@ class SignupController extends Controller
         ];
     }
 
+    
     #+Изменение данных в ячейке таблицы User. Пока что используется только для смены отдела охранника.
     #+Принять данные от core.js, внести в таблицу User
     public function actionChangeuser(){
@@ -67,8 +66,6 @@ class SignupController extends Controller
     }
     
 
- 
-    
     #+Принять от manager.js id юзера, вытащить связь, вытащить прикреплённое оружие, вернуть js-скрипту
     public function actionGunshow(){
         if(Yii::$app->request->isAjax){
@@ -109,10 +106,7 @@ class SignupController extends Controller
         
     }
 
-    
- 
-    
-    
+   
     //+Акшен срабатывает при посещении страницы signup, либо при вводе данных с неё
     public function actionSignup(){
         //Проверка, является ли пользователь гостем
@@ -143,9 +137,6 @@ class SignupController extends Controller
         return $this->render('signup', compact('model', 'listUsers', 'listGun', 'error')); //compact('listUsers') - передаём в вид результат 
     }
 
-
-    
-    
     
 }
 

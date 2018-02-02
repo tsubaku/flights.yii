@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -11,9 +10,9 @@ use yii\filters\VerbFilter;
 use app\models\Gun;         //список оружия;
 use app\models\User;        //встроенная авторизация;
 
+# Класс страницы Оружие
 class GunController extends Controller
 {
-
     /**
      * @inheritdoc
      */

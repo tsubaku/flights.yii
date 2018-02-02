@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -100,9 +99,6 @@ class SiteController extends Controller
         ];
     }
 
-
-    
-  
     
     #+Удаление рейса, клиента, оружия или юзера
     public function actionDelete(){
@@ -128,13 +124,7 @@ class SiteController extends Controller
     }
     
  
-   
-    
- 
-    
-   
 
-    
 
     
     
@@ -204,7 +194,7 @@ class SiteController extends Controller
     
   
        #-Добавление клиента (через написанный вручную аякс-скрипт)
-    public function actionRegisterclient4()
+    /* public function actionRegisterclient4()
     {      
         #Добавление строки в таблицу client
         if(Yii::$app->request->isAjax){
@@ -225,12 +215,12 @@ class SiteController extends Controller
             $json_data = array(0 => $rows);
             echo json_encode($json_data);
         }  
-    }
+    } */
     
     
     
     #-Добавление нового юзера (охранника/менеджера) (через написанный вручную аякс-скрипт)
-    public function actionRegisteruser4()
+    /* public function actionRegisteruser4()
     {      
         #Добавление строки в таблицу user
         if(Yii::$app->request->isAjax){
@@ -259,7 +249,7 @@ class SiteController extends Controller
             $json_data = array(0 => $rows);
             echo json_encode($json_data);
         }  
-    }
+    } */
     
     
     #Добавление строки в таблицу рейсов (через аякс)

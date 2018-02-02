@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -11,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\Client;      //список фирм клиентов;
 use app\models\User;        //список фирм клиентов;
 
+# Класс страницы Клиенты (список фирм-клиентов)
 class ClientController extends Controller
 {
     /**
@@ -42,6 +42,7 @@ class ClientController extends Controller
             ],
         ];
     }
+    
     
     #+Отрисовка страницы client и добавление клиента, если нажата копка добавления
     public function actionClient()

@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -13,9 +12,9 @@ use app\models\User_gun;    //таблица связей юзер-оружие 
 use app\models\Sentry;      //таблица постовой ведомости
 use app\models\Settings;    //таблица постовой ведомости
 
+# Класс страницы Постовая ведомость
 class SentryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -54,6 +53,7 @@ class SentryController extends Controller
         ];
     }
     
+    
     #+Изменение данных в ячейке таблицы Постовая ведомость. 
     # Получить от core.js id строки, название столбца и данные. Внести изменения в таблицу базы. 
     # Вернуть те же данные, плюс список оружия на охраннике, если изменено его имя
@@ -86,8 +86,6 @@ class SentryController extends Controller
         }
     }
     
- 
-    
     
     //+Получить от manager.js событие "установить текущее время", сделать изменения в базе Sentry, вернуть в js текущие дату и время
     public function actionSettime(){
@@ -116,10 +114,7 @@ class SentryController extends Controller
             echo json_encode($currentDateTime);
         }
     }
-
-    
-  
-    
+ 
     
     //+Акшен срабатывает при посещении страницы sentry, либо при вводе данных с неё
     public function actionSentry(){
@@ -266,11 +261,7 @@ class SentryController extends Controller
     
         return $this->render('sentry', compact('model', 'listSentry', 'listUsers', 'usersGuns', 'year', 'month', 'day', 'sentryHeaderText')); //передаём в вид результат 
     }
-
-
-    
-
-    
+  
     
 }
 

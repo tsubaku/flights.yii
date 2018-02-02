@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -12,9 +11,9 @@ use app\models\Settings;    //таблица настроек;
 use app\models\User;        //встроенная авторизация;
 use app\models\Gun;        //УБРАТЬ;
 
+# Класс страницы настроек
 class SettingsController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -44,6 +43,7 @@ class SettingsController extends Controller
             ],
         ];
     }
+    
     
     #+Отрисовка страницы settings и добавление оружия, если нажата копка добавления
     public function actionSettings()
@@ -78,9 +78,7 @@ class SettingsController extends Controller
         }
         return $this->render('settings', compact('model', 'sentryHeaderText')); //передаём в вид результат  
     }
-    
-
-    
+  
     
 }
 

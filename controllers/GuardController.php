@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -12,10 +11,9 @@ use app\models\Flight;      //таблица рейсов;
 use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
 use app\models\User;        //встроенная авторизация;
 
-#
+# Класс страницы Охранник (интерфейс охранника)
 class GuardController extends Controller
 {
-    
     /**
      * @inheritdoc
      */
@@ -42,6 +40,7 @@ class GuardController extends Controller
             ],
         ];
     }
+    
     
     #+Показ календаря на странице интерфейса охранника
     public function actionShowflight()
@@ -116,7 +115,6 @@ class GuardController extends Controller
         echo json_encode($data);
     }
     
-    
 
     #+Показ одного рейса
     public function actionGuard()
@@ -142,8 +140,6 @@ class GuardController extends Controller
 
         return $this->render( 'guard', compact('idUser', 'full_name', 'js_array') ); //передаём в вид результат   
     }
-    
-
     
 }
 

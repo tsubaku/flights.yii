@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -11,9 +10,9 @@ use app\models\LoginForm;
 
 use app\models\User;        //встроенная авторизация;
 
+# Класс страницы index (она же Справка)
 class IndexController extends Controller
-{
-    
+{  
     /**
      * @inheritdoc
      */
@@ -41,6 +40,7 @@ class IndexController extends Controller
         ];
     }
     
+    
     /**
      * Displays homepage.
      *
@@ -51,9 +51,7 @@ class IndexController extends Controller
         return $this->render('index');
     }
 
-  
-    
-    
+
 }
 
 

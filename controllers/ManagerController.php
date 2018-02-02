@@ -1,5 +1,4 @@
 <?php
-
 namespace app\controllers;
 
 use Yii;
@@ -7,21 +6,15 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-//use app\models\LoginForm;
-//use app\models\ContactForm;
 
- use app\models\Client;      //список фирм клиентов;
-//use app\models\Gun;         //список оружия;
- use app\models\User;        //встроенная авторизация;
-//use app\models\User_gun;    //таблица связей юзер-оружие (многие ко многим);
- use app\models\Flight;      //таблица рейсов;
- use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
-//use app\models\SignupForm;  //таблица охранников и прочих юзеров
-//use app\models\Sentry;      //таблица постовой ведомости
+use app\models\Client;      //список фирм клиентов;
+use app\models\User;        //встроенная авторизация;
+use app\models\Flight;      //таблица рейсов;
+use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
 
+# Класс страницы Рейсы 
 class ManagerController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -51,10 +44,6 @@ class ManagerController extends Controller
             ],
         ];
     }
-
-
-
-
 
 
     /**
@@ -164,9 +153,7 @@ class ManagerController extends Controller
         return $this->render('manager', compact('model', 'listFlight', 'year', 'month', 'ru_rows_array', 'listUsers', 'listClients', 'listPhoto', 'text')); //передаём в вид результат 
     }
     
-    
-    
-    
+
     #+Изменение данных в ячейке таблицы рейсов
     # Принимает данные из core.js, вставляет в таблицу Flight, если необходимо, то рассчитывает зависимые ячейки
     # и возвращает результаты обратно для отрисовки.
@@ -303,8 +290,6 @@ class ManagerController extends Controller
     }
     
 
-    
-
     #+Показ модального окна с фотографиями рейса
     # Принимает данные от manager.js, вытаскивает прикреплённые к рейсу фотографии и отдаёт их обратно
     //Посмотреть гайды:
@@ -337,7 +322,6 @@ class ManagerController extends Controller
     }
     
 
-    
 }
 
 
