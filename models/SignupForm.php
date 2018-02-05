@@ -22,7 +22,7 @@ class SignupForm extends Model
     public function rules() {
         return [
             [['username', 'password', 'full_name', 'department'], 'required', 'message' => 'Заполните поле'],
-            ['username', 'unique', 'targetClass' => User::className(),  'message' => 'Этот логин уже занят'],
+            [['username', 'full_name'], 'unique', 'targetClass' => User::className(),  'message' => 'Этот логин уже занят'],
         ];  //Поля 'username' и 'password' обязательны. Названия полей совпадают с названиями атрибутов модели
             //Содержимое поля username должно быть уникальным
     }

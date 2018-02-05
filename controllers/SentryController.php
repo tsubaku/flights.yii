@@ -224,7 +224,7 @@ class SentryController extends Controller
         $listSentry = array_merge($listSentry, $listSentryNotReturned);
 
         #Вытаскиваем все фамилии охранников
-        $listUsers = User::find()->select('full_name')->where(['department' => 'Сопровождение'])->asArray()->column();    //забираем из базы
+        $listUsers = User::find()->select('full_name')->where(['department' => 'Сопровождение'])->asArray()->orderBy(['full_name' => 'SORT_ASC'])->column();    //забираем из базы
         $k = count($listUsers);
         $listUsers[$k+1] = 'Не выбран'; //Добавляем в массив охранников невыбранного 
         

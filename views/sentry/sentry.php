@@ -119,6 +119,7 @@ $this->title = 'Постовая ведомость';
     <!-- Блок таблицы маршрутов-->
         <div id="div_flights_table"> 
             <?php   
+
                 #Рисуем таблицу маршрутов
                 if ($listSentry != NULL) { //иначе варнинги идут, если пусто 
                     echo "<table class='table table-striped table-bordered table-hover'>";
@@ -299,18 +300,18 @@ $this->title = 'Постовая ведомость';
 
 <?php
 
-//echo '<pre>'; 
+echo '<pre>'; 
 //print_r ($gun->name); //фактически - последний клиент из списка
 //print_r ($usersGuns[1]['gun'][0]['name']);
 
 //echo " xxx1 ";
 //print_r ($sentryHeaderText);
 //echo "$sentryHeaderText";
-//print_r ($res_array);
+print_r ($listUsers);
 //print_r ($currentDate);
 //echo count($usersGuns->gun);    //поcчитать, сколько продуктов имеется в $cats. "products" - обязательно должно совпадать с именем функции getProducts()
 
-//echo '</pre>'; 
+echo '</pre>'; 
 
 ?> 
        
