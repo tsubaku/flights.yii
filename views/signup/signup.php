@@ -71,7 +71,7 @@ $table_users = '10'; //охранники             !!! Костыль !!!
 
      
     <div class="row-fluid">    
-        <div class="col-md-7">
+        <div class="col-md-8">
          <table class="table table-striped table-bordered table-hover">
          <caption><strong>Список охранников</strong></caption>
             <thead>
