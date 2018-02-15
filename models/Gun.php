@@ -3,11 +3,9 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-//use yii\web\IdentityInterface;      //идут ошибки
-
-//use yii\base\NotSupportedException;
-//use Yii;
-
+/**
+ * Таблица табельного оружия, находящегося на балансе организации
+ */
 class Gun extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
 //class Gun extends ActiveRecord implements IdentityInterface
 { 
@@ -15,10 +13,9 @@ class Gun extends ActiveRecord //ActiveRecord - это встроенный во
     //public static function tableName()
     //{
     //    return 'clients';
-   // }
+    //}
     ///public $clients;
-    
-    //public $name; //если раскомментить - исчезают данные во вью (но сохраняется кол-во строк! хрень какая-то) 
+
     
     public function rules() {
         return [
@@ -28,6 +25,7 @@ class Gun extends ActiveRecord //ActiveRecord - это встроенный во
            // ['name', 'unique', 'targetClass' => User::className(),  'message' => 'Такой клиент уже существует'],
         ];
     }
+    
     
     //attributeLabels() -устанавливаете названия полей для тега label формы. Эти названия совпадают с именами атрибутов модели
     public function attributeLabels() {

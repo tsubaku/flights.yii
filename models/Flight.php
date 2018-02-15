@@ -3,14 +3,16 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class Flight extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
+/**
+ * Таблица рейсов охранников.
+ */
+class Flight extends ActiveRecord 
 { 
-    //обработка данных
+    //обработка данных (явно указываем название таблицы)
     public static function tableName()
     {
         return 'flight';
     }
-    ///public $clients;
     
     
     //rules() -правила валидации
@@ -18,15 +20,14 @@ class Flight extends ActiveRecord //ActiveRecord - это встроенный �
     {
         return [
             // username and password are both required
-            //кажется, username и password - имена полей ввода во вью login.php
-       ///     [['month', 'year'], 'required'],
-            // rememberMe must be a boolean value
+            // username и password - имена полей ввода во вью login.php
+            ///[['month', 'year'], 'required'],
             [['month', 'year'], 'safe'],
         ];
     }
     
-    //get - обязательная приставка
-    public function getPhoto() 
+    //Вернуть пути к сохранённым на сервере фотографиям с рейса №n_flight, если они есть
+    public function getPhoto() //get - обязательная приставка
     {  
         return $this->hasMany(Photo::className(), ['n_flight' => 'id']);
     }

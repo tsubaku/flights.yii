@@ -3,21 +3,11 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-//use yii\web\IdentityInterface;      //идут ошибки
-//use yii\base\NotSupportedException;
-//use Yii;
-
+/**
+ * Таблица настроек, используемых на сайте.
+ */
 class Settings extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
-//class Gun extends ActiveRecord implements IdentityInterface
 { 
-    //обработка данных
-    //public static function tableName()
-    //{
-    //    return 'clients';
-    //}
-    //public $sentryHeaderText;
-
-    
     public function rules() {
         return [
             //['name', 'unique', 'message' => 'Такое оружие уже есть в списке'],

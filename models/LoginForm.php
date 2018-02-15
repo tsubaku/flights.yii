@@ -1,5 +1,4 @@
 <?php
-
 namespace app\models;
 
 use Yii;
@@ -29,7 +28,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            //кажется, username и password - имена полей ввода во вью login.php
+            // username и password - имена полей ввода во вью login.php
             [['username', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
@@ -38,6 +37,7 @@ class LoginForm extends Model
         ];
     }
 
+    
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -59,6 +59,7 @@ class LoginForm extends Model
         }
     }
 
+    
     /**
      * Logs in a user using the provided username and password.
      * @return bool whether the user is logged in successfully
@@ -72,6 +73,7 @@ class LoginForm extends Model
         return false;
     }
 
+    
     /**
      * Finds user by [[username]]
      *
@@ -99,6 +101,7 @@ class LoginForm extends Model
             return false;
         }
     }
+    
     //Проверка на оператора
     public function loginOperator()
     {
@@ -108,6 +111,7 @@ class LoginForm extends Model
             return false;
         }
     }
+    
     //юзера (охранника)
     public function loginUser()
     {

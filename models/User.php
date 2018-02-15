@@ -2,13 +2,14 @@
 // http://rgblog.ru/page/sozdanie-sajta-na-yii-framework-20-chast-2 -тут правильные функции для модели User
 namespace app\models;
 
-//class User extends \yii\base\Object implements \yii\web\IdentityInterface
-use yii\db\ActiveRecord;            //без этого
-use yii\web\IdentityInterface;      //идут ошибки
-
+use yii\db\ActiveRecord;           
+use yii\web\IdentityInterface;      
 use yii\base\NotSupportedException;
 use Yii;
 
+/**
+ * Таблица пользователей.
+ */
 class User extends ActiveRecord implements IdentityInterface
 {
     #Проверка прав пользователя
@@ -31,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
     }
-    //Оператор
+    //Проверяем, имеется ли в базе указанный юзер с правами Оператор
     public static function isUserOperator($username)
     {
         if (static::findOne(['username' => $username, 'role' => self::ROLE_OPERATOR]))
@@ -41,7 +42,7 @@ class User extends ActiveRecord implements IdentityInterface
             return false;
         }
     }
-    //Юзер (охранник)
+    //Проверяем, имеется ли в базе указанный юзер с правами Юзер (охранник)
     public static function isUserUser($username)
     {
         if (static::findOne(['username' => $username, 'role' => self::ROLE_USER]))
@@ -60,12 +61,12 @@ class User extends ActiveRecord implements IdentityInterface
     public $accessToken; */
 
 
-    //Специально для того, чтобы связать контроллер с базой с произвольным именем
+    //Связать контроллер с базой с произвольным именем
     /*  public static function tableName() {
         return 'user';
     }  */
 
-    
+    //Пример работы с юзерами без занесения их в бд
     /* private static $users = [
         '100' => [
             'id' => '100',
@@ -83,10 +84,6 @@ class User extends ActiveRecord implements IdentityInterface
         ],
     ]; */
 
-/*         //Специально для того, чтобы связать контроллер с базой с произвольным именем
-        public static function tableName() {
-            return 'users';
-        } */
         
     /**
      * @inheritdoc
@@ -133,6 +130,7 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['username' => $username]);
     }
 
+    
     /**
      * @inheritdoc
      */
@@ -150,6 +148,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->authKey;
     }
 
+    
     /**
      * @inheritdoc
      */
@@ -158,6 +157,7 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->authKey === $authKey;
     }
 
+    
     /**
      * Validates password
      *
@@ -169,14 +169,5 @@ class User extends ActiveRecord implements IdentityInterface
         //return $this->password === $password;
         return \Yii::$app->security->validatePassword($password, $this->password);
     }
-    
-   
-    
-
-    
-   
-
-     
-    
     
 }

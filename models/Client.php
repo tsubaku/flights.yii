@@ -3,11 +3,9 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-//use yii\web\IdentityInterface;      //идут ошибки
-
-//use yii\base\NotSupportedException;
-//use Yii;
-
+/**
+ * Таблица со списком компаний-клиентов
+ */
 class Client extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
 //class Client extends ActiveRecord implements IdentityInterface
 { 
@@ -15,7 +13,7 @@ class Client extends ActiveRecord //ActiveRecord - это встроенный �
     //public static function tableName()
     //{
     //    return 'clients';
-   // }
+    //}
     ///public $clients;
     
     //public $name; //если раскомментить - исчезают данные во вью (но сохраняется кол-во строк! хрень какая-то) 

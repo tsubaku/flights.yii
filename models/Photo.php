@@ -3,13 +3,16 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class Photo extends ActiveRecord //ActiveRecord - это встроенный во фреймворк класс работы с таблицами
+/**
+ * Таблица фотографий, присылаемых охранниками с рейсов через смартфоны
+ */
+class Photo extends ActiveRecord 
 { 
     //обработка данных
     //public static function tableName()
     //{
     //    return 'clients';
-   // }
+    //}
     ///public $clients;
 
 }
