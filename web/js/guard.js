@@ -12,7 +12,7 @@ function show_one_flight(dat)
     console.log("dat: "+ dat + " \n");
 	console.log("user_id_current: "+ user_id_current + " \n");
 	$.ajax({
-		url:"index.php?r=site/showflight",
+		url:"index.php?r=guard/showflight",
 		type:"post",
 		statbox:"status",
 		data:

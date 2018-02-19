@@ -37,6 +37,14 @@ class LoginForm extends Model
         ];
     }
 
+    //attributeLabels() -устанавливаете названия полей для тега label формы. Эти названия совпадают с именами атрибутов модели
+    public function attributeLabels() {
+        return [
+            'username' => 'Логин',
+            'password' => 'Пароль',
+            'rememberMe' => 'Запомнить меня',
+        ];
+    }
     
     /**
      * Validates the password.

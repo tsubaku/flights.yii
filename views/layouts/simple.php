@@ -25,9 +25,11 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-
+<!--
 <div class="wrap">   
+-->
     <div class="container">
+    
         <?php 
             echo Nav::widget([
                     'options' => ['class' => 'navbar-nav navbar-right'],
@@ -52,8 +54,11 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>
-    </div>
+
+        </div>
+<!--        
 </div>
+-->
 
 
 <?php $this->endBody() ?>
