@@ -1,27 +1,19 @@
-/* Simple tags ======================================================== */
 
 /* @media screen {
     input {
         font-family: verdana,sans-serif;
-
         background: #1f5678;
     }
-
 } */
-
-
-
 
 /* @media print {
     input {
         font-family: times, serif;
-
         background: #f45567;
     }
-
 } */
 
-
+/* Simple tags ======================================================== */
 body {
 	background: #eeeeee;
 }
@@ -53,26 +45,26 @@ h3 {
 }
 
 /* для тестов *******************************************/
-#gun1 {
+/* #gun1 {
     background: #5eee3e;   
-}
+} */
 
 
 /* Blocks and selectors *******************************************/
-#layerA {
+/* #layerA {
 	position:absolute;
 	display:block;
-}
+} */
 
-#layerB {
+/* #layerB {
 	position:absolute;
-	display: none; /* в oбычнoм сoстoянии oкнa не дoлжнo быть */
-}
+	display: none; */ /* в oбычнoм сoстoянии oкнa не дoлжнo быть */
+/* } */
 
-#clients{
+/* #clients{
 	position:absolute;
-	display: none; /* в oбычнoм сoстoянии oкнa не дoлжнo быть */	
-}
+	display: none; */ /* в oбычнoм сoстoянии oкнa не дoлжнo быть */	
+/* }
 
 .page {
 	display:inline-block;
@@ -81,16 +73,16 @@ h3 {
 	background: #bebede;
 	border: 1px, #fefede;
 	border-radius: 3px;
-	text-align: center; /* Выравнивание по ширине */
-}
+	text-align: center; */ /* Выравнивание по ширине */
+/* }
 .page:active {
 	color: #00137F;
 	font-weight: bold;
 }
-
+ */
 
 /***  Buttons   *********************************/
-.a_demo_three {	
+/* .a_demo_three {	
 	float: left;
 	display: inline-block;
 	font-family: 'Open Sans', sans-serif;
@@ -98,8 +90,8 @@ h3 {
 	text-decoration:none;
 	color:#fff;
 	position:relative;
-	padding:10px 10px;  /* Отступ по высоте и по ширине */
-	margin-left:35px;
+	padding:10px 10px; */  /* Отступ по высоте и по ширине */
+/* 	margin-left:35px;
 	margin-top:0px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;	
@@ -128,9 +120,9 @@ h3 {
 .a_demo_three:active::before {
 	top:-3px;	
 }
+ */
 
-
-.b_blue {
+/* .b_blue {
 	background-color:#3bb3e0;
 	border-left:solid 1px #2ab7ec;
 	background-image: linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
@@ -197,22 +189,24 @@ h3 {
 .b_green:active::before {
 	box-shadow:inset 0px 1px 0px #86C155, 0px 5px 0px 0px #03593A, 1px 1px 0px 0px #00680A, 2px 2px 0px 0px #00680A, 2px 5px 0px 0px #00680A, 6px 4px 2px #0b698b, 0px 10px 5px #999;
 }
-
-#a_add_line::before {
+ */
+/* #a_add_line::before {
 	background-image: url(../img/add_line.png);
-}
+} */
 
-#a_show_flights_table::before {
+/* #a_show_flights_table::before {
 	background-image: url(../img/show_flights_table.png);
-}
+} */
 
-#a_register::before {
+/* #a_register::before {
 	background-image: url(../img/add_guard.png);
-}
+} */
 
-#a_register_client::before{
+/* #a_register_client::before{
 	background-image: url(../img/add_client.png);
-}
+} */
+
+/* используется в Блок модального окна показа миниатюр */
 .button_container {
 	margin-left: 10px;
 	float: left;
@@ -391,18 +385,23 @@ input {
 }
 
 /* Цвет текста дат в Постовой водомости у охранников, длительное время не сдающих оружие.  */
+.redText {
+    color: #EF264B;
+	font: bold;
+}
+.purpleText {
+    color: #D926B9;
+	font: bold;
+}
+.bluishText {
+    color: #AB26E1;
+	font: bold;
+}
 .blueText {
     color: #0026FF;
 	font: bold;
 }
-.purpleText {
-    color: #B200FF;
-	font: bold;
-}
-.redText {
-    color: #FF263B;
-	font: bold;
-}
+
 /********/
 
 
@@ -433,53 +432,56 @@ input {
     position: relative;
 }
 
-#panelGun {
+/* #panelGun {
  
 }
 
 #tableGun  {
      
-}
-#tableGun td {
+} */
+/* #tableGun td { */
 /*    background: #ceffee;  
     font: normal 11px Verdana, sans-serif;
     margin: 0px; /* Отступы вокруг */    
 /*    padding: 2px; /* Поля вокруг текста */
-}
-#tableGun tr {
+/* }
+#tableGun tr { */
 /*    background: #ceffee;  */
-    height:10px;
+/*     height:10px; */
 /*    padding: 0px; /* Поля вокруг текста */
 /*	margin: 0px; /* Отступы вокруг */
 
-}
-#tableGun label { 
+/* }
+#tableGun label {  */
 /*   padding: 0px; /* Поля вокруг текста */
 /*	margin: 0px; /* Отступы вокруг */
 /*	margin-left: 0px; /* Отступы вокруг */
 
-}
-#tableGun th { 
+/* }
+#tableGun th {  */
 /*   padding: 0px; /* Поля вокруг текста */
 /*	margin: 0px; /* Отступы вокруг */
-	padding: 0px; /* Отступы вокруг */
+/* 	padding: 0px;  *//* Отступы вокруг */
+/*     margin: 0px; */ /* Отступы вокруг */
+/*     height:20px;
 
 }
+ */
+
+
 .gunCheckbox{ 
-  /*  padding: 0px; /* Поля вокруг текста */
-/*	margin: 0px; /* Отступы вокруг */
-/*	margin-left: 0px; /* Отступы вокруг */
+    padding: 0px; /* Поля вокруг текста */
+	margin: 0px; /* Отступы вокруг */
 /*    position: relative; */
     height:20px;
 }
 
-/**** Table Column Classes *****************************************/
+/**** Table Manager Column Classes *****************************************/
 .number_line {
     width:33px;
 }
 .id {
 	width:100px; 
-/*	display: inline-block;*/
 }
 		
 .data_vyezda{
@@ -496,7 +498,7 @@ input {
 }
 .nomer_mashiny { 
 	width:80px; 
-	background: #C794CC;
+	background: #D4B1D8;
 }
 .nomer_mashiny_mobi{ 
 	width:150px; 
@@ -527,7 +529,7 @@ input {
 }
 .prinjatie {
 	width:210px;
-	background: #C794CC;
+	background: #D4B1D8;
 }
 .prinjatie_mobi{
 	width:280px;
@@ -537,7 +539,7 @@ input {
 }
 .sdacha {
 	width:210px;
-	background: #C794CC;
+	background: #D4B1D8;
 }
 .sdacha_mobi {
 	width:280px;
@@ -603,7 +605,7 @@ input {
 }
 
 
-.cont1 {
+/* .cont1 {
   min-width: 30px;
   max-width: 75%;
   margin: 0 auto;
@@ -617,7 +619,7 @@ input {
     min-width:40px;/*Минимальная ширина при маленьких разрешениях*/
     width:auto;/*Ширина в зависимости от разрешения экрана*/
 }
-
+ */
 
 /********************** Modal forms **********************/
 #modal_form {
@@ -845,12 +847,12 @@ figure.photo_prev figcaption {  /* стиль описания */
 }
 
 /* Блок оошибок, возникших при регистрации охранника*/
-#div_from_register_error{
+/* #div_from_register_error{
 	color: #FF4447;
-}
+} */
 
 /*	Стили для списка охранников	*/
-.number {
+/* .number {
 	width: 100%;
 }
 .user_login {
@@ -858,20 +860,20 @@ figure.photo_prev figcaption {  /* стиль описания */
 }
 .full_name {
 	width: 250px;
-}
+} */
 
 
 
 /* ----------------- */
 
-.client {
+/* .client {
 	width: 250px;
 	
-}
+} */
 
 
 /* ---=======---- */
-@keyframes appear {
+/* @keyframes appear {
 	0%{
 		opacity: .8;
 		transform: scale(.5, .5);
@@ -901,7 +903,7 @@ figure.photo_prev figcaption {  /* стиль описания */
 }
 .cursor1 {
     /* fixed - прилипают к экрану, absolute - только вверху, relative - внизу */
-	position: fixed;
+/*	position: fixed;
 	width: 40px;
 	height: 40px;
 	margin: -20px 0 0 -20px;
@@ -909,29 +911,29 @@ figure.photo_prev figcaption {  /* стиль описания */
 	background: #ef2c68;
 	animation: appear .2s;
 	-webkit-animation: appear .2s;
-}
+} */
 
 /*   */
-#cont{
+/* #cont{
   position: relative;
   width: 75%;
   padding-left: 20px;
   border: 3px solid red;
 }
-
-.btn_test{
-  display: block; 
+ */
+/* .btn_test{
+  display: block; */ 
 /*  padding: 20px;*/
 /*  background-color: green; */
 /*  color: white; */
-  width: 60px; 
+/*   width: 60px;  */
 /*  border: 1px solid white; */
 /*  margin-bottom: 50px; */
 /*  text-decoration: none; */
 /*  border-radius: 5px; */
-}
+/* } */
 
-.floatdiv{
+/* .floatdiv{
   position: absolute;
   border: 1px solid grey;
   width: 100px;
@@ -949,7 +951,7 @@ figure.photo_prev figcaption {  /* стиль описания */
 
 .atbtn3{
   top: 220px;
-}
+} */
 
 
 /* Убираем отступ снизу у форм, чтобы на странице охранников таблица была компактнее */
@@ -1010,5 +1012,14 @@ figure.photo_prev figcaption {  /* стиль описания */
        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+
+
+/*Эксперименты с вёрсткой */
+
+/* .form-horizontal .control-label { */
+/* text-align:right; */
+/* text-align:left; */
+/* background-color:#ffa; */
+/* } */
 
 

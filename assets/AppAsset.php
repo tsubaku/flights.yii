@@ -15,22 +15,22 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $basePath  = '@webroot';
+    public $baseUrl   = '@web';
     
     public $js = [
         'js/core.js',
         'js/manager.js',
 
     ];
-    public $depends = [
+    public $depends   = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
-    public $css = [
+    public $css       = [
         'css/site.css',
         'css/main.css',
     ];
-    #пробую подключить jquery
+    #подключить jquery в начало
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 }

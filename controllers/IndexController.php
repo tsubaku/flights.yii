@@ -23,7 +23,7 @@ class IndexController extends Controller
             'access' => [
                 'class' => AccessControl::className(),  
                 'only' => ['index'],
-                'rules' => [    //страницы, доступные админу и оператору:
+                'rules' => [    //список доступных старниц:
                     [
                        'actions' => ['index'],
                        'allow' => true,

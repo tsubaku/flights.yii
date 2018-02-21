@@ -33,15 +33,15 @@
     echo '<script language="javascript">var user_id_current = ' . $idUser . ';</script>';           //id охранника
     
     Modal::begin([
-        'header' => '<h2>Hello world</h2>',
+        'header' => '<h2>Test header</h2>',
         'toggleButton' => [
-            'label' => 'click me',
+            'label' => 'click',
             'tag' => 'button',
             'class' => 'btn btn-success',
         ],
         'footer' => 'Низ окна',
     ]);
-    echo 'Say hello...';
+    echo 'Test';
     Modal::end();
 ?>
 

@@ -28,7 +28,8 @@ class LoginController extends Controller
         //isGuest - проверить, является ли пользователь гостем
         //Для проверки прав на определённые действия удобно воспользоваться CWebUser::checkAccess. Также есть возможность получить уникальный идентификатор и другие постоянные данные пользователя.
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome(); //Если юзер не гость, то Redirects the browser to the home page.
+            return $this->redirect(['sentry/sentry']);//Если юзер не гость, то редирект на Постовую ведомость
+            //return $this->goHome(); //Redirects the browser to the home page.
         }
         
         //Если же он пока не авторизован, то:
@@ -55,11 +56,9 @@ class LoginController extends Controller
             return $this->redirect(['sentry/sentry']);
         } 
         if ($model->load(Yii::$app->request->post()) && $model->loginOperator() ) {
-            //return $this->goBack();
             return $this->redirect(['sentry/sentry']);
         } 
         if ($model->load(Yii::$app->request->post()) && $model->loginUser() ) {
-            //return $this->goBack();
             return $this->redirect(['guard/guard']);
         } 
         //Иначе снова отрендерить страницу login, передав в неё $model 

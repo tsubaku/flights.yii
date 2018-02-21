@@ -189,10 +189,15 @@ $this->title = 'Постовая ведомость';
                                              $colourClass = 'blueText';
                                              //$colourTdClass= 'table-secondary';
                                          }
-                                         if ( $diffDay > 3 ) {
+                                         if ( $diffDay > 2 ) {
+                                             $colourClass = 'bluishText';
+                                             //$colourTdClass= 'table-warning';
+                                         }
+                                         if ( $diffDay > 4 ) {
                                              $colourClass = 'purpleText';
                                              //$colourTdClass= 'table-warning';
                                          }
+                                         
                                          if ( $diffDay > 7 ) {
                                              $colourClass = 'redText';
                                              //$colourTdClass= 'table-danger';
