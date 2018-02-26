@@ -1,18 +1,4 @@
 
-/* @media screen {
-    input {
-        font-family: verdana,sans-serif;
-        background: #1f5678;
-    }
-} */
-
-/* @media print {
-    input {
-        font-family: times, serif;
-        background: #f45567;
-    }
-} */
-
 /* Simple tags ======================================================== */
 body {
 	background: #eeeeee;
@@ -44,167 +30,7 @@ h3 {
 	font-weight: bold;
 }
 
-/* для тестов *******************************************/
-/* #gun1 {
-    background: #5eee3e;   
-} */
 
-
-/* Blocks and selectors *******************************************/
-/* #layerA {
-	position:absolute;
-	display:block;
-} */
-
-/* #layerB {
-	position:absolute;
-	display: none; */ /* в oбычнoм сoстoянии oкнa не дoлжнo быть */
-/* } */
-
-/* #clients{
-	position:absolute;
-	display: none; */ /* в oбычнoм сoстoянии oкнa не дoлжнo быть */	
-/* }
-
-.page {
-	display:inline-block;
-	height: 30px;
-	width: 100px;
-	background: #bebede;
-	border: 1px, #fefede;
-	border-radius: 3px;
-	text-align: center; */ /* Выравнивание по ширине */
-/* }
-.page:active {
-	color: #00137F;
-	font-weight: bold;
-}
- */
-
-/***  Buttons   *********************************/
-/* .a_demo_three {	
-	float: left;
-	display: inline-block;
-	font-family: 'Open Sans', sans-serif;
-	font-size:12px;
-	text-decoration:none;
-	color:#fff;
-	position:relative;
-	padding:10px 10px; */  /* Отступ по высоте и по ширине */
-/* 	margin-left:35px;
-	margin-top:0px;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;	
-}
-
-.a_demo_three:active {
-	top:3px;
-}
-
-.a_demo_three::before {	
-	content:"";
-	width:35px;
-	max-height:29px;
-	height:100%;
-	position:absolute;
-	display:block;
-	padding-top:8px;
-	top:0px;
-	left:-36px;
-	font-size:16px;
-	font-weight:bold;	 
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;	
-}
-
-.a_demo_three:active::before {
-	top:-3px;	
-}
- */
-
-/* .b_blue {
-	background-color:#3bb3e0;
-	border-left:solid 1px #2ab7ec;
-	background-image: linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
-	box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #156785, 0px 10px 5px #999;
-}
-.b_blue:active {
-	background-image: linear-gradient(bottom, rgb(62,184,229) 0%, rgb(44,160,202) 100%);
-	box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #156785, 0px 5px 3px #999;
-}
-.b_blue::before {
-	background-color:#3bb3e0;
-	color:#8fd1ea;
-	text-shadow:1px 1px 0px #07526e;
-	border-right:solid 1px #07526e;
-	background-image: linear-gradient(bottom, rgb(10,94,125) 0%, rgb(14,139,184) 100%);
-	box-shadow:inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 0px 10px 5px #999 ;
-}
-.b_blue:active::before {
-	box-shadow:inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #032b3a, 1px 1px 0px 0px #044a64, 2px 2px 0px 0px #044a64, 2px 5px 0px 0px #044a64, 6px 4px 2px #0b698b, 0px 10px 5px #999 ;
-}
-
-
-.b_red {
-	background-color:#FA5704;
-	border-left:solid 1px #FFB7EC;
-	background-image: linear-gradient(bottom, rgb(44,160,202) 0%, rgb(62,184,229) 100%);
-	box-shadow: inset 0px 1px 0px #E8527F, 0px 5px 0px 0px #E24724, 0px 10px 5px #999;
-}
-.b_red:active {
-	background-image: linear-gradient(bottom, rgb(62,184,229) 0%, rgb(44,160,202) 100%);
-	box-shadow: inset 0px 1px 0px #E8527F, 0px 2px 0px 0px #E24724, 0px 5px 3px #999;
-}
-.b_red::before {
-	background-color:#FA5704;
-	color:#FFD1EA;
-	text-shadow:1px 1px 0px #6D2D07;
-	border-right:solid 1px #6D2D07;
-	background-image: linear-gradient(bottom, rgb(10,94,125) 0%, rgb(14,139,184) 100%);
-	box-shadow:inset 0px 1px 0px #E8527F, 0px 5px 0px 0px #BE2B3A, 0px 10px 5px #999 ;
-}
-.b_red:active::before {
-	box-shadow:inset 0px 1px 0px #E8527F, 0px 5px 0px 0px #BE2B3A, 1px 1px 0px 0px #FF2764, 2px 2px 0px 0px #FF2764, 2px 5px 0px 0px #FF2764, 6px 4px 2px #E16961, 0px 10px 5px #999 ;
-}
-
-
-.b_green {
-	background-color:#6fba26;
-	border-left:solid 1px #86C155;
-	background-image: linear-gradient(bottom, rgb(100,170,30) 0%, rgb(129,212,51) 100%);
-	box-shadow: inset 0px 1px 0px #86C155, 0px 5px 0px 0px #3d6f0d, 0px 10px 5px #999;
-}
-.b_green:active {
-	background-image: linear-gradient(bottom, rgb(100,170,30) 0%, rgb(129,212,51) 100%);
-	box-shadow: inset 0px 1px 0px #86C155, 0px 2px 0px 0px #3d6f0d, 0px 5px 3px #999;
-}
-.b_green::before {
-	background-color:#6fba26;
-	color:#FFD1EA;
-	text-shadow:1px 1px 0px #325411;
-	border-right:solid 1px #325411;
-	background-image: linear-gradient(bottom, rgb(10,94,125) 0%, rgb(14,139,184) 100%);
-	box-shadow:inset 0px 1px 0px #86C155, 0px 5px 0px 0px #03593A, 0px 10px 5px #999 ;
-}
-.b_green:active::before {
-	box-shadow:inset 0px 1px 0px #86C155, 0px 5px 0px 0px #03593A, 1px 1px 0px 0px #00680A, 2px 2px 0px 0px #00680A, 2px 5px 0px 0px #00680A, 6px 4px 2px #0b698b, 0px 10px 5px #999;
-}
- */
-/* #a_add_line::before {
-	background-image: url(../img/add_line.png);
-} */
-
-/* #a_show_flights_table::before {
-	background-image: url(../img/show_flights_table.png);
-} */
-
-/* #a_register::before {
-	background-image: url(../img/add_guard.png);
-} */
-
-/* #a_register_client::before{
-	background-image: url(../img/add_client.png);
-} */
 
 /* используется в Блок модального окна показа миниатюр */
 .button_container {
@@ -231,9 +57,7 @@ h3 {
 	width: 23px;
 	float: left;
 	padding-right: 2px;
-	vertical-align: top;
-   
-/*	height:100%; */   
+	vertical-align: top; 
 }
 
 .a_button_delete {
@@ -245,8 +69,6 @@ h3 {
 	float: right;
 	padding-right: 2px;
 	vertical-align: top;
-
-/*	height:100%; */
 }
 
 .button_set_time {
@@ -306,32 +128,6 @@ h3 {
 /*	------------------	*/
 
 
-/**************************** Table content ************************/
-/* table{
-    display: table;
-	border: 1px solid #777; /* Параметры рамки */
-/*	border-collapse: collapse; /* Убираем двойные линии между ячейками */
-/*	background: #9d9;
-	width: 100%; /* Ширина таблицы в процентах */
-/*	table-layout: auto;	*/
-/*	float: left;
-} */
-
-/*tr {
-/*    display: table-row; */
-/*	border: 0px solid #451; /* Параметры рамки */
-/*	padding: 0px;
-/*    margin: 0px; 
-}
-*/
-
-/*td { 
-/*	border: 1px solid #951; /* Параметры рамки */
-/*	height: 23px; */
-/*	padding: 0px;
-/*	margin: 0px; 
-}
-*/
 
 input {
 	width:100%;
@@ -432,47 +228,10 @@ input {
     position: relative;
 }
 
-/* #panelGun {
- 
-}
-
-#tableGun  {
-     
-} */
-/* #tableGun td { */
-/*    background: #ceffee;  
-    font: normal 11px Verdana, sans-serif;
-    margin: 0px; /* Отступы вокруг */    
-/*    padding: 2px; /* Поля вокруг текста */
-/* }
-#tableGun tr { */
-/*    background: #ceffee;  */
-/*     height:10px; */
-/*    padding: 0px; /* Поля вокруг текста */
-/*	margin: 0px; /* Отступы вокруг */
-
-/* }
-#tableGun label {  */
-/*   padding: 0px; /* Поля вокруг текста */
-/*	margin: 0px; /* Отступы вокруг */
-/*	margin-left: 0px; /* Отступы вокруг */
-
-/* }
-#tableGun th {  */
-/*   padding: 0px; /* Поля вокруг текста */
-/*	margin: 0px; /* Отступы вокруг */
-/* 	padding: 0px;  *//* Отступы вокруг */
-/*     margin: 0px; */ /* Отступы вокруг */
-/*     height:20px;
-
-}
- */
-
 
 .gunCheckbox{ 
     padding: 0px; /* Поля вокруг текста */
 	margin: 0px; /* Отступы вокруг */
-/*    position: relative; */
     height:20px;
 }
 
@@ -605,21 +364,6 @@ input {
 }
 
 
-/* .cont1 {
-  min-width: 30px;
-  max-width: 75%;
-  margin: 0 auto;
-  padding: 0;
-  }
-
-.cont1{
-    margin:0 auto;/*Центрирование блока*/
-    background:#ccc;/*Цвет блока*/
-    max-width:200px;/*Максимальная ширина при больших разрешениях*/
-    min-width:40px;/*Минимальная ширина при маленьких разрешениях*/
-    width:auto;/*Ширина в зависимости от разрешения экрана*/
-}
- */
 
 /********************** Modal forms **********************/
 #modal_form {
@@ -846,114 +590,6 @@ figure.photo_prev figcaption {  /* стиль описания */
     
 }
 
-/* Блок оошибок, возникших при регистрации охранника*/
-/* #div_from_register_error{
-	color: #FF4447;
-} */
-
-/*	Стили для списка охранников	*/
-/* .number {
-	width: 100%;
-}
-.user_login {
-	width: 200px;
-}
-.full_name {
-	width: 250px;
-} */
-
-
-
-/* ----------------- */
-
-/* .client {
-	width: 250px;
-	
-} */
-
-
-/* ---=======---- */
-/* @keyframes appear {
-	0%{
-		opacity: .8;
-		transform: scale(.5, .5);
-	}
-	70%{
-		opacity: .3;
-		transform: scale(1, 1);
-	}
-	100%{
-		opacity: 0;
-		transform: scale(.5, .5);
-	}
-}
-@-webkit-keyframes appear {
-	0%{
-		opacity: .8;
-		-webkit-transform: scale(.5, .5);
-	}
-	70%{
-		opacity: .3;
-		-webkit-transform: scale(1, 1);
-	}
-	100%{
-		opacity: 0;
-		-webkit-transform: scale(.5, .5);
-	}
-}
-.cursor1 {
-    /* fixed - прилипают к экрану, absolute - только вверху, relative - внизу */
-/*	position: fixed;
-	width: 40px;
-	height: 40px;
-	margin: -20px 0 0 -20px;
-	border-radius: 50%;
-	background: #ef2c68;
-	animation: appear .2s;
-	-webkit-animation: appear .2s;
-} */
-
-/*   */
-/* #cont{
-  position: relative;
-  width: 75%;
-  padding-left: 20px;
-  border: 3px solid red;
-}
- */
-/* .btn_test{
-  display: block; */ 
-/*  padding: 20px;*/
-/*  background-color: green; */
-/*  color: white; */
-/*   width: 60px;  */
-/*  border: 1px solid white; */
-/*  margin-bottom: 50px; */
-/*  text-decoration: none; */
-/*  border-radius: 5px; */
-/* } */
-
-/* .floatdiv{
-  position: absolute;
-  border: 1px solid grey;
-  width: 100px;
-  min-height: 50px;
-  left: 150px;
-}
-
-.atbtn1{
-  top: 1px;
-}
-
-.atbtn2{
-  top: 110px;
-}
-
-.atbtn3{
-  top: 220px;
-} */
-
-
 /* Убираем отступ снизу у форм, чтобы на странице охранников таблица была компактнее */
 .form-group {
     margin-bottom: 0px;
@@ -986,18 +622,14 @@ figure.photo_prev figcaption {  /* стиль описания */
 }
 
 .bg-primary {
-/*  color: #fff; */
   color: #111;
-/*  background-color: #337ab7; */
   background-color: #9FBF76;
 }
 
 .form-control {
   display: block;
   width: 100%;
-/*  height: 34px; */
   height: 30px;
-/*  padding: 6px 12px; */
   padding: 0px 12px;
   font-size: 14px;
   line-height: 1.42857143;
@@ -1016,10 +648,7 @@ figure.photo_prev figcaption {  /* стиль описания */
 
 /*Эксперименты с вёрсткой */
 
-/* .form-horizontal .control-label { */
-/* text-align:right; */
-/* text-align:left; */
-/* background-color:#ffa; */
-/* } */
+
+
 
 

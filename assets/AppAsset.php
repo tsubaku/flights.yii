@@ -21,6 +21,7 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/core.js',
         'js/manager.js',
+        'js/jquery.maskedinput.min.js', //Подключение jQuery плагина Masked Input
 
     ];
     public $depends   = [

@@ -232,7 +232,7 @@ function changeUser(cell_value, cell_id)
 }
 
 
-//----- ++Скрипт загрузки фото для рейса из интерфейса охранника ----- 
+// ++Скрипт загрузки фото для рейса из интерфейса охранника 
 function submitFile( jQuery ) {
 (function($){
 	var files;  // Глобальная переменная куда будут располагаться данные файлов. С ней будем работать
@@ -302,4 +302,23 @@ function submitFile( jQuery ) {
 $( document ).ready( submitFile );	//Запускаем ф-ию submitFile после полной зарузки страницы		
 //---------------------------
 
-  
+ 
+
+
+
+
+// ++ Маски полей ввода
+$(function(){
+    //Маски для полей постовой ведомости
+    $(".number").mask("9?99");                              //№ маршрута
+    $(".time_on, .time_off, .time_report").mask("99:99");   //начало/окончание службы и рапорт
+        
+    //Маски для полей страницы Рейсы
+    $(".id").mask("9?99999");                               //№ рейса
+    $(".vremja, .srok_dostavki").mask("99:99");             //время принятия и фактическое время в пути
+    $(".nomer_mashiny").mask("a999aa");                     //№ машины
+    $(".vydano, .prostoj_chasy, .prostoj_stavka_za_ohrannika, .stavka_bez_nds, .stavka_s_nds, .zp, .prostoj, .arenda_mashin").mask("?999999");                     //Числовые поля
+
+});
+
+

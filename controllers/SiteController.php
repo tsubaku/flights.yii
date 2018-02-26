@@ -12,7 +12,7 @@ use app\models\LoginForm;
 use app\models\Client;      //список фирм клиентов;
 use app\models\Gun;         //список оружия;
 use app\models\User;        //встроенная авторизация;
-use app\models\User_gun;    //таблица связей юзер-оружие (многие ко многим);
+use app\models\User_gun;    //таблица связей охранники-ружие;
 use app\models\Flight;      //таблица рейсов;
 use app\models\Photo;       //таблица фотографий, присылаемых охранниками;
 use app\models\SignupForm;  //таблица охранников и прочих юзеров
@@ -108,17 +108,25 @@ class SiteController extends Controller
             $tableName = Yii::$app->request->post('table');
 
             if ($tableName == '11') {
-                $model = new Client(); //говорят, лишняя
+                $model = new Client();                                                          //говорят, лишняя
                 $model = Client::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-            } elseif ($tableName == '10') {
-                //$model = new User(); //говорят, лишняя
-                $model = new SignupForm(); //говорят, лишняя
+            } elseif ($tableName == '10') {                                                     //удалить юзера
+                $model = new SignupForm();                                                      //говорят, лишняя
                 $model = User::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+                
+                //Удалить связи с оружием для удаляемого юзера
+                $connection = Yii::$app->db;                                                    //Соединение с базой данных
+                $connection->createCommand()->delete("User_gun", "user_id = $idRow")->execute();// выполняем запрос 
+                
             } elseif ($tableName == '20') {
-                $model = Flight::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
-            } elseif ($tableName == '31') {
-                $model = new Gun(); //говорят, лишняя
-                $model = Gun::find()->where(['id' => $idRow])->one()->delete(); //выбираем строку с нужным id и удаляем её
+                $model = Flight::find()->where(['id' => $idRow])->one()->delete();              //выбираем строку с нужным id и удаляем её
+            } elseif ($tableName == '31') {                                                     //Удаляем оружие
+                $model = new Gun();                                                             //говорят, лишняя
+                $model = Gun::find()->where(['id' => $idRow])->one()->delete();                 //выбираем строку с нужным id и удаляем её
+                
+                //Удалить связи с юзерами для удаляемого оружия
+                $connection = Yii::$app->db;                                                    //Соединение с базой данных
+                $connection->createCommand()->delete("User_gun", "gun_id = $idRow")->execute(); // выполняем запрос
             }
         }
     }

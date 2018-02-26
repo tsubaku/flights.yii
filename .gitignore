@@ -29,6 +29,8 @@ phpunit.phar
 tests/_output/*
 tests/_support/_generated
 
-/web/img/photo
+# uploads photos
+/web/img/photo/*
 
+# database configuration
 config/db.php
