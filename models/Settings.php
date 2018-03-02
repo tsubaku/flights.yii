@@ -20,11 +20,11 @@ class Settings extends ActiveRecord //ActiveRecord - это встроенный
     //attributeLabels() -устанавливаете названия полей для тега label формы. Эти названия совпадают с именами атрибутов модели
     public function attributeLabels() {
         return [
-            'content' => 'Шапка',
+            'content' => 'Название компании',
         ];
     }
     
-    //attributeLabels() -устанавливаете названия полей для тега label формы. Эти названия совпадают с именами атрибутов модели
+
     public static function getCompanyName() {
         //$companyName=Settings::model()->findByPk($id);
         $companyName=Settings::find()->select('content')->where(['name' => 'companyName'])->asArray()->column();

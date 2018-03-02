@@ -23,7 +23,7 @@ function show_one_flight(dat)
 		},
 		success: function (data) {
 			document.getElementById("status").innerHTML=''; //удалить значок ожидания
-			//console.log("data = "+data);
+			console.log("data = "+data);
 			//document.getElementById("div_show_one_flight").innerHTML=data;
 			var array_data_one_flight = JSON.parse(data);
 			//console.log("# "+array_data_one_flight["sdacha_s_ohrany"]);
@@ -40,9 +40,10 @@ function show_one_flight(dat)
 				array_data_one_flight['sdacha'] = array_data_one_flight['sdacha'].substring(0, 10)+"T"+array_data_one_flight['sdacha'].substring(11, 19);
 			}
 			
-
+            console.log("data_id = "+array_data_one_flight['id']);
+            
 			number_flight = array_data_one_flight['id'];	//номер рейса
-			document.getElementById("div_right_string0").innerHTML=array_data_one_flight['id'];			
+			document.getElementById("div_right_string0").innerHTML="Номер рейса: "+array_data_one_flight['id'];			
 			document.getElementById("div_right_string1").innerHTML=array_data_one_flight['data_vyezda' ];
 			document.getElementById("div_right_string2").innerHTML=array_data_one_flight['vremja'];			
 			document.getElementById("div_right_string3").innerHTML=array_data_one_flight['klient' ];			
@@ -76,11 +77,8 @@ window.show_one_flight = show_one_flight;
 //--------------------------
 //Внешний вид и настройки календаря для выбора даты 
 $(function(){
-	//var array = ["2017-03-03","2017-03-04"];
 	//var array_date_of_departure = ["2017-10-03","2017-10-04"];
-	//console.log("выезды: "+window.array_date_of_departure);
-	//console.log("выезды2: "+array_date_of_departure);
-	
+	//console.log("выезды: "+window.array_date_of_departure);	
 	$("#calendar").datepicker({
         inline: true,
 		language: 'ru',
@@ -105,21 +103,12 @@ $(function(){
 				return [false,"not_date_of_departure","not available"];
 			}
 		},
-		// Что делать при клике по дате. https://habrahabr.ru/post/111155/
+		//onSelect - действия при клике по дате. https://habrahabr.ru/post/111155/
 		onSelect: function(date) { 		//date - дата календаря, на которую нажали
-			console.log(date);
-			show_one_flight(date);      //Показать таблицу			
-			
-			//Показываем модальное окно с данными выбранного рейса
-			event.preventDefault(); 	// выключaем стaндaртную рoль элементa
-			$('#overlay').fadeIn(400, 	// снaчaлa плaвнo пoкaзывaем темную пoдлoжку
-				function(){ 			// пoсле выпoлнения предыдущей aнимaции
-				//	$('#modal_form') 
-				//		.css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
-				//		.animate({opacity: 1}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-                    $("#myModalBox").modal('show');
-                });
-
+			//console.log(date);
+            setTimeout(function() { document.getElementsByName('buttonModal')[0].click(); },1) //ШАМАНСТВО. Программно нажимаем кнопку 
+                                                                                               //вызова модального окна           
+			show_one_flight(date);      //Внести данные рейса в модальное окно
             return false;
 		},
     });
@@ -129,44 +118,7 @@ $(function(){
 //-------------------------
 
 
-//Модальное окно
-$(document).ready(function() { // вся мaгия пoсле зaгрузки стрaницы
-	//$('.date_of_departure').click( function(event){ // лoвим клик пo ссылке с id="date_of_departure"
-	//	event.preventDefault(); // выключaем стaндaртную рoль элементa
-	//	$('#overlay').fadeIn(400, // снaчaлa плaвнo пoкaзывaем темную пoдлoжку
-	//	 	function(){ // пoсле выпoлнения предыдущей aнимaции
-	//			$('#modal_form') 
-	//				.css('display', 'block') // убирaем у мoдaльнoгo oкнa display: none;
-	//				.animate({opacity: 1, top: '50%'}, 200); // плaвнo прибaвляем прoзрaчнoсть oднoвременнo сo съезжaнием вниз
-	//	});
-	//});
-	/* Зaкрытие мoдaльнoгo oкнa, тут делaем тo же сaмoе нo в oбрaтнoм пoрядке */
-	$('#modal_close, #overlay').click( function(){ // лoвим клик пo крестику или пoдлoжке
-		$('#modal_form')
-			.animate({opacity: 0, top: '0%'}, 200,  // плaвнo меняем прoзрaчнoсть нa 0 и oднoвременнo двигaем oкнo вверх
-				function(){ // пoсле aнимaции
-					$(this).css('display', 'none'); // делaем ему display: none;
-					$('#overlay').fadeOut(400); // скрывaем пoдлoжку
-					document.getElementById("div_right_string0").innerHTML='';	//Очистка полей модальнго окна рейсов		
-					document.getElementById("div_right_string1").innerHTML='';
-					document.getElementById("div_right_string2").innerHTML='';			
-					document.getElementById("div_right_string3").innerHTML='';	
-					document.getElementById("div_right_string4").innerHTML='';					
-					document.getElementById("div_right_string5").innerHTML='';			
-					document.getElementById("div_right_string6").innerHTML='';
-					document.getElementById("div_right_string7").innerHTML='';			
-					document.getElementById("div_right_string8").innerHTML='';
-					ajax_respond.style.visibility='hidden';	//Скрываем ответ сервера
-				}
-			);
-	});
-   // $("#modal_close, #overlay").modal("hide");
-   /* $('#modal_close, #overlay').click(function() {
-       var qqq = $(this).closest('.modal');
-       $(qqq).modal('hide');
-    }); */
-    
-});
+
 
 
 

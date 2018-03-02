@@ -113,7 +113,7 @@ $this->title = 'Постовая ведомость';
         <?php ActiveForm::end(); ?>
         
         <div class="col-xs-5 sentryHeader" id="sentryHeaderId">
-            <?php echo "$sentryHeaderText[0]"; ?>
+            <?php echo "$sentryHeaderText[0]"; ?> <!-- Рисуем сопроводительный текст для таблицы (берётся из бд settings в контроллере) -->
         </div>
     </div>
 

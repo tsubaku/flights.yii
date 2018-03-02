@@ -22,7 +22,6 @@ class Gun extends ActiveRecord //ActiveRecord - это встроенный во
             ['name', 'unique', 'message' => 'Такое оружие уже есть в списке'],
             //['name', 'safe'],
             ['name', 'required', 'message' => 'Заполните поле'],
-           // ['name', 'unique', 'targetClass' => User::className(),  'message' => 'Такой клиент уже существует'],
         ];
     }
     

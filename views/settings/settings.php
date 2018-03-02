@@ -60,7 +60,9 @@ $this->title = 'Настройки';
 
     echo '<pre>'; 
     //print_r ($gun->name); //фактически - последний клиент из списка
-    print_r ($sentryHeaderText);
+    //print_r ($sentryHeaderText);
+    print_r ($settingsSentryText);
+    print_r ($settingsCompanyName);
     //print_r ($rows);
     echo '</pre>'; 
 

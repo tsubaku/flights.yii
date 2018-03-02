@@ -444,7 +444,7 @@ input {
 
 }
 
-#div_right_string4 {
+#number {
 	display: block;
 	float: left;
 	position:relative;
@@ -645,6 +645,10 @@ figure.photo_prev figcaption {  /* стиль описания */
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
+/*Эксперименты с вёрсткой */
+#buttonModal {
+    visibility: hidden;
+}
 
 /*Эксперименты с вёрсткой */
 

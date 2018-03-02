@@ -44,9 +44,10 @@
                 <div class="col-xs-2">  
                     <?php
                         $years=[
-                           2016=>'2016',
                            2017=>'2017',
                            2018=>'2018',
+                           2019=>'2019',
+                           2020=>'2020',
                         ];
                         $param = [
                             'options' =>[ $year => ['Selected' => true]],
@@ -81,13 +82,13 @@
                     #Рисуем таблицу рейсов
                     if ($listFlight != NULL) { //иначе варнинги идут, если рейсов нет 
                         echo "<table class='table table-striped table-bordered table-hover'>";
-                        echo "<h1>Рейсы за $months[$month] $year</h1>"; //Название таблицы
+                        echo "<h1>Рейсы за ". htmlspecialchars("$months[$month] $year", ENT_QUOTES) ."</h1>"; //Название таблицы
                         
                         #Рисуем шапку таблицы
                         echo "<thead>";
                             echo "<tr class='bg-primary'>";
                             foreach ($ru_rows_array as $key => $value) {
-                                echo "<th scope='col'>" . $value . "</th>"; 
+                                echo "<th scope='col'>" . htmlspecialchars("$value", ENT_QUOTES) . "</th>"; 
                             } 
                             echo "</tr>";
                         echo "</thead>";
@@ -100,8 +101,8 @@
                                 
                                 $id_line   = $row_content['id']; //$id_line - id строки в БД рейсов
                                 $id_status = $row_content['fakticheskij_srok_dostavki']; //$id_status - status строки в БД
-                                echo "<tr id='flight-$id_line'>";
-                                echo "<th scope='row'>$i</th>"; //Вывод № строки
+                                echo "<tr id='flight-" . htmlspecialchars("$id_line", ENT_QUOTES) . "'>";
+                                echo "<th scope='row'>" . htmlspecialchars("$i", ENT_QUOTES) . "</th>"; //Вывод № строки
                                 $i = $i + 1;
                                 
                                 foreach ($row_content as $column_name => $data) {
@@ -116,19 +117,10 @@
                                     switch ($column_name) {
                                         case 'id':
                                             #Вытаскиваем все пути к фотографиям рейса
-                                            //$stmt = $pdo->prepare('SELECT `path` FROM `photo` WHERE `n_flight` = :id_line');
-                                            //$stmt->execute(array(
-                                            //    'id_line' => $id_line
-                                            //));
-                                            //$photo_name_array = $stmt->fetchAll(); //Обработать запрос, переведя ВСЕ данные в массив $photo_name_array
-                                            
-                                            //$listPhoto
-                                            //$flightPhoto = Array();
                                             $photo_name_array = null;
-                                             $p = 0;
+                                            $p = 0;
                                             foreach ($listPhoto as $key => $val) {
                                                 if ($val['n_flight'] == $id_line) { 
-                                                    //$flightPhoto[] = $val['path']; 
                                                     $photo_name_array[$p] = $val['path'];
                                                     $p = $p + 1;
                                                 }   
@@ -136,13 +128,13 @@
 
                                             
                                             if ($photo_name_array) { //Если имеется хотя бы одно фото
-                                                $photo = "<button type='button' class='a_button_photo' onclick='get_photo($id_line)'></button>";
+                                                $photo = "<button type='button' class='a_button_photo' onclick='get_photo(" . htmlspecialchars("$id_line", ENT_QUOTES) . ")'></button>";
                                             } else {
-                                                $photo = "<button type='button' class='a_button_no_photo' onclick='get_photo($id_line)'></button>";
+                                                $photo = "<button type='button' class='a_button_no_photo' onclick='get_photo(" . htmlspecialchars("$id_line", ENT_QUOTES) . ")'></button>";
                                             }
                                             $readonly  = "readonly";
                                             $container = "container_id";
-                                            $button    = "<button type='button' class='a_button_delete' onclick='delete_line($data, $table);'></button>";
+                                            $button    = "<button type='button' class='a_button_delete' onclick='delete_line(" . htmlspecialchars("$data, $table", ENT_QUOTES) . ");'></button>";
                                             break;
                                         
                                         case 'data_vyezda':
@@ -165,10 +157,12 @@
                                             break;
                                         
                                         case 'klient':
-                                             $klient = "<select size='0' id='klient-$id_line' name='klient-$id_line' class='list_users' onchange='$js_change_list'>";
+                                            $id_lineSafe = htmlspecialchars("$id_line", ENT_QUOTES);
+                                            $klient = "<select size='0' id='klient-$id_lineSafe' name='klient-$id_lineSafe' class='list_users' onchange='$js_change_list'>";
                                             foreach ($listClients as $value) {
                                                 $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                                $klient .= "<option value=$user_n";
+                                                $user_nSafe = htmlspecialchars("$user_n", ENT_QUOTES);
+                                                $klient .= "<option value=$user_nSafe";
                                                 if (($value == $data) or ($data == NULL)) {
                                                     $klient .= " selected='selected'";
                                                 }
@@ -178,10 +172,12 @@
                                             break;
                                         
                                         case 'fio':
-                                             $fio = "<select size='0' id='fio-$id_line' name='fio-$id_line' class='list_users' onchange='$js_change_list'>";
+                                            $id_lineSafe = htmlspecialchars("$id_line", ENT_QUOTES);
+                                            $fio = "<select size='0' id='fio-$id_lineSafe' name='fio-$id_lineSafe' class='list_users' onchange='$js_change_list'>";
                                             foreach ($listUsers as $value) {
                                                 $user_n = str_replace(" ", "_", $value); //Заменяем пробелы на _, иначе браузер не понимает
-                                                $fio .= "<option value=$user_n";
+                                                $user_nSafe = htmlspecialchars("$user_n", ENT_QUOTES);
+                                                $fio .= "<option value=$user_nSafe";
                                                 if (($value == $data) or ($data == NULL)) {
                                                     $fio .= " selected='selected'";
                                                 }
@@ -208,11 +204,10 @@
                                     
                                     //Если столбец ФИО или Клиент, то рисуем тег select со списком
                                     if ($column_name == 'fio') {
-                                        echo "<td><div class='$container'>$fio</div></td>"; //
+                                        echo "<td><div class='container_default'>$fio</div></td>"; //
                                     } else if ($column_name == 'klient') {
-                                        echo "<td><div class='$container'>$klient</div></td>"; //
+                                        echo "<td><div class='container_default'>$klient</div></td>"; //
                                     } else {    //иначе просто инпут
-                                       // echo "<td><div class='$container'>$photo<input $readonly type='$type' id='$column_name-$id_line' name='$column_name-$id_line' class='$column_name $status_class' value='$data' onchange='$js_change_cell'></input>$button</div></td>"; //
                                         echo "<td>
                                             <div class='divButtonPhoto'>
                                                 $photo
@@ -233,7 +228,7 @@
                     } else { //Если в таблице нет ни одного рейса за этот месяц и нет рейсов без даты, то:
                         //$stmt = $pdo->query('INSERT INTO flights () VALUES()'); //Добавляем пустую строку
                         //showTable($year, $month_name); //Заново запускаем функцию и выводим эту строку на экран
-                        echo "таблица пуста";
+                        echo "Таблица пуста";
                     } 
                 ?>     
             </div> <!-- div_flights_table -->
